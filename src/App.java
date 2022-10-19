@@ -39,7 +39,7 @@ public class App extends Application {
         Button changeWidthItem = new Button("Change Width of Item");
         Button changeHeightItem = new Button("Change Height of Item");
 
-        // variables for items
+        // variables for items and item containers (all but 1 overlap)
         String nameString = "Item name";
         long itemPrice = 50;
         int xCoord = 50;
