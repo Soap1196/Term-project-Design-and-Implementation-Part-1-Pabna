@@ -1,4 +1,7 @@
 
+import javax.naming.ldap.Control;
+import javax.swing.ComboBoxModel;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
@@ -8,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,6 +19,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.animation.PathTransition; 
+import javafx.scene.shape.MoveTo; 
+import javafx.scene.shape.Path;
+import javafx.util.Duration;  
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.MenuItem; 
+
+
+
 
 class itemList extends Stage{ 
         
@@ -45,11 +59,13 @@ class itemList extends Stage{
     
 } 
 
-interface items {
+interface items{
     public void showItemDetails();
 }
 
-class component implements items {
+class component implements items{
+    public static component component; 
+
     public String[] obj = new String[30];
     public String name;
     public long price;
@@ -59,7 +75,20 @@ class component implements items {
     public long width;
     public long height;
 
-    @Override
+    public static component getInstance() 
+    { 
+        if (component == null) {
+            component = new component(); 
+        }
+        return component;
+
+    } 
+
+    private component() 
+    { 
+         
+    }
+    
     public void showItemDetails()
     {
         System.out.println("Placeholder for component");
@@ -67,7 +96,8 @@ class component implements items {
 
 }
 
-class Leaf implements items{
+class leaf implements items{
+    public static leaf leaf;
     public String name;
     public long price;
     public long xCoordinate;
@@ -75,6 +105,15 @@ class Leaf implements items{
     public long length;
     public long width;
     public long height;
+
+    public static leaf getInstance() 
+    { 
+        if (leaf == null) {
+            leaf = new leaf(); 
+        }
+        return leaf;
+
+    } 
 
     @Override
     public void showItemDetails()
@@ -95,13 +134,32 @@ public class App extends Application
 	{
         itemList IL;
         IL= itemList.getInstance();
-        // Create the VBox
-		VBox root = new VBox();
-		// Set Spacing to 10 pixels
+
+        Button addItemContainer = new Button("addItemContainer");
+        Button addItem = new Button("addItem");
+        Button deleteItem = new Button("deleteItem");
+        Button ChangeName = new Button("ChangeName");
+        Button ChangePrice = new Button("ChangePrice");
+        Button ChangeLocationY = new Button("ChangeLocationY");
+        Button ChangeLocationX = new Button("ChangeLocationX");
+        Button ChangeLength = new Button("ChangeLength");
+        Button ChangeWidth = new Button("ChangeWidth");
+        Button ChangeHeight = new Button("ChangeHeight");
+
+
+        component ItemContainer = component.getInstance();
+        ItemContainer.name = "root";
+        System.out.println(ItemContainer.name);
+        SplitMenuButton ItemComponent= new SplitMenuButton();
+        ItemComponent.setText(ItemContainer.name);
+
+        
+
+		ImageView drone = new ImageView(new Image("Subject.png", 100, 80, false, false));
+
+		VBox root = new VBox(drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,ChangeLocationY,ChangeLocationX,ChangeLength,ChangeWidth,ChangeHeight);
 		root.setSpacing(10);
-		// Set the Size of the VBox
 		root.setPrefSize(800, 600);
-		// Set the Style-properties of the VBox
 		root.setStyle("-fx-padding: 10;" +
 				"-fx-border-style: solid inside;" +
 				"-fx-border-width: 2;" +
@@ -109,14 +167,44 @@ public class App extends Application
 				"-fx-border-radius: 5;" +
 				"-fx-border-color: transparent;");
 
-		// Create the Scene
+
 		Scene scene = new Scene(root);
-		// Add the Scene to the Stage
 		IL.setScene(scene);
-		// Set the Title of the Stage
-		IL.setTitle("A JavaFX Animation Example With Button");
-		// Display the Stage
+		IL.setTitle("Group Pabna");
+  
+      Path path = new Path(); 
+       
+      MoveTo moveTo = new MoveTo(100, 150); 
+       
+      CubicCurveTo cubicCurveTo = new CubicCurveTo(400, 40, 175, 250, 500, 150); 
+       
+      path.getElements().add(moveTo); 
+      path.getElements().add(cubicCurveTo);        
+       
+      PathTransition pathTransition = new PathTransition(); 
+       
+      pathTransition.setDuration(Duration.millis(1000)); 
+       
+      pathTransition.setNode(drone); 
+       
+      pathTransition.setPath(path);  
+      
+      pathTransition.setCycleCount(1); 
+      
+      pathTransition.setAutoReverse(false); 
+
+      pathTransition.play(); 
+
 		IL.show();
+
+		double sceneWidth = scene.getWidth();
+		double sceneHeight = scene.getHeight();
+		double droneWidth = drone.getLayoutBounds().getWidth();
+        
+
+        
+
+
         
     }
 
