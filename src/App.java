@@ -39,6 +39,17 @@ public class App extends Application {
         Button changeWidthItem = new Button("Change Width of Item");
         Button changeHeightItem = new Button("Change Height of Item");
 
+        // variables for items
+        String nameString = "Item name";
+        long itemPrice = 50;
+        int xCoord = 50;
+        int yCoord = 50;
+        int length = 50;
+        int weight = 50;
+        int height = 50;
+        String[] itemCollection;
+
+
         // set on action functions: 
         deleteItem.setOnAction(new EventHandler <ActionEvent>()
 		{
@@ -46,6 +57,7 @@ public class App extends Application {
             {
             	// sequence.playFromStart();
             	// status.setText("Current State: " + sequence.getStatus());
+
             }
         });
 
