@@ -31,74 +31,35 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-class itemList { 
-        
-    private static itemList itemObject = null; 
-  
-    
-    public String s; 
-  
-    
-    private itemList() 
-    { 
-         
-    } 
-  
-    
-    public static itemList getInstance() 
-    { 
-        if (itemObject == null) 
-            itemObject = new itemList(); 
-  
-        return itemObject; 
-    } 
-} 
-
-interface items {
-    public void showItemDetails();
-}
-
-class component implements items {
-    public String[] obj = new String[30];
-    public String name;
-    public long price;
-    public long xCoordinate;
-    public long yCoordinate;
-    public long length;
-    public long width;
-    public long height;
-
-    @Override
-    public void showItemDetails()
-    {
-        System.out.println("Placeholder for component");
-    }
-
-}
-
-class Leaf implements items{
-    public String name;
-    public long price;
-    public long xCoordinate;
-    public long yCoordinate;
-    public long length;
-    public long width;
-    public long height;
-
-    @Override
-    public void showItemDetails()
-    {
-        System.out.println("Placeholder fo component");
-    }
-}
-
-
-
 public class Control implements Initializable{
 
-    itemList iL1=itemList.getInstance();
-
     public Image drone;
+
+    interface items {
+        public void showItemDetails();
+    }
+
+    class component implements items {
+        public String[] obj = new String[30];
+        public String name;
+        public long price;
+        public long xCoordinate;
+        public long yCoordinate;
+        public long length;
+        public long width;
+        public long height;
+
+        @Override
+        public void showItemDetails()
+        {
+            System.out.println("Placeholder");
+        }
+
+    }
+    
+
+
+    
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
