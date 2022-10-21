@@ -26,7 +26,13 @@ import javafx.util.Duration;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.MenuItem; 
-
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;  
+import javafx.scene.shape.Rectangle;  
+import javafx.scene.shape.LineTo;
+import javafx.scene.Node;
 
 
 
@@ -53,11 +59,9 @@ class itemList extends Stage{
   
         
     } 
-
-    
-    
-    
 } 
+
+
 
 interface items{
     public void showItemDetails();
@@ -124,6 +128,37 @@ class leaf implements items{
 
 public class App extends Application
 {
+
+    public static class MoveToAbs extends MoveTo {
+
+        public MoveToAbs(Node node) {
+            super(node.getLayoutBounds().getWidth() / 2, node.getLayoutBounds().getHeight() / 2);
+        }
+
+        public MoveToAbs(Node node, double x, double y) {
+            super(x - node.getLayoutX() + node.getLayoutBounds().getWidth() / 2, y - node.getLayoutY() + node.getLayoutBounds().getHeight() / 2);
+        }
+
+    }
+
+    public static class LineToAbs extends LineTo {
+
+        public LineToAbs(Node node, double x, double y) {
+            super(x - node.getLayoutX() + node.getLayoutBounds().getWidth() / 2, y - node.getLayoutY() + node.getLayoutBounds().getHeight() / 2);
+        }
+
+    }
+
+    // change layout to current position, reset translate
+    public void setPositionFixed( Node node) {
+        double x = node.getLayoutX() + node.getTranslateX();
+        double y = node.getLayoutY() + node.getTranslateY();
+        node.relocate(x, y);
+        node.setTranslateX(0);
+        node.setTranslateY(0);
+    }
+
+    int itemNumber = 0;
     public static void main(String[] args)
         {
             Application.launch(args);
@@ -146,60 +181,97 @@ public class App extends Application
         Button ChangeWidth = new Button("ChangeWidth");
         Button ChangeHeight = new Button("ChangeHeight");
 
+        Button MoveDrone = new Button("MoveDrone");
 
         component ItemContainer = component.getInstance();
         ItemContainer.name = "root";
         System.out.println(ItemContainer.name);
-        SplitMenuButton ItemComponent= new SplitMenuButton();
+        MenuButton ItemComponent= new MenuButton();
         ItemComponent.setText(ItemContainer.name);
 
         
 
 		ImageView drone = new ImageView(new Image("Subject.png", 100, 80, false, false));
 
-		VBox root = new VBox(drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,ChangeLocationY,ChangeLocationX,ChangeLength,ChangeWidth,ChangeHeight);
+        Label Tname = new Label("Data:");
+        TextField textField = new TextField ();
+        HBox hb = new HBox();
+        hb.getChildren().addAll(Tname, textField);
+        hb.setSpacing(10);
+
+		VBox root = new VBox(drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,
+        ChangeLocationY,ChangeLocationX,ChangeLength,ChangeWidth,ChangeHeight,hb,MoveDrone);
 		root.setSpacing(10);
-		root.setPrefSize(800, 600);
-		root.setStyle("-fx-padding: 10;" +
+		root.setPrefSize(1000, 800);
+		root.setStyle("-fx-padding: 1;" +
 				"-fx-border-style: solid inside;" +
 				"-fx-border-width: 2;" +
 				"-fx-border-insets: 5;" +
 				"-fx-border-radius: 5;" +
 				"-fx-border-color: transparent;");
 
+        addItemContainer.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                MenuItem MI1 = new MenuItem(textField.getText());
+                ItemComponent.getItems().add(MI1);
+                component ItemContainer = component.getInstance();
+                ItemContainer.name = "root";
+            }
+        });
+        
+        addItem.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                MenuItem MI2 = new MenuItem(textField.getText());
+                ItemComponent.getItems().add(MI2);
+                component ItemContainer = component.getInstance();
+                ItemContainer.name = "root";
+            }
+        });
+
+        MoveDrone.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                Path path = new Path();
+                PathTransition pathTransition = new PathTransition();
+                pathTransition.setDuration(Duration.millis(1000));
+                pathTransition.setNode(drone);
+                pathTransition.setPath(path);
+                path.getElements().add(new MoveToAbs(drone));
+                path.getElements().add(new LineToAbs(drone, 300, 300));
+                pathTransition.setCycleCount(1);
+                pathTransition.setAutoReverse(false);
+                pathTransition.play();
+            }
+        });
+
 
 		Scene scene = new Scene(root);
 		IL.setScene(scene);
 		IL.setTitle("Group Pabna");
   
-      Path path = new Path(); 
-       
-      MoveTo moveTo = new MoveTo(100, 150); 
-       
-      CubicCurveTo cubicCurveTo = new CubicCurveTo(400, 40, 175, 250, 500, 150); 
-       
-      path.getElements().add(moveTo); 
-      path.getElements().add(cubicCurveTo);        
-       
-      PathTransition pathTransition = new PathTransition(); 
-       
-      pathTransition.setDuration(Duration.millis(1000)); 
-       
-      pathTransition.setNode(drone); 
-       
-      pathTransition.setPath(path);  
       
-      pathTransition.setCycleCount(1); 
-      
-      pathTransition.setAutoReverse(false); 
-
-      pathTransition.play(); 
 
 		IL.show();
 
 		double sceneWidth = scene.getWidth();
 		double sceneHeight = scene.getHeight();
 		double droneWidth = drone.getLayoutBounds().getWidth();
+
+        Path path = new Path();
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setNode(drone);
+        pathTransition.setPath(path);
+        path.getElements().add(new MoveToAbs(drone));
+        path.getElements().add(new LineToAbs(drone, 100, 100));
+        pathTransition.setCycleCount(1);
+        pathTransition.setAutoReverse(false);
+        pathTransition.play();
         
 
         
