@@ -1,12 +1,18 @@
+
+import javax.naming.ldap.Control;
+import javax.swing.ComboBoxModel;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.animation.PathTransition.OrientationType;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,232 +20,230 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-public class App extends Application {
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("App.fxml"));
-        Scene App = new Scene(root);
-        stage.setScene(App);
-        stage.show();
-
-        // Item buttons
-        Button deleteItem = new Button("Delete Item");
-		Button changeNameItem = new Button("Change Name of Item");
-		Button changePriceItem = new Button("Change Price of Item");
-        Button changeXITem = new Button("Change Location-x of Item");
-        Button changeYITem = new Button("Change Location-y of Item");
-        Button changeLengthItem = new Button("Change Length of Item");
-        Button changeWidthItem = new Button("Change Width of Item");
-        Button changeHeightItem = new Button("Change Height of Item");
-
-        // variables for items and item containers (all but 1 overlap)
-        String nameString = "Item name";
-        long itemPrice = 50;
-        int xCoord = 50;
-        int yCoord = 50;
-        int length = 50;
-        int weight = 50;
-        int height = 50;
-        String[] itemCollection;
+import javafx.animation.PathTransition; 
+import javafx.scene.shape.MoveTo; 
+import javafx.scene.shape.Path;
+import javafx.util.Duration;  
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.LineTo;
+import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.MenuItem; 
 
 
-        // set on action functions: 
-        deleteItem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
 
-            }
-        });
 
-        changeNameItem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changePriceItem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeXITem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeYITem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeLengthItem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeWidthItem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeHeightItem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
+class itemList extends Stage{ 
+        
+    public static itemList itemObject; 
+  
+    
+    public String s; 
+  
+    
+    private itemList() 
+    { 
+         
+    } 
+  
+    
+    public static itemList getInstance() 
+    { 
+        if (itemObject == null) {
+            itemObject = new itemList(); 
+        }
+        return itemObject;
+  
+        
+    } 
 
     
-        // Item Container buttons
-        Button addItemContainer = new Button("Add Item Container");
-        Button addItem = new Button("Add Item");
-        Button deleteItemContainer = new Button("Delete Item Container");
-        Button deleteItem2 = new Button("Delete Item (Item Container)");
-		Button changeName2 = new Button("Change Name of Item Container");
-		Button changePrice2 = new Button("Change Price of Item (Container)");
-        Button changeX2 = new Button("Change Location-x of Item Container");
-        Button changeY2 = new Button("Change Location-y of Item Container");
-        Button changeLength2 = new Button("Change Length of Item Container");
-        Button changeWidth2 = new Button("Change Width of Item Container");
-        Button changeHeight2 = new Button("Change Height of Item Container");
+    
+    
+} 
 
-        addItemContainer.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
+interface items{
+    public void showItemDetails();
+}
 
-        addItem.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
+class component implements items{
+    public static component component; 
 
-        deleteItemContainer.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
+    public String[] obj = new String[30];
+    public String name;
+    public long price;
+    public long xCoordinate;
+    public long yCoordinate;
+    public long length;
+    public long width;
+    public long height;
 
-        deleteItem2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
+    public static component getInstance() 
+    { 
+        if (component == null) {
+            component = new component(); 
+        }
+        return component;
 
-        changeName2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
+    } 
 
-        changePrice2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeX2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeY2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeLength2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeWidth2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-        changeHeight2.setOnAction(new EventHandler <ActionEvent>()
-		{
-            public void handle(ActionEvent event)
-            {
-            	// sequence.playFromStart();
-            	// status.setText("Current State: " + sequence.getStatus());
-            }
-        });
-
-    }   
-
-    public static void main(String[] args) {
-        launch(args);
+    private component() 
+    { 
+         
     }
+    
+    public void showItemDetails()
+    {
+        System.out.println("Placeholder for component");
+    }
+
+}
+
+class leaf implements items{
+    public static leaf leaf;
+    public String name;
+    public long price;
+    public long xCoordinate;
+    public long yCoordinate;
+    public long length;
+    public long width;
+    public long height;
+
+    public static leaf getInstance() 
+    { 
+        if (leaf == null) {
+            leaf = new leaf(); 
+        }
+        return leaf;
+
+    } 
+
+    @Override
+    public void showItemDetails()
+    {
+        System.out.println("Placeholder fo component");
+    }
+}
+
+public class App extends Application
+{
+    public static void main(String[] args)
+        {
+            Application.launch(args);
+        }
+
+    @Override
+	public void start(Stage stage) throws InterruptedException
+	{
+        itemList IL;
+        IL= itemList.getInstance();
+
+        Button addItemContainer = new Button("addItemContainer");
+        Button addItem = new Button("addItem");
+        Button deleteItem = new Button("deleteItem");
+        Button ChangeName = new Button("ChangeName");
+        Button ChangePrice = new Button("ChangePrice");
+        Button ChangeLocationY = new Button("ChangeLocationY");
+        Button ChangeLocationX = new Button("ChangeLocationX");
+        Button ChangeLength = new Button("ChangeLength");
+        Button ChangeWidth = new Button("ChangeWidth");
+        Button ChangeHeight = new Button("ChangeHeight");
+
+
+        component ItemContainer = component.getInstance();
+        ItemContainer.name = "root";
+        System.out.println(ItemContainer.name);
+        SplitMenuButton ItemComponent= new SplitMenuButton();
+        ItemComponent.setText(ItemContainer.name);
+
+        
+
+		ImageView drone = new ImageView(new Image("Subject.png", 100, 80, false, false));
+
+		VBox root = new VBox(drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,ChangeLocationY,ChangeLocationX,ChangeLength,ChangeWidth,ChangeHeight);
+		root.setSpacing(10);
+		root.setPrefSize(800, 600);
+		root.setStyle("-fx-padding: 10;" +
+				"-fx-border-style: solid inside;" +
+				"-fx-border-width: 2;" +
+				"-fx-border-insets: 5;" +
+				"-fx-border-radius: 5;" +
+				"-fx-border-color: transparent;");
+
+
+		Scene scene = new Scene(root);
+		IL.setScene(scene);
+		IL.setTitle("Group Pabna");
+
+        Path path = new Path();
+        path.getElements().add(new MoveTo(700f, 500f));
+        path.getElements().add(new LineTo(10f, 10f));
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setPath(path);
+        pathTransition.setNode(drone);
+        pathTransition.setCycleCount(5);
+        pathTransition.setAutoReverse(true);
+        pathTransition.play();
+
+
+
+
+
+
+
+        
+        //other option
+    //   Path path = new Path(); 
+
+    //   path.getElements().add (new MoveTo (1f, 5f));
+    //   path.getElements().add (new CubicCurveTo (40f, 10f, 390f, 240f, 1904, 800f));
+
+    //   PathTransition pathTransition = new PathTransition(); 
+ 
+    //   pathTransition.setDuration(Duration.millis(1000));
+    //   pathTransition.setNode(drone);
+    //   pathTransition.setPath(path);
+    //   pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);
+    //   pathTransition.setAutoReverse(true);
+ 
+    //   pathTransition.play();
+
+    // option 2
+       
+    //   MoveTo moveTo = new MoveTo(100, 150); 
+       
+    //   CubicCurveTo cubicCurveTo = new CubicCurveTo(400, 40, 175, 250, 500, 150); 
+       
+    //   path.getElements().add(moveTo); 
+    //   path.getElements().add(cubicCurveTo);        
+       
+    //   PathTransition pathTransition = new PathTransition(); 
+       
+    //   pathTransition.setDuration(Duration.millis(100000)); 
+       
+    //   pathTransition.setNode(drone); 
+       
+    //   pathTransition.setPath(path);  
+      
+    //   pathTransition.setCycleCount(1); 
+      
+    //   pathTransition.setAutoReverse(false); 
+
+    //   pathTransition.play(); 
+
+		IL.show();
+
+		double sceneWidth = scene.getWidth();
+		double sceneHeight = scene.getHeight();
+		double droneWidth = drone.getLayoutBounds().getWidth();
+        
+
+        
+
+
+        
+    }
+
+    
+    
 }
