@@ -1,7 +1,6 @@
 
 import javax.naming.ldap.Control;
 import javax.swing.ComboBoxModel;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
@@ -33,6 +32,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;  
 import javafx.scene.shape.LineTo;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 
 
@@ -43,7 +43,7 @@ class itemList extends Stage{
     
     public String s; 
   
-    
+    //Singleton
     private itemList() 
     { 
          
@@ -62,7 +62,7 @@ class itemList extends Stage{
 } 
 
 
-
+//Custom classes for item and containers
 interface items{
     public void showItemDetails();
 }
@@ -163,6 +163,7 @@ public class App extends Application
         itemList IL;
         IL= itemList.getInstance();
 
+        //buttons
         Button addItemContainer = new Button("addItemContainer");
         Button addItem = new Button("addItem");
         Button deleteItem = new Button("deleteItem");
@@ -183,15 +184,17 @@ public class App extends Application
         ItemComponent.setText(ItemContainer.name);
 
         
-
+        //drone
 		ImageView drone = new ImageView(new Image("Subject.png", 100, 80, false, false));
 
+        //textbox
         Label Tname = new Label("Data:");
         TextField textField = new TextField ();
         HBox hb = new HBox();
         hb.getChildren().addAll(Tname, textField);
         hb.setSpacing(10);
 
+        //intial box for all activity
 		VBox root = new VBox(drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,
         ChangeLocationY,ChangeLocationX,ChangeLength,ChangeWidth,ChangeHeight,hb,MoveDrone);
 		root.setSpacing(10);
@@ -203,6 +206,7 @@ public class App extends Application
 				"-fx-border-radius: 5;" +
 				"-fx-border-color: transparent;");
 
+        //action functions for buttons
         addItemContainer.setOnAction(new EventHandler <ActionEvent>()
         {
             public void handle(ActionEvent event)
@@ -242,19 +246,16 @@ public class App extends Application
             }
         });
 
-
 		Scene scene = new Scene(root);
 		IL.setScene(scene);
 		IL.setTitle("Group Pabna");
-  
-      
-
 		IL.show();
 
 		double sceneWidth = scene.getWidth();
 		double sceneHeight = scene.getHeight();
 		double droneWidth = drone.getLayoutBounds().getWidth();
 
+        //Drone flight instructions
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(1000));
