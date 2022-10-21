@@ -128,25 +128,18 @@ class leaf implements items{
 
 public class App extends Application
 {
-
-    public static class MoveToAbs extends MoveTo {
-
-        public MoveToAbs(Node node) {
-            super(node.getLayoutBounds().getWidth() / 2, node.getLayoutBounds().getHeight() / 2);
+    public static class UpdatedMoveTo extends MoveTo {
+        public UpdatedMoveTo(Node drone) {
+            super((drone.getLayoutBounds().getWidth() / 2), drone.getLayoutBounds().getHeight() / 2);
         }
-
-        public MoveToAbs(Node node, double x, double y) {
-            super(x - node.getLayoutX() + node.getLayoutBounds().getWidth() / 2, y - node.getLayoutY() + node.getLayoutBounds().getHeight() / 2);
+        public UpdatedMoveTo(Node drone, double xAxis, double yAxis) {
+            super((drone.getLayoutBounds().getWidth() / 2) + xAxis - drone.getLayoutX(),(drone.getLayoutBounds().getHeight() / 2) + yAxis - drone.getLayoutY());
         }
-
     }
-
-    public static class LineToAbs extends LineTo {
-
-        public LineToAbs(Node node, double x, double y) {
-            super(x - node.getLayoutX() + node.getLayoutBounds().getWidth() / 2, y - node.getLayoutY() + node.getLayoutBounds().getHeight() / 2);
+    public static class UpdatedLineTo extends LineTo {
+        public UpdatedLineTo(Node drone, double xAxis, double yAxis) {
+            super((drone.getLayoutBounds().getWidth() / 2) + xAxis - drone.getLayoutX(),(drone.getLayoutBounds().getHeight() / 2) + yAxis - drone.getLayoutY());
         }
-
     }
 
     // change layout to current position, reset translate
@@ -241,8 +234,8 @@ public class App extends Application
                 pathTransition.setDuration(Duration.millis(1000));
                 pathTransition.setNode(drone);
                 pathTransition.setPath(path);
-                path.getElements().add(new MoveToAbs(drone));
-                path.getElements().add(new LineToAbs(drone, 300, 300));
+                path.getElements().add(new UpdatedMoveTo(drone));
+                path.getElements().add(new UpdatedLineTo(drone, 300, 300));
                 pathTransition.setCycleCount(1);
                 pathTransition.setAutoReverse(false);
                 pathTransition.play();
@@ -267,8 +260,8 @@ public class App extends Application
         pathTransition.setDuration(Duration.millis(1000));
         pathTransition.setNode(drone);
         pathTransition.setPath(path);
-        path.getElements().add(new MoveToAbs(drone));
-        path.getElements().add(new LineToAbs(drone, 100, 100));
+        path.getElements().add(new UpdatedMoveTo(drone));
+        path.getElements().add(new UpdatedLineTo(drone, 100, 100));
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
         pathTransition.play();
