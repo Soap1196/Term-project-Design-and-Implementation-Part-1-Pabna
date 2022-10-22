@@ -1,4 +1,3 @@
-package com.farm.farmdashboard;
 
 import javax.naming.ldap.Control;
 import javax.swing.ComboBoxModel;
@@ -9,7 +8,6 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -34,15 +32,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;  
 import javafx.scene.shape.LineTo;
 import javafx.scene.Node;
-<<<<<<< HEAD:src/App.java
 import javafx.scene.layout.Pane;
 
 
-=======
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import java.util.ArrayList;
->>>>>>> calebBranch:src/com/farm/farmdashboard/App.java
 
 class itemList extends Stage{ 
         
@@ -70,17 +62,12 @@ class itemList extends Stage{
 } 
 
 
-<<<<<<< HEAD:src/App.java
 //Custom classes for item and containers
 interface items{
-=======
-
-interface Items{
->>>>>>> calebBranch:src/com/farm/farmdashboard/App.java
     public void showItemDetails();
 }
 
-class component implements Items{
+class component implements items{
     public static component component; 
 
     public String[] obj = new String[30];
@@ -113,7 +100,7 @@ class component implements Items{
 
 }
 
-class leaf implements Items{
+class leaf implements items{
     public static leaf leaf;
     public String name;
     public long price;
@@ -173,7 +160,6 @@ public class App extends Application
     @Override
 	public void start(Stage stage) throws InterruptedException
 	{
-
         itemList IL;
         IL= itemList.getInstance();
 
@@ -191,22 +177,15 @@ public class App extends Application
 
         Button MoveDrone = new Button("MoveDrone");
 
-        TreeView<String> tree = new TreeView<String>();
-        TreeItem<String> rootItem = new TreeItem<String>("Root");
-        rootItem.setExpanded(true);
-        tree.setRoot(rootItem);
-        tree.setStyle(
-            //set width of tree
-            "-fx-min-width: 200px; "
-        );
+        component ItemContainer = component.getInstance();
+        ItemContainer.name = "root";
+        System.out.println(ItemContainer.name);
+        MenuButton ItemComponent= new MenuButton();
+        ItemComponent.setText(ItemContainer.name);
 
-<<<<<<< HEAD:src/App.java
         
         //drone
 		ImageView drone = new ImageView(new Image("Subject.png", 100, 80, false, false));
-=======
-		ImageView drone = new ImageView(new Image("https://media.discordapp.net/attachments/942443536765309028/1033177962243178616/Subject.png", 100, 89, false, false));
->>>>>>> calebBranch:src/com/farm/farmdashboard/App.java
 
         //textbox
         Label Tname = new Label("Data:");
@@ -215,12 +194,8 @@ public class App extends Application
         hb.getChildren().addAll(Tname, textField);
         hb.setSpacing(10);
 
-<<<<<<< HEAD:src/App.java
         //intial box for all activity
 		VBox root = new VBox(drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,
-=======
-		VBox root = new VBox(drone, tree, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,
->>>>>>> calebBranch:src/com/farm/farmdashboard/App.java
         ChangeLocationY,ChangeLocationX,ChangeLength,ChangeWidth,ChangeHeight,hb,MoveDrone);
 		root.setSpacing(10);
 		root.setPrefSize(1000, 800);
@@ -229,20 +204,17 @@ public class App extends Application
 				"-fx-border-width: 2;" +
 				"-fx-border-insets: 5;" +
 				"-fx-border-radius: 5;" +
-				"-fx-border-color: transparent;"
-                );
-        
+				"-fx-border-color: transparent;");
 
-<<<<<<< HEAD:src/App.java
         //action functions for buttons
-=======
-        
->>>>>>> calebBranch:src/com/farm/farmdashboard/App.java
         addItemContainer.setOnAction(new EventHandler <ActionEvent>()
         {
             public void handle(ActionEvent event)
             {
-                //create new component and add to tree
+                MenuItem MI1 = new MenuItem(textField.getText());
+                ItemComponent.getItems().add(MI1);
+                component ItemContainer = component.getInstance();
+                ItemContainer.name = "root";
             }
         });
         
@@ -250,7 +222,10 @@ public class App extends Application
         {
             public void handle(ActionEvent event)
             {
-                //Create new item and add to tree
+                MenuItem MI2 = new MenuItem(textField.getText());
+                ItemComponent.getItems().add(MI2);
+                component ItemContainer = component.getInstance();
+                ItemContainer.name = "root";
             }
         });
 
