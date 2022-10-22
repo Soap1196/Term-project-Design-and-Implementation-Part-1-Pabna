@@ -33,6 +33,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+
+
 
 
 
@@ -48,24 +54,22 @@ class itemList extends Stage{
     { 
          
     } 
-  
-    
+
     public static itemList getInstance() 
     { 
         if (itemObject == null) {
             itemObject = new itemList(); 
         }
         return itemObject;
-  
-        
     } 
 } 
-
 
 //Custom classes for item and containers
 interface items{
     public void showItemDetails();
 }
+
+
 
 class component implements items{
     public static component component; 
@@ -99,6 +103,7 @@ class component implements items{
     }
 
 }
+    
 
 class leaf implements items{
     public static leaf leaf;
@@ -142,6 +147,9 @@ public class App extends Application
         }
     }
 
+    TreeView<String> tree = new TreeView<String>();
+    ImageView drone = new ImageView(new Image("Subject.png", 100, 80, false, false));
+
     // change layout to current position, reset translate
     public void setPositionFixed( Node node) {
         double x = node.getLayoutX() + node.getTranslateX();
@@ -163,6 +171,9 @@ public class App extends Application
         itemList IL;
         IL= itemList.getInstance();
 
+        
+        
+
         //buttons
         Button addItemContainer = new Button("addItemContainer");
         Button addItem = new Button("addItem");
@@ -182,10 +193,19 @@ public class App extends Application
         System.out.println(ItemContainer.name);
         MenuButton ItemComponent= new MenuButton();
         ItemComponent.setText(ItemContainer.name);
+        TreeItem<String> rootItem = new TreeItem<String>("Root");
+        rootItem.setExpanded(true);
+        tree.setRoot(rootItem);
+        
+        tree.setStyle(
+            //set width of tree
+            "-fx-min-width: 50px; "
+        );
 
         
+        
         //drone
-		ImageView drone = new ImageView(new Image("Subject.png", 100, 80, false, false));
+		
 
         //textbox
         Label Tname = new Label("Data:");
@@ -195,7 +215,7 @@ public class App extends Application
         hb.setSpacing(10);
 
         //intial box for all activity
-		VBox root = new VBox(drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,
+		VBox root = new VBox(tree, drone, ItemComponent, addItemContainer,addItem,deleteItem,ChangeName,ChangePrice,
         ChangeLocationY,ChangeLocationX,ChangeLength,ChangeWidth,ChangeHeight,hb,MoveDrone);
 		root.setSpacing(10);
 		root.setPrefSize(1000, 800);
@@ -206,15 +226,21 @@ public class App extends Application
 				"-fx-border-radius: 5;" +
 				"-fx-border-color: transparent;");
 
+        
+        
+        
+          
+
         //action functions for buttons
         addItemContainer.setOnAction(new EventHandler <ActionEvent>()
         {
             public void handle(ActionEvent event)
             {
-                MenuItem MI1 = new MenuItem(textField.getText());
-                ItemComponent.getItems().add(MI1);
-                component ItemContainer = component.getInstance();
-                ItemContainer.name = "root";
+                TreeItem MI1 = new TreeItem(textField.getText());
+                rootItem.getChildren().add(MI1);
+                //add event handler here
+                
+                
             }
         });
         
@@ -222,10 +248,8 @@ public class App extends Application
         {
             public void handle(ActionEvent event)
             {
-                MenuItem MI2 = new MenuItem(textField.getText());
-                ItemComponent.getItems().add(MI2);
-                component ItemContainer = component.getInstance();
-                ItemContainer.name = "root";
+                TreeItem MI2 = new TreeItem(textField.getText());
+                
             }
         });
 
@@ -255,25 +279,20 @@ public class App extends Application
 		double sceneHeight = scene.getHeight();
 		double droneWidth = drone.getLayoutBounds().getWidth();
 
-        //Drone flight instructions
-        Path path = new Path();
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(1000));
-        pathTransition.setNode(drone);
-        pathTransition.setPath(path);
-        path.getElements().add(new UpdatedMoveTo(drone));
-        path.getElements().add(new UpdatedLineTo(drone, 100, 100));
-        pathTransition.setCycleCount(1);
-        pathTransition.setAutoReverse(false);
-        pathTransition.play();
-        
-
-        
-
-
-        
     }
 
-    
+    public void MouseClick(TreeItem treeitem){
+        TreeItem<String> item = tree.getSelectionModel().getSelectedItem();
+        Path path = new Path();
+                PathTransition pathTransition = new PathTransition();
+                pathTransition.setDuration(Duration.millis(1000));
+                pathTransition.setNode(drone);
+                pathTransition.setPath(path);
+                path.getElements().add(new UpdatedMoveTo(drone));
+                path.getElements().add(new UpdatedLineTo(drone, 300, 300));
+                pathTransition.setCycleCount(1);
+                pathTransition.setAutoReverse(false);
+                pathTransition.play();
+    };
     
 }
