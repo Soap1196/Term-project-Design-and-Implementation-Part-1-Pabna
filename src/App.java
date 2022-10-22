@@ -33,6 +33,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import java.util.ArrayList;
 
 
 
@@ -48,19 +51,15 @@ class itemList extends Stage{
     { 
          
     } 
-  
-    
+
     public static itemList getInstance() 
     { 
         if (itemObject == null) {
             itemObject = new itemList(); 
         }
         return itemObject;
-  
-        
     } 
 } 
-
 
 //Custom classes for item and containers
 interface items{
