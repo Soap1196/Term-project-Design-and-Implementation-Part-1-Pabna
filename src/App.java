@@ -219,10 +219,8 @@ public class App extends Application
         {
             public void handle(ActionEvent event)
             {
-                MenuItem MI1 = new MenuItem(textField.getText());
-                ItemComponent.getItems().add(MI1);
-                component ItemContainer = component.getInstance();
-                ItemContainer.name = "root";
+                TreeItem MI1 = new TreeItem(textField.getText());
+                rootItem.getChildren().add(MI1);
             }
         });
         
@@ -230,10 +228,8 @@ public class App extends Application
         {
             public void handle(ActionEvent event)
             {
-                MenuItem MI2 = new MenuItem(textField.getText());
-                ItemComponent.getItems().add(MI2);
-                component ItemContainer = component.getInstance();
-                ItemContainer.name = "root";
+                TreeItem MI2 = new TreeItem(textField.getText());
+                
             }
         });
 
