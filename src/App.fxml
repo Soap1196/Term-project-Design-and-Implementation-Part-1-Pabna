@@ -5,7 +5,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
@@ -27,7 +26,7 @@
       <Button fx:id="Delete" layoutX="13.0" layoutY="625.0" mnemonicParsing="false" text="Delete" />
       <Line endX="-100.0" endY="628.5" layoutX="334.0" layoutY="27.0" startX="-100.0" startY="-16.5" />
       <TreeView fx:id="locationTreeView" layoutX="14.0" layoutY="14.0" prefHeight="280.0" prefWidth="200.0" />
-      <VBox fx:id="farm" layoutX="245.0" layoutY="86.0" prefHeight="574.0" prefWidth="482.0">
+      <Pane fx:id="farm" layoutX="260.0" layoutY="102.0" prefHeight="537.0" prefWidth="446.0">
          <children>
             <ImageView fx:id="Corgicopter" fitHeight="72.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -35,10 +34,10 @@
                </image>
             </ImageView>
          </children>
-      </VBox>
+      </Pane>
       <Button fx:id="Visit" layoutX="302.0" layoutY="14.0" mnemonicParsing="false" onAction="#droneVisit" text="Visit Item / Container" />
       <Button layoutX="302.0" layoutY="48.0" mnemonicParsing="false" text="Scan Farm" />
-      <Text layoutX="256.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0"  text="Drone" />
+      <Text layoutX="256.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drone" />
       <Text layoutX="252.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Actions" />
       <Button fx:id="createItemContainer" layoutX="508.0" layoutY="14.0" mnemonicParsing="false" onAction="#CIC" text="Create Item Container" />
       <Button layoutX="536.0" layoutY="48.0" mnemonicParsing="false" text="Create Item" />
