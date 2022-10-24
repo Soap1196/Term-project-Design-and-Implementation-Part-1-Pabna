@@ -172,7 +172,7 @@ public class Control implements Initializable{
         Button Rename;
         @FXML private Button createItemContainer;
         @FXML private ImageView Corgicopter;
-        @FXML private VBox farm;
+        @FXML private Pane farm;
 
         
 
@@ -221,7 +221,7 @@ public class Control implements Initializable{
         });
   
         // create a tilepane
-        VBox Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
   
         // create a scene
         Scene sc = new Scene(Pane, 200, 200);
