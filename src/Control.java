@@ -2,6 +2,8 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+
+import javax.swing.Action;
 //import javax.naming.ldap.Control;
 import javax.swing.ComboBoxModel;
 import javafx.animation.KeyFrame;
@@ -142,6 +144,28 @@ class leaf implements items{
     }
 }
 
+// from Bryce (ends at empty space)--------------------------------------------
+class ItemCon {
+    String name;
+    int length;
+    int width;
+    int height;
+    int x;
+    int y;
+    double price;
+    public ItemCon(String name, double price, int length, int width, int height, int x, int y) {
+        name = this.name;
+        length = this.length;
+        width = this.width;
+        height = this.height;
+        x = this.x;
+        y = this.y;
+        price = this.price;
+    }
+    public String getName() {
+        return name;
+    }
+}
 
 public class Control implements Initializable{
 
@@ -174,11 +198,18 @@ public class Control implements Initializable{
         @FXML private ImageView Corgicopter;
         @FXML private Pane farm;
 
-        
+        TreeItem<String> root = new TreeItem<String>("Root Node"); // moved outside of initialization function - Bryce
+
+            
+        // FUNCTIONALITY from Bryce (ends with empty space)----------------------------------------------------
+        void addItemContainer(String name, double price, int length, int width, int height, int x, int y) {
+            ItemCon iContainer = new ItemCon(name, price, length, width, height, x, y);
+            root.setExpanded(true);
+            root.getChildren().add(new TreeItem<String>(iContainer.getName()));
+        }        
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        TreeItem<String> root = new TreeItem<String>("Root Node");
         root.setExpanded(true);
         locationTreeView.setRoot(root);
     }
@@ -199,6 +230,8 @@ public class Control implements Initializable{
         
         stage.setTitle("Item Container Creation");
         TextField textFieldName = new TextField ("Name variable");
+        TextField textFieldPrice = new TextField ("Price variable");
+        TextField textFieldL = new TextField ("Length variable");
         TextField textFieldW = new TextField ("Width variable");
         TextField textFieldH = new TextField ("Height variable");
         TextField textFieldX = new TextField ("X variable");
@@ -208,6 +241,9 @@ public class Control implements Initializable{
         {
             public void handle(ActionEvent event)
             {
+                // from Bryce-------------------------------
+            addItemContainer(textFieldName.getText(), Double.parseDouble(textFieldPrice.getText()), Integer.parseInt(textFieldL.getText()), Integer.parseInt(textFieldW.getText()), Integer.parseInt(textFieldH.getText()), Integer.parseInt(textFieldX.getText()), Integer.parseInt(textFieldY.getText()));
+
                 //Drawing a Rectangle 
                 Rectangle rectangle = new Rectangle();  
       
@@ -231,4 +267,10 @@ public class Control implements Initializable{
   
         stage.show();
     }
+
+
+    // @FXML
+    // void addICClicked(ActionEvent event) {
+
+    // }
 }
