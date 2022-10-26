@@ -214,7 +214,7 @@ public class Control implements Initializable{
                 rectangle.setX(Integer.parseInt(textFieldX.getText())); 
                 rectangle.setY(Integer.parseInt(textFieldY.getText())); 
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
-                rectangle.setHeight(Integer.parseInt(textFieldX.getText()));
+                rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
                 TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
                 root.getChildren().add(Container);
