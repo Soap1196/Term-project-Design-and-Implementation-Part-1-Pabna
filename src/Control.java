@@ -175,10 +175,9 @@ public class Control implements Initializable{
         @FXML private Pane farm;
 
         
-
+        TreeItem<String> root = new TreeItem<String>("Root Node");
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        TreeItem<String> root = new TreeItem<String>("Root Node");
         root.setExpanded(true);
         locationTreeView.setRoot(root);
     }
@@ -217,6 +216,8 @@ public class Control implements Initializable{
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldX.getText()));
                 farm.getChildren().add(rectangle);
+                TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
+                root.getChildren().add(Container);
             }
         });
   
