@@ -43,6 +43,8 @@ import java.awt.event.MouseEvent;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
@@ -85,7 +87,8 @@ interface items{
 class component implements items{
     public static component component; 
 
-    public String[] obj = new String[30];
+    private List<items> itemslist = new ArrayList<items>();
+    
     public String name;
     public long price;
     public long xCoordinate;
@@ -102,6 +105,8 @@ class component implements items{
         return component;
 
     } 
+
+    
 
     private component() 
     { 
@@ -193,7 +198,7 @@ public class Control implements Initializable{
                 pathTransition.setAutoReverse(false);
                 pathTransition.play();
     }
-    public void CIC() {
+    public void CreateItemContainer() {
         Stage stage = new Stage();
         
         stage.setTitle("Item Container Creation");
