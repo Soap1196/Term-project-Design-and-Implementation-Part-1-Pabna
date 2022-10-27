@@ -178,8 +178,7 @@ class leaf implements items{
 
 
 /*
- * My creation of the composite class. It has the attributes of leaf and 
- * item
+ * My creation of the composite class
  */
 
 class composite implements items{
