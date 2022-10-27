@@ -77,8 +77,23 @@ class itemList extends Stage{
     } 
 } 
 
+class Srectangle extends Rectangle{
+    private String name; // private = restricted access
+
+  // Getter
+  public String getName() {
+    return name;
+  }
+
+  // Setter
+  public void setName(String newName) {
+    this.name = newName;
+
+}
+
 //Custom classes for item and containers
 interface items{
+    
     public void showItemDetails();
 }
 
@@ -87,7 +102,7 @@ interface items{
 class component implements items{
     public static component component; 
 
-    private List<items> itemslist = new ArrayList<items>();
+    private List<leaf> itemslist = new ArrayList<leaf>();
     
     public String name;
     public long price;
@@ -212,10 +227,14 @@ public class Control implements Initializable{
         {
             public void handle(ActionEvent event)
             {
+                //Create component object
+                
+
                 //Drawing a Rectangle 
-                Rectangle rectangle = new Rectangle();  
+                Srectangle rectangle = new Srectangle();  
       
                 //Setting the properties of the rectangle 
+                rectangle.setName(textFieldName.getText());
                 rectangle.setX(Integer.parseInt(textFieldX.getText())); 
                 rectangle.setY(Integer.parseInt(textFieldY.getText())); 
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
