@@ -89,6 +89,7 @@ class Srectangle extends Rectangle{
   public void setName(String newName) {
     this.name = newName;
 
+    }
 }
 
 //Custom classes for item and containers
@@ -114,16 +115,12 @@ class component implements items{
 
     public static component getInstance() 
     { 
-        if (component == null) {
-            component = new component(); 
-        }
         return component;
-
     } 
 
     
 
-    private component() 
+    public component() 
     { 
          
     }
@@ -228,6 +225,7 @@ public class Control implements Initializable{
             public void handle(ActionEvent event)
             {
                 //Create component object
+                component comp1 = new component();
                 
 
                 //Drawing a Rectangle 
