@@ -53,6 +53,10 @@ import javafx.scene.text.Text.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 
+
+/*
+ * Implements singleton
+ */
 class itemList extends Stage{ 
         
     public static itemList itemObject; 
@@ -75,10 +79,30 @@ class itemList extends Stage{
     } 
 } 
 
+
+
+
+/*
+ * items interface
+ */
+
+
+
 //Custom classes for item and containers
 interface items{
     public void showItemDetails();
 }
+
+
+
+
+
+/*
+ * component class; implements items; overarches all attributes
+ * of item containers and item objects
+ */
+
+
 
 
 
@@ -116,6 +140,15 @@ class component implements items{
 }
     
 
+
+
+/*
+ * no idea. It's the leaf class, but what does that mean?
+ */
+
+
+
+
 class leaf implements items{
     public static leaf leaf;
     public String name;
@@ -143,6 +176,51 @@ class leaf implements items{
 }
 
 
+
+/*
+ * My creation of the composite class. It has the attributes of leaf and 
+ * item
+ */
+
+class composite implements items{
+    public static composite composite;
+    public String newName;
+    public long newPrice;
+    public long xCoordinate; // for location
+    public long yCoordinate; // for location
+    public long length; // for dimensions
+    public long width; // for dimensions
+    public long height; // for dimensions
+    // insert something for add items
+    // insert something for add item-container
+    // insert something for delete
+
+    public static composite getInstance() 
+    { 
+        if (composite == null) {
+            composite = new composite(); 
+        }
+        return composite;
+
+    } 
+
+    @Override
+    public void showItemDetails()
+    {
+        System.out.println("Placeholder fo component");
+    }
+}
+
+
+
+/*
+ * Controller class. Does all the hard stuff.
+ */
+
+
+
+
+
 public class Control implements Initializable{
 
         public static class UpdatedMoveTo extends MoveTo {
@@ -158,6 +236,8 @@ public class Control implements Initializable{
                 super((drone.getLayoutBounds().getWidth() / 2) + xAxis - drone.getLayoutX(),(drone.getLayoutBounds().getHeight() / 2) + yAxis - drone.getLayoutY());
             }
         }
+
+
         @FXML private TreeView<String> locationTreeView;
         //buttons
         Button addItemContainer;
