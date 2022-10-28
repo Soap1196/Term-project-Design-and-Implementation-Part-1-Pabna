@@ -150,7 +150,82 @@ class leaf implements items{
         }
         return leaf;
 
-    } 
+    }
+
+    public void setInstance(leaf newLeaf)
+    {
+        this.leaf = newLeaf;
+    }
+    
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String newName)
+    {
+        this.name = newName;
+    }
+
+    public long getPrice()
+    {
+        return price;
+    }
+
+    public void setPrice(long newPrice)
+    {
+        this.price = newPrice;
+    }
+
+    public long getXCoordinate()
+    {
+        return xCoordinate;
+    }
+
+    public void setXCoordinate(long newXCoordinate)
+    {
+        this.xCoordinate = newXCoordinate;
+    }
+
+    public long getYCoordinate()
+    {
+        return yCoordinate;
+    }
+
+    public void setYCoordinate(long newYCoordinate)
+    {
+        this.yCoordinate = newYCoordinate;
+    }
+
+    public long getLength()
+    {
+        return length;
+    }
+
+    public void setLength(long newLength)
+    {
+        this.length = newLength;
+    }
+
+    public long getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(long newWidth)
+    {
+        this.width = newWidth;
+    }
+
+    public long getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight(long newHeight)
+    {
+        this.height = newHeight;
+    }
 
     @Override
     public void showItemDetails()
@@ -276,7 +351,7 @@ public class Control implements Initializable{
                 //component comp1 = new component();
                 leaf leaf1 = new leaf();
                 
-
+                
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
       
@@ -289,6 +364,13 @@ public class Control implements Initializable{
                 farm.getChildren().add(rectangle);
                 TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
                 root.getChildren().add(Container);
+
+                //Leaf Setup
+                leaf1.setName(textFieldName.getText());
+                leaf1.setXCoordinate(Long.parseLong(textFieldX.getText()));
+                leaf1.setYCoordinate(Long.parseLong(textFieldY.getText()));
+                leaf1.setWidth(Long.parseLong(textFieldW.getText()));
+                leaf1.setHeight(Long.parseLong(textFieldH.getText()));
             }
         });
 
