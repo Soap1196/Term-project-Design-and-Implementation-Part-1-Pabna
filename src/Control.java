@@ -304,11 +304,7 @@ public class Control implements Initializable{
             }
         }
 
-        public String Choice1;
-        public TreeItem Choice2;
-        
-
-        @FXML private TreeView<String> locationTreeView;
+        @FXML public TreeView<String> locationTreeView;
         //buttons
         @FXML private Button addItemContainer;
         @FXML private Button addItem;
@@ -327,10 +323,24 @@ public class Control implements Initializable{
         
         TreeItem<String> root = new TreeItem<String>("Root Node");
         component rootDirectory = new component();
+
+        public String Choice1;
+        public TreeItem Choice2 = root;
+        
+        
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         root.setExpanded(true);
         locationTreeView.setRoot(root);
+    }
+
+    @FXML
+    public void mouseClick (MouseEvent event) {
+        if (event.getClickCount()==2){
+        TreeItem<String> item = locationTreeView.getSelectionModel().getSelectedItem();
+        System.out.println("test");
+        }
     }
     
     public void droneVisit() {
@@ -373,8 +383,8 @@ public class Control implements Initializable{
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
-                TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
-                root.getChildren().add(Container);
+                TreeItem Container = new TreeItem(textFieldName.getText());
+                Choice2.getChildren().add(Container);
                 
                 comp1.setCompName(textFieldName.getText());
                 comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
@@ -397,7 +407,7 @@ public class Control implements Initializable{
         stage.show();
     }
 
-    public void CreateItemContainer2() {
+    public void CreateItem() {
         Stage stage = new Stage();
         
         stage.setTitle("Item Container Creation");
@@ -432,10 +442,9 @@ public class Control implements Initializable{
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
-                TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
+                TreeItem Container = new TreeItem(textFieldName.getText());
                 Choice2.getChildren().add(Container);
 
-                
             }
         });
   
@@ -451,11 +460,6 @@ public class Control implements Initializable{
         stage.show();
     }
 
-    public void treeClick (MouseEvent event) {
-        if (event.getClickCount()==2){
-        TreeItem<String> item = locationTreeView.getSelectionModel().getSelectedItem();
-        Choice1 = (item.getValue());
-        Choice2 = locationTreeView.getSelectionModel().getSelectedItem();
-        }
-    }
+
+    
 }
