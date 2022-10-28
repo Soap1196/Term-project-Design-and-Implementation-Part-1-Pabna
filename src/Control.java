@@ -94,14 +94,32 @@ class Srectangle extends Rectangle{
 
 //Custom classes for item and containers
 interface items{
-    
     public void showItemDetails();
 }
 
 class component implements items{
     public static component component; 
 
-    private List<leaf> itemslist = new ArrayList<leaf>();
+    private List<items> itemslist = new ArrayList<items>();
+
+    @Override
+    public void showItemDetails()
+    {
+        for(items x:itemslist)
+        {
+            x.showItemDetails();
+        }
+    }
+
+    public void additem(items x)
+    {
+        itemslist.add(x);
+    }
+
+    public void removeitems(items x)
+    {
+        itemslist.remove(x);
+    }
     
     public String name;
     public long price;
@@ -168,12 +186,6 @@ class component implements items{
     }
     public void setCompHeight(long height) {
         this.height = height;
-    }
-
-    
-    public void showItemDetails()
-    {
-        System.out.println("Placeholder for component");
     }
 
 }
@@ -270,7 +282,7 @@ class leaf implements items{
     @Override
     public void showItemDetails()
     {
-        System.out.println("Placeholder for leaf");
+        System.out.println(name);
     }
 }
 
@@ -291,6 +303,11 @@ public class Control implements Initializable{
                 super((drone.getLayoutBounds().getWidth() / 2) + xAxis - drone.getLayoutX(),(drone.getLayoutBounds().getHeight() / 2) + yAxis - drone.getLayoutY());
             }
         }
+
+        public String Choice1;
+        public TreeItem Choice2;
+        
+
         @FXML private TreeView<String> locationTreeView;
         //buttons
         @FXML private Button addItemContainer;
@@ -309,11 +326,13 @@ public class Control implements Initializable{
 
         
         TreeItem<String> root = new TreeItem<String>("Root Node");
+        component rootDirectory = new component();
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         root.setExpanded(true);
         locationTreeView.setRoot(root);
     }
+    
     public void droneVisit() {
                 Path path = new Path();
                 PathTransition pathTransition = new PathTransition();
@@ -344,7 +363,6 @@ public class Control implements Initializable{
                 //Create component object
                 component comp1 = new component();
 
-
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
       
@@ -357,7 +375,13 @@ public class Control implements Initializable{
                 farm.getChildren().add(rectangle);
                 TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
                 root.getChildren().add(Container);
-                System.out.println(rectangle.getName());
+                
+                comp1.setCompName(textFieldName.getText());
+                comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
+                comp1.setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
+                comp1.setCompLength(Integer.parseInt(textFieldW.getText()));
+                comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
+
             }
         });
 
@@ -390,6 +414,12 @@ public class Control implements Initializable{
                 //Create leaf object
                 //component comp1 = new component();
                 leaf leaf1 = new leaf();
+                //Leaf Setup
+                leaf1.setName(textFieldName.getText());
+                leaf1.setXCoordinate(Long.parseLong(textFieldX.getText()));
+                leaf1.setYCoordinate(Long.parseLong(textFieldY.getText()));
+                leaf1.setWidth(Long.parseLong(textFieldW.getText()));
+                leaf1.setHeight(Long.parseLong(textFieldH.getText()));
                 
                 
                 //Drawing a Rectangle 
@@ -403,14 +433,9 @@ public class Control implements Initializable{
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
                 TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
-                root.getChildren().add(Container);
+                Choice2.getChildren().add(Container);
 
-                //Leaf Setup
-                leaf1.setName(textFieldName.getText());
-                leaf1.setXCoordinate(Long.parseLong(textFieldX.getText()));
-                leaf1.setYCoordinate(Long.parseLong(textFieldY.getText()));
-                leaf1.setWidth(Long.parseLong(textFieldW.getText()));
-                leaf1.setHeight(Long.parseLong(textFieldH.getText()));
+                
             }
         });
   
@@ -429,7 +454,8 @@ public class Control implements Initializable{
     public void treeClick (MouseEvent event) {
         if (event.getClickCount()==2){
         TreeItem<String> item = locationTreeView.getSelectionModel().getSelectedItem();
-        System.out.println(item.getValue());
+        Choice1 = (item.getValue());
+        Choice2 = locationTreeView.getSelectionModel().getSelectedItem();
         }
     }
 }
