@@ -373,6 +373,7 @@ public class Control implements Initializable{
         pathTransition.play();
         dronestartx = Choice3.getX();
         dronestarty = Choice3.getY();
+        Corgicopter.toFront();
     }
 
     public void CreateItemContainer() {
