@@ -242,6 +242,9 @@ public class Control implements Initializable{
                 root.getChildren().add(Container);
             }
         });
+
+
+        
   
         // create a tilepane
         Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
@@ -254,4 +257,55 @@ public class Control implements Initializable{
   
         stage.show();
     }
+
+    public void CreateItemContainer2() {
+        Stage stage = new Stage();
+        
+        stage.setTitle("Item Container Creation");
+        TextField textFieldName = new TextField ("Name variable");
+        TextField textFieldW = new TextField ("Width variable");
+        TextField textFieldH = new TextField ("Height variable");
+        TextField textFieldX = new TextField ("X variable");
+        TextField textFieldY = new TextField ("Y variable");
+        Button Submit = new Button("Submit");
+        Submit.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                //Create leaf object
+                //component comp1 = new component();
+                leaf leaf1 = new leaf();
+                
+
+                //Drawing a Rectangle 
+                Srectangle rectangle = new Srectangle();  
+      
+                //Setting the properties of the rectangle 
+                rectangle.setName(textFieldName.getText());
+                rectangle.setX(Integer.parseInt(textFieldX.getText())); 
+                rectangle.setY(Integer.parseInt(textFieldY.getText())); 
+                rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
+                rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
+                farm.getChildren().add(rectangle);
+                TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
+                root.getChildren().add(Container);
+            }
+        });
+
+
+        
+  
+        // create a tilepane
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
+    }
+
+    
 }
