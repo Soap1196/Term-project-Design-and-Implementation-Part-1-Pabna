@@ -2,6 +2,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import java.util.*;
 //import javax.naming.ldap.Control;
 import javax.swing.ComboBoxModel;
 import javafx.animation.KeyFrame;
@@ -304,6 +305,7 @@ public class Control implements Initializable{
             }
         }
 
+
         @FXML public TreeView<String> locationTreeView;
         //buttons
         @FXML private Button addItemContainer;
@@ -326,6 +328,12 @@ public class Control implements Initializable{
 
         public String Choice1;
         public TreeItem Choice2 = root;
+        public Srectangle Choice3;
+        double dronestartx = 25;
+        double dronestarty = 25;
+
+
+        ArrayList<Srectangle> rectanglelist = new ArrayList<>();
         
         
 
@@ -333,29 +341,40 @@ public class Control implements Initializable{
     public void initialize(URL arg0, ResourceBundle arg1) {
         root.setExpanded(true);
         locationTreeView.setRoot(root);
-    }
+        locationTreeView.setOnMouseClicked((event) -> {
+            TreeItem<String> item = locationTreeView.getSelectionModel().getSelectedItem();
+            for (int i = 0; i < rectanglelist.size(); i++){
+                if (rectanglelist.get(i)!=null){
+                    Srectangle temp = rectanglelist.get(i);
+                    if (temp.getName().contains(item.getValue())){
+                        Choice1 = item.getValue();
+                        Choice2 = item;
+                        Choice3 = temp;
+                        System.out.println(Choice1);
+                }
+                }
+                
+                
+            }
 
-    @FXML
-    public void mouseClick (MouseEvent event) {
-        if (event.getClickCount()==2){
-        TreeItem<String> item = locationTreeView.getSelectionModel().getSelectedItem();
-        System.out.println("test");
-        }
+        });
     }
     
     public void droneVisit() {
-                Path path = new Path();
-                PathTransition pathTransition = new PathTransition();
-                pathTransition.setDuration(Duration.millis(1000));
-                pathTransition.setNode(Corgicopter);
-                pathTransition.setPath(path);
-                path.getElements().add(new UpdatedMoveTo(Corgicopter));
-                path.getElements().add(new UpdatedLineTo(Corgicopter, 200, 200));
-                path.getElements().add(new UpdatedLineTo(Corgicopter, 100, 100));
-                pathTransition.setCycleCount(1);
-                pathTransition.setAutoReverse(false);
-                pathTransition.play();
+        Path path = new Path();
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setNode(Corgicopter);
+        pathTransition.setPath(path);
+        path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
+        path.getElements().add(new LineTo(Choice3.getX(), Choice3.getY())); //ends
+        pathTransition.setCycleCount(1);
+        pathTransition.setAutoReverse(false);
+        pathTransition.play();
+        dronestartx = Choice3.getX();
+        dronestarty = Choice3.getY();
     }
+
     public void CreateItemContainer() {
         Stage stage = new Stage();
         
@@ -383,8 +402,9 @@ public class Control implements Initializable{
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
+                rectanglelist.add(rectangle);
                 TreeItem Container = new TreeItem(textFieldName.getText());
-                Choice2.getChildren().add(Container);
+                root.getChildren().add(Container);
                 
                 comp1.setCompName(textFieldName.getText());
                 comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
@@ -442,6 +462,7 @@ public class Control implements Initializable{
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
+                rectanglelist.add(rectangle);
                 TreeItem Container = new TreeItem(textFieldName.getText());
                 Choice2.getChildren().add(Container);
 
