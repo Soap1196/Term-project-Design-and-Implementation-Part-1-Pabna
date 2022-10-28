@@ -143,6 +143,11 @@ class leaf implements items{
 }
 
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 public class Control implements Initializable{
 
         public static class UpdatedMoveTo extends MoveTo {
@@ -158,7 +163,15 @@ public class Control implements Initializable{
                 super((drone.getLayoutBounds().getWidth() / 2) + xAxis - drone.getLayoutX(),(drone.getLayoutBounds().getHeight() / 2) + yAxis - drone.getLayoutY());
             }
         }
+<<<<<<< Updated upstream
         @FXML private TreeView<String> locationTreeView;
+=======
+
+        @FXML TreeView<String> locationTreeView;
+        
+        
+
+>>>>>>> Stashed changes
         //buttons
         Button addItemContainer;
         Button addItem;
@@ -181,7 +194,16 @@ public class Control implements Initializable{
         TreeItem<String> root = new TreeItem<String>("Root Node");
         root.setExpanded(true);
         locationTreeView.setRoot(root);
+        locationTreeView.setOnMouseClicked((event) -> {
+            System.out.println(locationTreeView.getSelectionModel().getSelectedItems());
+        });
+        
     }
+<<<<<<< Updated upstream
+=======
+
+    
+>>>>>>> Stashed changes
     public void droneVisit() {
                 Path path = new Path();
                 PathTransition pathTransition = new PathTransition();
