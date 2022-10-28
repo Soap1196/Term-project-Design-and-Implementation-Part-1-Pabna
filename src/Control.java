@@ -1,3 +1,5 @@
+// add getters/setters to component
+
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -118,8 +120,6 @@ class component implements items{
         return component;
     } 
 
-    
-
     public component() 
     { 
          
@@ -128,6 +128,52 @@ class component implements items{
     public void showItemDetails()
     {
         System.out.println("Placeholder for component");
+    }
+
+    // Getters
+    public String getCompName() {
+        return name;
+    }
+    public long getCompPrice() {
+        return price;
+    }
+    public long getCompXcoordinate() {
+        return xCoordinate;
+    }
+    public long getCompYcoordinate() {
+        return yCoordinate;
+    }
+    public long getCompLength() {
+        return length;
+    }
+    public long getCompWidth() {
+        return width;
+    }
+    public long getCompHeight() {
+        return height;
+    }
+
+    // Setters
+    public void setCompName(String name) {
+        this.name = name;
+    }
+    public void setCompPrice(long price) {
+        this.price = price;
+    }
+    public void setCompXcoordinate(long xCoordinate) {
+        this.xCoordinate = xCoordinate;
+    }
+    public void setCompYcoordinate(long yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+    public void setCompLength(long length) {
+        this.length = length;
+    }
+    public void setCompWidth(long width) {
+        this.width = width;
+    }
+    public void setCompHeight(long height) {
+        this.height = height;
     }
 
 }
