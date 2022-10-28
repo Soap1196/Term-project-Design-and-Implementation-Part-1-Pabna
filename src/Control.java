@@ -98,8 +98,6 @@ interface items{
     public void showItemDetails();
 }
 
-
-
 class component implements items{
     public static component component; 
 
@@ -113,17 +111,65 @@ class component implements items{
     public long width;
     public long height;
 
+    // Getters
+    // Setters
+
     public static component getInstance() 
     { 
         return component;
     } 
 
-    
-
     public component() 
     { 
          
     }
+
+    // Getters
+    public String getCompName() {
+        return name;
+    }
+    public long getCompPrice() {
+        return price;
+    }
+    public long getCompXcoordinate() {
+        return xCoordinate;
+    }
+    public long getCompYcoordinate() {
+        return yCoordinate;
+    }
+    public long getCompLength() {
+        return length;
+    }
+    public long getCompWidth() {
+        return width;
+    }
+    public long getCompHeight() {
+        return height;
+    }
+
+    // Setters
+    public void setCompName(String name) {
+        this.name = name;
+    }
+    public void setCompPrice(long price) {
+        this.price = price;
+    }
+    public void setCompXcoordinate(long xCoordinate) {
+        this.xCoordinate = xCoordinate;
+    }
+    public void setCompYcoordinate(long yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+    public void setCompLength(long length) {
+        this.length = length;
+    }
+    public void setCompWidth(long width) {
+        this.width = width;
+    }
+    public void setCompHeight(long height) {
+        this.height = height;
+    }
+
     
     public void showItemDetails()
     {
@@ -132,7 +178,6 @@ class component implements items{
 
 }
     
-
 class leaf implements items{
     public static leaf leaf;
     public String name;
@@ -145,19 +190,90 @@ class leaf implements items{
 
     public static leaf getInstance() 
     { 
-        if (leaf == null) {
-            leaf = new leaf(); 
-        }
         return leaf;
-
     } 
+
+    public leaf(){
+
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String newName)
+    {
+        this.name = newName;
+    }
+
+    public long getPrice()
+    {
+        return price;
+    }
+
+    public void setPrice(long newPrice)
+    {
+        this.price = newPrice;
+    }
+
+    public long getXCoordinate()
+    {
+        return xCoordinate;
+    }
+
+    public void setXCoordinate(long newXCoordinate)
+    {
+        this.xCoordinate = newXCoordinate;
+    }
+
+    public long getYCoordinate()
+    {
+        return yCoordinate;
+    }
+
+    public void setYCoordinate(long newYCoordinate)
+    {
+        this.yCoordinate = newYCoordinate;
+    }
+
+    public long getLength()
+    {
+        return length;
+    }
+
+    public void setLength(long newLength)
+    {
+        this.length = newLength;
+    }
+
+    public long getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(long newWidth)
+    {
+        this.width = newWidth;
+    }
+
+    public long getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight(long newHeight)
+    {
+        this.height = newHeight;
+    }
 
     @Override
     public void showItemDetails()
     {
-        System.out.println("Placeholder fo component");
+        System.out.println("Placeholder for leaf");
     }
 }
+
 
 
 public class Control implements Initializable{
@@ -177,16 +293,16 @@ public class Control implements Initializable{
         }
         @FXML private TreeView<String> locationTreeView;
         //buttons
-        Button addItemContainer;
-        Button addItem;
-        Button Delete;
-        Button ChangeName;
-        Button ChangePrices;
-        Button ChangeLocation;
-        Button ChangeLength;
-        Button ChangeWidth;
-        Button ChangeHeight;
-        Button Rename;
+        @FXML private Button addItemContainer;
+        @FXML private Button addItem;
+        @FXML private Button Delete;
+        @FXML private Button ChangeName;
+        @FXML private Button ChangePrices;
+        @FXML private Button ChangeLocation;
+        @FXML private Button ChangeLength;
+        @FXML private Button ChangeWidth;
+        @FXML private Button ChangeHeight;
+        @FXML private Button Rename;
         @FXML private Button createItemContainer;
         @FXML private ImageView Corgicopter;
         @FXML private Pane farm;
@@ -205,6 +321,7 @@ public class Control implements Initializable{
                 pathTransition.setNode(Corgicopter);
                 pathTransition.setPath(path);
                 path.getElements().add(new UpdatedMoveTo(Corgicopter));
+                path.getElements().add(new UpdatedLineTo(Corgicopter, 200, 200));
                 path.getElements().add(new UpdatedLineTo(Corgicopter, 100, 100));
                 pathTransition.setCycleCount(1);
                 pathTransition.setAutoReverse(false);
@@ -226,7 +343,7 @@ public class Control implements Initializable{
             {
                 //Create component object
                 component comp1 = new component();
-                
+
 
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
@@ -240,6 +357,60 @@ public class Control implements Initializable{
                 farm.getChildren().add(rectangle);
                 TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
                 root.getChildren().add(Container);
+                System.out.println(rectangle.getName());
+            }
+        });
+
+        // create a tilepane
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
+    }
+
+    public void CreateItemContainer2() {
+        Stage stage = new Stage();
+        
+        stage.setTitle("Item Container Creation");
+        TextField textFieldName = new TextField ("Name variable");
+        TextField textFieldW = new TextField ("Width variable");
+        TextField textFieldH = new TextField ("Height variable");
+        TextField textFieldX = new TextField ("X variable");
+        TextField textFieldY = new TextField ("Y variable");
+        Button Submit = new Button("Submit");
+        Submit.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                //Create leaf object
+                //component comp1 = new component();
+                leaf leaf1 = new leaf();
+                
+                
+                //Drawing a Rectangle 
+                Srectangle rectangle = new Srectangle();  
+      
+                //Setting the properties of the rectangle 
+                rectangle.setName(textFieldName.getText());
+                rectangle.setX(Integer.parseInt(textFieldX.getText())); 
+                rectangle.setY(Integer.parseInt(textFieldY.getText())); 
+                rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
+                rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
+                farm.getChildren().add(rectangle);
+                TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
+                root.getChildren().add(Container);
+
+                //Leaf Setup
+                leaf1.setName(textFieldName.getText());
+                leaf1.setXCoordinate(Long.parseLong(textFieldX.getText()));
+                leaf1.setYCoordinate(Long.parseLong(textFieldY.getText()));
+                leaf1.setWidth(Long.parseLong(textFieldW.getText()));
+                leaf1.setHeight(Long.parseLong(textFieldH.getText()));
             }
         });
   
@@ -253,5 +424,12 @@ public class Control implements Initializable{
         stage.setScene(sc);
   
         stage.show();
+    }
+
+    public void treeClick (MouseEvent event) {
+        if (event.getClickCount()==2){
+        TreeItem<String> item = locationTreeView.getSelectionModel().getSelectedItem();
+        System.out.println(item.getValue());
+        }
     }
 }
