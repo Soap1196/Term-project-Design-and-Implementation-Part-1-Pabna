@@ -80,6 +80,7 @@ class itemList extends Stage{
 
 class Srectangle extends Rectangle{
     private String name; // private = restricted access
+    private double price; // private = restricted access
 
   // Getter
   public String getName() {
@@ -89,6 +90,17 @@ class Srectangle extends Rectangle{
   // Setter
   public void setName(String newName) {
     this.name = newName;
+
+    }
+
+    // Getter
+  public double getPrice() {
+    return price;
+  }
+
+  // Setter
+  public void setPrice(double newPrice) {
+    this.price = newPrice;
 
     }
 }
@@ -319,7 +331,7 @@ public class Control implements Initializable{
         @FXML private Button ChangeHeight;
         @FXML private Button Rename;
         @FXML private Button createItemContainer;
-        @FXML private ImageView Corgicopter;
+        public ImageView Corgicopter;
         @FXML private Pane farm;
 
         
@@ -331,6 +343,8 @@ public class Control implements Initializable{
         public Srectangle Choice3;
         double dronestartx = 25;
         double dronestarty = 25;
+        double commandCenterx;
+        double commandCentery;
 
 
         ArrayList<Srectangle> rectanglelist = new ArrayList<>();
@@ -351,7 +365,7 @@ public class Control implements Initializable{
                         Choice2 = item;
                         Choice3 = temp;
                         System.out.println(Choice1);
-                }
+                    }
                 }
                 
                 
@@ -359,6 +373,85 @@ public class Control implements Initializable{
 
         });
     }
+
+    public void commandCenterDrone() {
+        Stage stage = new Stage();
+        
+        stage.setTitle("Create Command Center");
+        TextField textFieldW = new TextField ("Width variable");
+        TextField textFieldH = new TextField ("Height variable");
+        TextField textFieldX = new TextField ("X variable");
+        TextField textFieldY = new TextField ("Y variable");
+        TextField textFieldP = new TextField ("Price");
+        Button Submit = new Button("Submit");
+        Submit.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                //Create component object
+                component comp1 = new component();
+
+                //Drawing a Rectangle 
+                Srectangle rectangle = new Srectangle();  
+      
+                //Setting the properties of the rectangle 
+                rectangle.setName("Command Center");
+                rectangle.setX(Integer.parseInt(textFieldX.getText())); 
+                rectangle.setY(Integer.parseInt(textFieldY.getText())); 
+                rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
+                rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
+                rectangle.setPrice(Long.parseLong(textFieldP.getText()));
+                rectangle.setFill(Color.AQUA);
+                rectangle.setStroke(Color.BLACK);
+                farm.getChildren().add(rectangle);
+                
+                rectanglelist.add(rectangle);
+                TreeItem Container = new TreeItem("Command Center");
+                root.getChildren().add(Container);
+                
+                comp1.setCompName("Command Center");
+                comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
+                comp1.setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
+                comp1.setCompLength(Integer.parseInt(textFieldW.getText()));
+                comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
+                comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
+                
+                Corgicopter = new ImageView(new Image("Subject.png"));
+                Corgicopter.setFitHeight(72.0);
+                Corgicopter.setFitWidth(107.0);
+                Corgicopter.setPickOnBounds(true);
+                Corgicopter.setPreserveRatio(true);
+                farm.getChildren().add(Corgicopter);
+                Path path = new Path();
+                PathTransition pathTransition = new PathTransition();
+                pathTransition.setDuration(Duration.millis(1000));
+                pathTransition.setNode(Corgicopter);
+                pathTransition.setPath(path);
+                path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
+                path.getElements().add(new LineTo(Integer.parseInt(textFieldX.getText()), Integer.parseInt(textFieldY.getText()))); //ends
+                pathTransition.setCycleCount(1);
+                pathTransition.setAutoReverse(false);
+                pathTransition.play();
+                dronestartx = Integer.parseInt(textFieldX.getText());
+                dronestarty = Integer.parseInt(textFieldY.getText());
+                commandCenterx = Integer.parseInt(textFieldX.getText());
+                commandCentery = Integer.parseInt(textFieldY.getText());
+                Corgicopter.toFront();
+            }
+        });
+
+        // create a tilepane
+        Pane Pane = new VBox(textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
+    }
+    
     
     public void droneVisit() {
         Path path = new Path();
@@ -385,6 +478,7 @@ public class Control implements Initializable{
         TextField textFieldH = new TextField ("Height variable");
         TextField textFieldX = new TextField ("X variable");
         TextField textFieldY = new TextField ("Y variable");
+        TextField textFieldP = new TextField ("Price");
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
         {
@@ -402,6 +496,9 @@ public class Control implements Initializable{
                 rectangle.setY(Integer.parseInt(textFieldY.getText())); 
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
+                rectangle.setPrice(Long.parseLong(textFieldP.getText()));
+                rectangle.setFill(Color.WHITE);
+                rectangle.setStroke(Color.BLACK);
                 farm.getChildren().add(rectangle);
                 
                 rectanglelist.add(rectangle);
@@ -413,12 +510,13 @@ public class Control implements Initializable{
                 comp1.setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
                 comp1.setCompLength(Integer.parseInt(textFieldW.getText()));
                 comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
+                comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
 
             }
         });
 
         // create a tilepane
-        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
   
         // create a scene
         Scene sc = new Scene(Pane, 200, 200);
@@ -438,6 +536,7 @@ public class Control implements Initializable{
         TextField textFieldH = new TextField ("Height variable");
         TextField textFieldX = new TextField ("X variable");
         TextField textFieldY = new TextField ("Y variable");
+        TextField textFieldP = new TextField ("Price");
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
         {
@@ -452,6 +551,7 @@ public class Control implements Initializable{
                 leaf1.setYCoordinate(Long.parseLong(textFieldY.getText()));
                 leaf1.setWidth(Long.parseLong(textFieldW.getText()));
                 leaf1.setHeight(Long.parseLong(textFieldH.getText()));
+                leaf1.setPrice(Long.parseLong(textFieldP.getText()));
                 
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
@@ -462,6 +562,9 @@ public class Control implements Initializable{
                 rectangle.setY(Integer.parseInt(textFieldY.getText())); 
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
+                rectangle.setPrice(Long.parseLong(textFieldP.getText()));
+                rectangle.setFill(Color.WHITE);
+                rectangle.setStroke(Color.BLACK);
                 farm.getChildren().add(rectangle);
                 rectanglelist.add(rectangle);
                 rectangle.toFront();
@@ -474,7 +577,7 @@ public class Control implements Initializable{
 
   
         // create a tilepane
-        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
   
         // create a scene
         Scene sc = new Scene(Pane, 200, 200);
@@ -523,26 +626,146 @@ public class Control implements Initializable{
     
 
     public void changeLocation() {
-        locationTreeView.getSelectionModel().getSelectedItem().setValue("rename");
+        Stage stage = new Stage();
+        
+        stage.setTitle("Rename");
+        TextField textFieldX = new TextField ("New X variable");
+        TextField textFieldY = new TextField ("New Y variable");
+        Button Submit = new Button("Submit");
+        Submit.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                
+                for (int i = 0; i < rectanglelist.size(); i++){
+                    if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                        rectanglelist.get(i).setX(Integer.parseInt(textFieldX.getText()));
+                        rectanglelist.get(i).setY(Integer.parseInt(textFieldY.getText()));
+                    }
+                    
+                }
+                
+            }
+        });
+        
+
+  
+        // create a tilepane
+        Pane Pane = new VBox(textFieldX,textFieldY,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
     }
 
     public void changePrice() {
+        Stage stage = new Stage();
+        
+        stage.setTitle("Rename");
+        TextField textField = new TextField ("New Price variable");
+        Button Submit = new Button("Submit");
+        Submit.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                
+                for (int i = 0; i < rectanglelist.size(); i++){
+                    if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                        rectanglelist.get(i).setPrice(Long.parseLong(textField.getText()));
+                    }
+                    
+                }
+                
+            }
+        });
+        
+
+  
+        // create a tilepane
+        Pane Pane = new VBox(textField,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
 
     }
 
     public void changeDimensions() {
+        Stage stage = new Stage();
+        
+        stage.setTitle("Rename");
+        TextField textFieldW = new TextField ("New Width variable");
+        TextField textFieldH = new TextField ("New Height variable");
+        Button Submit = new Button("Submit");
+        Submit.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                
+                for (int i = 0; i < rectanglelist.size(); i++){
+                    if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                        rectanglelist.get(i).setWidth(Integer.parseInt(textFieldW.getText()));
+                        rectanglelist.get(i).setHeight(Integer.parseInt(textFieldH.getText()));
+                    }
+                    
+                }
+                
+            }
+        });
+        
+
+  
+        // create a tilepane
+        Pane Pane = new VBox(textFieldW,textFieldH,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
 
     }
 
     public void Delete() {
-
+        System.out.println(rectanglelist);
+        for (int i = 0; i < rectanglelist.size(); i++){
+            if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                rectanglelist.remove(i);
+            }
+            
+        }
+        System.out.println(rectanglelist);
     }
 
     public void scanFarm() {
-
+        
     }
 
     public void goHome() {
+
+        Path path = new Path();
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setNode(Corgicopter);
+        pathTransition.setPath(path);
+        path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
+        path.getElements().add(new LineTo(commandCenterx, commandCentery)); //ends
+        pathTransition.setCycleCount(1);
+        pathTransition.setAutoReverse(false);
+        pathTransition.play();
+        dronestartx = Choice3.getX();
+        dronestarty = Choice3.getY();
+        Corgicopter.toFront();
 
     }
 
