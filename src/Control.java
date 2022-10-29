@@ -770,7 +770,9 @@ public class Control implements Initializable{
         System.out.println(rectanglelist);
         for (int i = 0; i < rectanglelist.size(); i++){
             if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
-                //needs to delete rectangle from farm pane 
+                farm.getChildren().remove(rectanglelist.get(i));
+                TreeItem t = (locationTreeView.getSelectionModel().getSelectedItem());
+                t.getParent().getChildren().remove(t);
                 rectanglelist.remove(i);
             }
             
