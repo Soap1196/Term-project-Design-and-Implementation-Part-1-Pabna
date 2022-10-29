@@ -27,13 +27,15 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;  
 import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.HLineTo;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.MenuItem; 
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;  
-import javafx.scene.shape.Rectangle;  
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.VLineTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -55,6 +57,7 @@ import javafx.stage.Stage;
 import javafx.scene.text.Text.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
+import java.util.concurrent.TimeUnit;
 
 class itemList extends Stage{ 
         
@@ -377,16 +380,27 @@ public class Control implements Initializable{
     public void DroneScan(double x, double y){
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setDuration(Duration.millis(10000));
         pathTransition.setNode(Corgicopter);
         pathTransition.setPath(path);
         path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
-        path.getElements().add(new LineTo(x, y)); //ends
+        path.getElements().add(new LineTo(0, 0)); //ends
+        path.getElements().add(new VLineTo(530));
+        path.getElements().add(new HLineTo(80));
+        path.getElements().add(new VLineTo(0));
+        path.getElements().add(new HLineTo(160));
+        path.getElements().add(new VLineTo(530));
+        path.getElements().add(new HLineTo(240));
+        path.getElements().add(new VLineTo(0));
+        path.getElements().add(new HLineTo(320));
+        path.getElements().add(new VLineTo(530));
+        path.getElements().add(new HLineTo(400));
+        path.getElements().add(new VLineTo(0));
+        path.getElements().add(new HLineTo(446));
+        path.getElements().add(new VLineTo(530));
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
         pathTransition.play();
-        dronestartx = x;
-        dronestarty = y;
         Corgicopter.toFront();
     }
 
@@ -765,13 +779,10 @@ public class Control implements Initializable{
     }
 
     public void scanFarm() {
-        int Xarray[] = {0,446,446,0,0}; 
-        int Yarray[] = {0,537,0,537,0};
-        
-        for (int i = 0; i < Xarray.length; i++){
-            DroneScan(Xarray[i], Yarray[i]);
-            System.out.println("test " + i);
-        }
+
+        DroneScan(0,0);
+        dronestartx=446;
+        dronestarty=530;
         
 
     }
