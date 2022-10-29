@@ -658,7 +658,7 @@ public class Control implements Initializable{
     public void changeLocation() {
         Stage stage = new Stage();
         
-        stage.setTitle("Rename");
+        stage.setTitle("Change Location");
         TextField textFieldX = new TextField ("New X variable");
         TextField textFieldY = new TextField ("New Y variable");
         Button Submit = new Button("Submit");
@@ -695,7 +695,7 @@ public class Control implements Initializable{
     public void changePrice() {
         Stage stage = new Stage();
         
-        stage.setTitle("Rename");
+        stage.setTitle("Change Price");
         TextField textField = new TextField ("New Price variable");
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
@@ -731,7 +731,7 @@ public class Control implements Initializable{
     public void changeDimensions() {
         Stage stage = new Stage();
         
-        stage.setTitle("Rename");
+        stage.setTitle("Change Dimensions");
         TextField textFieldW = new TextField ("New Width variable");
         TextField textFieldH = new TextField ("New Height variable");
         Button Submit = new Button("Submit");
