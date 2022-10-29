@@ -374,6 +374,22 @@ public class Control implements Initializable{
         });
     }
 
+    public void DroneScan(double x, double y){
+        Path path = new Path();
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setNode(Corgicopter);
+        pathTransition.setPath(path);
+        path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
+        path.getElements().add(new LineTo(x, y)); //ends
+        pathTransition.setCycleCount(1);
+        pathTransition.setAutoReverse(false);
+        pathTransition.play();
+        dronestartx = x;
+        dronestarty = y;
+        Corgicopter.toFront();
+    }
+
     public void commandCenterDrone() {
         Stage stage = new Stage();
         
@@ -740,6 +756,7 @@ public class Control implements Initializable{
         System.out.println(rectanglelist);
         for (int i = 0; i < rectanglelist.size(); i++){
             if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                //needs to delete rectangle from farm pane 
                 rectanglelist.remove(i);
             }
             
@@ -748,7 +765,15 @@ public class Control implements Initializable{
     }
 
     public void scanFarm() {
+        int Xarray[] = {0,446,446,0,0}; 
+        int Yarray[] = {0,537,0,537,0};
         
+        for (int i = 0; i < Xarray.length; i++){
+            DroneScan(Xarray[i], Yarray[i]);
+            System.out.println("test " + i);
+        }
+        
+
     }
 
     public void goHome() {
