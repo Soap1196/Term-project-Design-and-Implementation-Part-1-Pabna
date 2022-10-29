@@ -403,6 +403,7 @@ public class Control implements Initializable{
                 rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
+                
                 rectanglelist.add(rectangle);
                 TreeItem Container = new TreeItem(textFieldName.getText());
                 root.getChildren().add(Container);
@@ -431,7 +432,7 @@ public class Control implements Initializable{
     public void CreateItem() {
         Stage stage = new Stage();
         
-        stage.setTitle("Item Container Creation");
+        stage.setTitle("Item Creation");
         TextField textFieldName = new TextField ("Name variable");
         TextField textFieldW = new TextField ("Width variable");
         TextField textFieldH = new TextField ("Height variable");
@@ -452,7 +453,6 @@ public class Control implements Initializable{
                 leaf1.setWidth(Long.parseLong(textFieldW.getText()));
                 leaf1.setHeight(Long.parseLong(textFieldH.getText()));
                 
-                
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
       
@@ -464,11 +464,14 @@ public class Control implements Initializable{
                 rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
                 farm.getChildren().add(rectangle);
                 rectanglelist.add(rectangle);
+                rectangle.toFront();
                 TreeItem Container = new TreeItem(textFieldName.getText());
                 Choice2.getChildren().add(Container);
 
             }
         });
+        
+
   
         // create a tilepane
         Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
@@ -482,6 +485,66 @@ public class Control implements Initializable{
         stage.show();
     }
 
+    public void Rename() {
+        
+        Stage stage = new Stage();
+        
+        stage.setTitle("Rename");
+        TextField textFieldName = new TextField ("New Name variable");
+        Button Submit = new Button("Submit");
+        Submit.setOnAction(new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent event)
+            {
+                
+                for (int i = 0; i < rectanglelist.size(); i++){
+                    if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                        rectanglelist.get(i).setName(textFieldName.getText());
+                    }
+                    
+                }
+                locationTreeView.getSelectionModel().getSelectedItem().setValue(textFieldName.getText());
+            }
+        });
+        
+
+  
+        // create a tilepane
+        Pane Pane = new VBox(textFieldName,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
+    }
+    
+
+    public void changeLocation() {
+        locationTreeView.getSelectionModel().getSelectedItem().setValue("rename");
+    }
+
+    public void changePrice() {
+
+    }
+
+    public void changeDimensions() {
+
+    }
+
+    public void Delete() {
+
+    }
+
+    public void scanFarm() {
+
+    }
+
+    public void goHome() {
+
+    }
 
     
 }
