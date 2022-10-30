@@ -140,7 +140,8 @@ public class Control implements Initializable{
         
         stage.setTitle("Create Command Center");
         TextField textFieldW = new TextField ("Width variable");
-        TextField textFieldH = new TextField ("Height variable");
+        TextField textFieldH = new TextField ("Length variable");
+        TextField textFieldL = new TextField ("Height variable");
         TextField textFieldX = new TextField ("X variable");
         TextField textFieldY = new TextField ("Y variable");
         TextField textFieldP = new TextField ("Price");
@@ -229,7 +230,7 @@ public class Control implements Initializable{
             }
         });
 
-        Pane Pane = new VBox(textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
+        Pane Pane = new VBox(textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,Submit);
   
         Scene sc = new Scene(Pane, 200, 200);
   
@@ -274,7 +275,8 @@ public class Control implements Initializable{
         stage.setTitle("Item Container Creation");
         TextField textFieldName = new TextField ("Name variable");
         TextField textFieldW = new TextField ("Width variable");
-        TextField textFieldH = new TextField ("Height variable");
+        TextField textFieldH = new TextField ("Length variable");
+        TextField textFieldL = new TextField ("Height variable");
         TextField textFieldX = new TextField ("X variable");
         TextField textFieldY = new TextField ("Y variable");
         TextField textFieldP = new TextField ("Price");
@@ -340,7 +342,7 @@ public class Control implements Initializable{
             }
         });
 
-        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,Submit);
   
         Scene sc = new Scene(Pane, 200, 200);
   
@@ -369,7 +371,8 @@ public class Control implements Initializable{
         stage.setTitle("Item Creation");
         TextField textFieldName = new TextField ("Name variable");
         TextField textFieldW = new TextField ("Width variable");
-        TextField textFieldH = new TextField ("Height variable");
+        TextField textFieldH = new TextField ("Length variable");
+        TextField textFieldL = new TextField ("Height variable");
         TextField textFieldX = new TextField ("X variable");
         TextField textFieldY = new TextField ("Y variable");
         TextField textFieldP = new TextField ("Price");
@@ -436,7 +439,7 @@ public class Control implements Initializable{
 
             }
         });
-        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,Submit);
   
         Scene sc = new Scene(Pane, 200, 200);
   
@@ -581,7 +584,8 @@ public class Control implements Initializable{
         
         stage.setTitle("Rename");
         TextField textFieldW = new TextField ("New Width variable");
-        TextField textFieldH = new TextField ("New Height variable");
+        TextField textFieldH = new TextField ("New Length variable");
+        TextField textFieldL = new TextField ("New Height variable");
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
         {
@@ -610,7 +614,7 @@ public class Control implements Initializable{
 
   
         // create a tilepane
-        Pane Pane = new VBox(textFieldW,textFieldH,Submit);
+        Pane Pane = new VBox(textFieldW,textFieldH,textFieldL,Submit);
   
         // create a scene
         Scene sc = new Scene(Pane, 200, 200);
