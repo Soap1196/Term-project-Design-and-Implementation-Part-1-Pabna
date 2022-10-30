@@ -15,13 +15,13 @@ public class composite implements items{
     @Override
     public void showItemDetails()
     {
+        System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
+        System.out.println("{");
         for(items x:itemslist)
         {
-            System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
-            System.out.println("{");
             x.showItemDetails();
-            System.out.println("}");
         }
+        System.out.println("}");
     }
 
     public void additem(items x)
