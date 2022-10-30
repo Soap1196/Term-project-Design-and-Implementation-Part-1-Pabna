@@ -1,9 +1,9 @@
 import javafx.fxml.Initializable;
 import java.net.URL;
+import java.time.format.TextStyle;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import java.util.*;
-//import javax.naming.ldap.Control;
 import javax.swing.ComboBoxModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -42,7 +42,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import java.util.ArrayList;
-import java.awt.event.MouseEvent;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -58,6 +57,16 @@ import javafx.scene.text.Text.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import java.util.concurrent.TimeUnit;
+import javafx.scene.input.MouseEvent;
+import javafx.beans.value.ChangeListener;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.geometry.Bounds;
+import javafx.stage.Popup;
 
 class itemList extends Stage{ 
         
@@ -84,6 +93,7 @@ class itemList extends Stage{
 class Srectangle extends Rectangle{
     private String name; // private = restricted access
     private double price; // private = restricted access
+    private boolean isComposite;
 
   // Getter
   public String getName() {
@@ -104,6 +114,17 @@ class Srectangle extends Rectangle{
   // Setter
   public void setPrice(double newPrice) {
     this.price = newPrice;
+
+    }
+
+// Getter
+public boolean getisComposite() {
+    return isComposite;
+  }
+
+  // Setter
+  public void setisComposite(boolean newisComposite) {
+    this.isComposite = newisComposite;
 
     }
 }
@@ -306,19 +327,7 @@ class leaf implements items{
 
 public class Control implements Initializable{
 
-        public static class UpdatedMoveTo extends MoveTo {
-            public UpdatedMoveTo(Node drone) {
-                super((drone.getLayoutBounds().getWidth() / 2), drone.getLayoutBounds().getHeight() / 2);
-            }
-            public UpdatedMoveTo(Node drone, double xAxis, double yAxis) {
-                super((drone.getLayoutBounds().getWidth() / 2) + xAxis - drone.getLayoutX(),(drone.getLayoutBounds().getHeight() / 2) + yAxis - drone.getLayoutY());
-            }
-        }
-        public static class UpdatedLineTo extends LineTo {
-            public UpdatedLineTo(Node drone, double xAxis, double yAxis) {
-                super((drone.getLayoutBounds().getWidth() / 2) + xAxis - drone.getLayoutX(),(drone.getLayoutBounds().getHeight() / 2) + yAxis - drone.getLayoutY());
-            }
-        }
+        
 
 
         @FXML public TreeView<String> locationTreeView;
@@ -421,30 +430,54 @@ public class Control implements Initializable{
                 //Create component object
                 component comp1 = new component();
 
+                comp1.setCompName("Command Center");
+                comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
+                comp1.setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
+                comp1.setCompWidth(Integer.parseInt(textFieldW.getText()));
+                comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
+                comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
+
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
       
                 //Setting the properties of the rectangle 
                 rectangle.setName("Command Center");
-                rectangle.setX(Integer.parseInt(textFieldX.getText())); 
-                rectangle.setY(Integer.parseInt(textFieldY.getText())); 
-                rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
-                rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
-                rectangle.setPrice(Long.parseLong(textFieldP.getText()));
+                rectangle.setX(comp1.getCompXcoordinate()); 
+                rectangle.setY(comp1.getCompYcoordinate()); 
+                rectangle.setWidth(comp1.getCompWidth()); 
+                rectangle.setHeight(comp1.getCompHeight());
+                rectangle.setPrice(comp1.getCompPrice());
+                rectangle.setisComposite(true);
                 rectangle.setFill(Color.AQUA);
                 rectangle.setStroke(Color.BLACK);
+                
+                VBox infoVbox = new VBox();
+                infoVbox.setPrefSize(250, 150);
+                infoVbox.setStyle("-fx-background-color: grey;");
+                Text textName = new Text ("NAME: " + rectangle.getName());
+                Text textX = new Text ("X coordinate: " + rectangle.getX());
+                Text textY = new Text ("Y coordinate: " + rectangle.getY());
+                Text textW = new Text ("Width: " + rectangle.getWidth());
+                Text textL = new Text ("Length: " + rectangle.getHeight());
+                Text textP = new Text ("Price: " + rectangle.getPrice());
+                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP);
+
+                Popup infobox = new Popup();
+                infobox.getContent().add(infoVbox);
+
+                rectangle.hoverProperty().addListener((x, prev, NewV) -> {
+                    if (NewV) {
+                        infobox.show(rectangle, 300, 150);
+                    } else {
+                        infobox.hide();
+                    }
+                });
+            
                 farm.getChildren().add(rectangle);
                 
                 rectanglelist.add(rectangle);
                 TreeItem Container = new TreeItem("Command Center");
                 root.getChildren().add(Container);
-                
-                comp1.setCompName("Command Center");
-                comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
-                comp1.setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
-                comp1.setCompLength(Integer.parseInt(textFieldW.getText()));
-                comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
-                comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
                 
                 Corgicopter = new ImageView(new Image("Subject.png"));
                 Corgicopter.setFitHeight(72.0);
@@ -470,13 +503,10 @@ public class Control implements Initializable{
             }
         });
 
-        // create a tilepane
         Pane Pane = new VBox(textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
   
-        // create a scene
         Scene sc = new Scene(Pane, 200, 200);
   
-        // set the scene
         stage.setScene(sc);
   
         stage.show();
@@ -514,27 +544,8 @@ public class Control implements Initializable{
         {
             public void handle(ActionEvent event)
             {
-                //Create component object
+                //Create composite object
                 component comp1 = new component();
-
-                //Drawing a Rectangle 
-                Srectangle rectangle = new Srectangle();  
-      
-                //Setting the properties of the rectangle 
-                rectangle.setName(textFieldName.getText());
-                rectangle.setX(Integer.parseInt(textFieldX.getText())); 
-                rectangle.setY(Integer.parseInt(textFieldY.getText())); 
-                rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
-                rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
-                rectangle.setPrice(Long.parseLong(textFieldP.getText()));
-                rectangle.setFill(Color.WHITE);
-                rectangle.setStroke(Color.BLACK);
-                farm.getChildren().add(rectangle);
-                
-                rectanglelist.add(rectangle);
-                TreeItem Container = new TreeItem(textFieldName.getText());
-                root.getChildren().add(Container);
-                
                 comp1.setCompName(textFieldName.getText());
                 comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
                 comp1.setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
@@ -542,22 +553,74 @@ public class Control implements Initializable{
                 comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
                 comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
 
+                //Drawing a Rectangle 
+                Srectangle rectangle = new Srectangle();  
+      
+                //Setting the properties of the rectangle 
+                rectangle.setName(comp1.getCompName());
+                rectangle.setX(comp1.getCompXcoordinate()); 
+                rectangle.setY(comp1.getCompYcoordinate()); 
+                rectangle.setWidth(comp1.getCompLength()); 
+                rectangle.setHeight(comp1.getCompHeight());
+                rectangle.setPrice(comp1.getCompPrice());
+                rectangle.setisComposite(true);
+                rectangle.setFill(Color.WHITE);
+                rectangle.setStroke(Color.BLACK);
+
+                VBox infoVbox = new VBox();
+                infoVbox.setPrefSize(200, 150);
+                infoVbox.setStyle("-fx-background-color: grey;");
+                Text textName = new Text ("NAME: " + rectangle.getName());
+                Text textX = new Text ("X coordinate: " + rectangle.getX());
+                Text textY = new Text ("Y coordinate: " + rectangle.getY());
+                Text textW = new Text ("Width: " + rectangle.getWidth());
+                Text textL = new Text ("Length: " + rectangle.getHeight());
+                Text textP = new Text ("Price: " + rectangle.getPrice());
+                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP);
+
+                Popup infobox = new Popup();
+                infobox.getContent().add(infoVbox);
+
+                rectangle.hoverProperty().addListener((x, prev, NewV) -> {
+                    if (NewV) {
+                        infobox.show(rectangle, 300, 150);
+                    } else {
+                        infobox.hide();
+                    }
+                });
+
+                farm.getChildren().add(rectangle);
+                
+                rectanglelist.add(rectangle);
+                TreeItem Container = new TreeItem(textFieldName.getText());
+                Choice2.getChildren().add(Container);
+
             }
         });
 
-        // create a tilepane
         Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
   
-        // create a scene
         Scene sc = new Scene(Pane, 200, 200);
   
-        // set the scene
         stage.setScene(sc);
   
         stage.show();
     }
 
     public void CreateItem() {
+        if(Choice3.getisComposite() == false){
+            Stage stage = new Stage();
+            stage.setTitle("");
+            Text text = new Text("A new node cannot be added as a child to a leaf node");
+            
+            Pane Pane = new VBox(text);
+            
+            Scene sc = new Scene(Pane, 400, 100);
+            
+            stage.setScene(sc);
+            stage.show();
+        }
+        else {
         Stage stage = new Stage();
         
         stage.setTitle("Item Creation");
@@ -587,14 +650,38 @@ public class Control implements Initializable{
                 Srectangle rectangle = new Srectangle();  
       
                 //Setting the properties of the rectangle 
-                rectangle.setName(textFieldName.getText());
-                rectangle.setX(Integer.parseInt(textFieldX.getText())); 
-                rectangle.setY(Integer.parseInt(textFieldY.getText())); 
-                rectangle.setWidth(Integer.parseInt(textFieldW.getText())); 
-                rectangle.setHeight(Integer.parseInt(textFieldH.getText()));
-                rectangle.setPrice(Long.parseLong(textFieldP.getText()));
+                rectangle.setName(leaf1.getName());
+                rectangle.setX(leaf1.getXCoordinate()); 
+                rectangle.setY(leaf1.getYCoordinate()); 
+                rectangle.setWidth(leaf1.getWidth()); 
+                rectangle.setHeight(leaf1.getHeight());
+                rectangle.setPrice(leaf1.getPrice());
+                rectangle.setisComposite(false);
                 rectangle.setFill(Color.WHITE);
                 rectangle.setStroke(Color.BLACK);
+
+                VBox infoVbox = new VBox();
+                infoVbox.setPrefSize(250, 150);
+                infoVbox.setStyle("-fx-background-color: grey;");
+                Text textName = new Text ("NAME: " + rectangle.getName());
+                Text textX = new Text ("X coordinate: " + rectangle.getX());
+                Text textY = new Text ("Y coordinate: " + rectangle.getY());
+                Text textW = new Text ("Width: " + rectangle.getWidth());
+                Text textL = new Text ("Length: " + rectangle.getHeight());
+                Text textP = new Text ("Price: " + rectangle.getPrice());
+                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP);
+
+                Popup infobox = new Popup();
+                infobox.getContent().add(infoVbox);
+
+                rectangle.hoverProperty().addListener((x, prev, NewV) -> {
+                    if (NewV) {
+                        infobox.show(rectangle, 300, 200);
+                    } else {
+                        infobox.hide();
+                    }
+                });
+
                 farm.getChildren().add(rectangle);
                 rectanglelist.add(rectangle);
                 rectangle.toFront();
@@ -603,19 +690,14 @@ public class Control implements Initializable{
 
             }
         });
-        
-
-  
-        // create a tilepane
         Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,textFieldP,Submit);
   
-        // create a scene
         Scene sc = new Scene(Pane, 200, 200);
   
-        // set the scene
         stage.setScene(sc);
   
         stage.show();
+    }
     }
 
     public void Rename() {
