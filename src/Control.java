@@ -51,6 +51,7 @@ public class Control implements Initializable{
 
         TreeItem<String> root = new TreeItem<String>("Root Node");
         composite rootDirectory = new composite();
+        
 
         public String Choice1;
         public TreeItem Choice2 = root;
@@ -73,7 +74,17 @@ public class Control implements Initializable{
         farm.setPrefHeight(537);
         farm.setPrefWidth(446);
         Mpain.getChildren().addAll(farm);
-        rootDirectory.setCompName("Root");
+        rootDirectory.setCompName("Root Node");
+
+        //Drawing a Rectangle 
+        Srectangle rectangle = new Srectangle();  
+      
+        //Setting the properties of the rectangle 
+        rectangle.setName(rootDirectory.getCompName());
+        rectanglelist.add(rectangle);
+        rectangle.setComposite(rootDirectory);
+        rectangle.setisComposite(true);
+
         root.setExpanded(true);
         locationTreeView.setRoot(root);
         locationTreeView.setOnMouseClicked((event) -> {
@@ -81,11 +92,11 @@ public class Control implements Initializable{
             for (int i = 0; i < rectanglelist.size(); i++){
                 if (rectanglelist.get(i)!=null){
                     Srectangle temp = rectanglelist.get(i);
-                    globalComposite = rectanglelist.get(i).getComposite();
                     if (temp.getName().contains(item.getValue())){
                         Choice1 = item.getValue();
                         Choice2 = item;
                         Choice3 = temp;
+                        globalComposite = temp.getComposite();
                         System.out.println(Choice1);
                     }
                 }
@@ -245,6 +256,19 @@ public class Control implements Initializable{
     }
 
     public void CreateItemContainer() {
+        if((Choice3.getisComposite()) == false){
+            Stage stage = new Stage();
+            stage.setTitle("");
+            Text text = new Text("A new node cannot be added as a child to a leaf node");
+            
+            Pane Pane = new VBox(text);
+            
+            Scene sc = new Scene(Pane, 400, 100);
+            
+            stage.setScene(sc);
+            stage.show();
+        }
+        else {
         Stage stage = new Stage();
         
         stage.setTitle("Item Container Creation");
@@ -324,9 +348,10 @@ public class Control implements Initializable{
   
         stage.show();
     }
+    }
 
     public void CreateItem() {
-        if(Choice3.getisComposite() == false){
+        if((Choice3.getisComposite()) == false){
             Stage stage = new Stage();
             stage.setTitle("");
             Text text = new Text("A new node cannot be added as a child to a leaf node");
