@@ -28,277 +28,12 @@ import java.util.List;
 import javafx.scene.text.*;
 import javafx.stage.Popup;
 
-class itemList extends Stage{ 
-        
-    public static itemList itemObject; 
-  
-    
-    public String s; 
-  
-    //Singleton
-    private itemList() 
-    { 
-         
-    } 
-
-    public static itemList getInstance() 
-    { 
-        if (itemObject == null) {
-            itemObject = new itemList(); 
-        }
-        return itemObject;
-    } 
-} 
-
-class Srectangle extends Rectangle{
-    private String name;
-    private double price; 
-    private boolean isComposite;
-    private composite composite;
-    private leaf leaf;
-
-  // Getter
-  public String getName() {
-    return name;
-  }
-
-  // Setter
-  public void setName(String newName) {
-    this.name = newName;
-
-    }
-
-    // Getter
-  public double getPrice() {
-    return price;
-  }
-
-  // Setter
-  public void setPrice(double newPrice) {
-    this.price = newPrice;
-
-    }
-
-// Getter
-public boolean getisComposite() {
-    return isComposite;
-  }
-
-  // Setter
-  public void setisComposite(boolean newisComposite) {
-    this.isComposite = newisComposite;
-
-    }
-// Getter
-public composite getComposite() {
-    return composite;
-  }
-
-  // Setter
-  public void setComposite(composite newComposite) {
-    this.composite = newComposite;
-
-    }
-
-    // Getter
-public leaf getLeaf() {
-    return leaf;
-  }
-
-  // Setter
-  public void setLeaf(leaf newleaf) {
-    this.leaf = newleaf;
-
-    }
-
-}
-
-//Custom classes for item and containers
-interface items{
-    public void showItemDetails();
-}
-
-class composite implements items{
-    public static composite composite; 
-
-    private List<items> itemslist = new ArrayList<items>();
-
-    @Override
-    public void showItemDetails()
-    {
-        for(items x:itemslist)
-        {
-            System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
-            System.out.println("{");
-            x.showItemDetails();
-            System.out.println("}");
-        }
-    }
-
-    public void additem(items x)
-    {
-        itemslist.add(x);
-    }
-
-    public void removeitems(items x)
-    {
-        itemslist.remove(x);
-    }
-    
-    public String name;
-    public double price;
-    public double xCoordinate;
-    public double yCoordinate;
-    public double length;
-    public double width;
-    public double height;
-
-
-    // Getters
-    public String getCompName() {
-        return name;
-    }
-    public double getCompPrice() {
-        return price;
-    }
-    public double getCompXcoordinate() {
-        return xCoordinate;
-    }
-    public double getCompYcoordinate() {
-        return yCoordinate;
-    }
-    public double getCompLength() {
-        return length;
-    }
-    public double getCompWidth() {
-        return width;
-    }
-    public double getCompHeight() {
-        return height;
-    }
-
-    // Setters
-    public void setCompName(String name) {
-        this.name = name;
-    }
-    public void setCompPrice(double price) {
-        this.price = price;
-    }
-    public void setCompXcoordinate(double xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-    public void setCompYcoordinate(double yCoordinate) {
-        this.yCoordinate = yCoordinate;
-    }
-    public void setCompLength(double length) {
-        this.length = length;
-    }
-    public void setCompWidth(double width) {
-        this.width = width;
-    }
-    public void setCompHeight(double height) {
-        this.height = height;
-    }
-
-}
-    
-class leaf implements items{
-    public static leaf leaf;
-    public String name;
-    public double price;
-    public double xCoordinate;
-    public double yCoordinate;
-    public double length;
-    public double width;
-    public double height;
-
-    
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String newName)
-    {
-        this.name = newName;
-    }
-
-    public double getPrice()
-    {
-        return price;
-    }
-
-    public void setPrice(double newPrice)
-    {
-        this.price = newPrice;
-    }
-
-    public double getXCoordinate()
-    {
-        return xCoordinate;
-    }
-
-    public void setXCoordinate(double newXCoordinate)
-    {
-        this.xCoordinate = newXCoordinate;
-    }
-
-    public double getYCoordinate()
-    {
-        return yCoordinate;
-    }
-
-    public void setYCoordinate(double newYCoordinate)
-    {
-        this.yCoordinate = newYCoordinate;
-    }
-
-    public double getLength()
-    {
-        return length;
-    }
-
-    public void setLength(double newLength)
-    {
-        this.length = newLength;
-    }
-
-    public double getWidth()
-    {
-        return width;
-    }
-
-    public void setWidth(double newWidth)
-    {
-        this.width = newWidth;
-    }
-
-    public double getHeight()
-    {
-        return height;
-    }
-
-    public void setHeight(double newHeight)
-    {
-        this.height = newHeight;
-    }
-
-    @Override
-    public void showItemDetails()
-    {
-        System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
-    }
-}
-
-
+import classes.*;
 
 public class Control implements Initializable{
 
-        
-
-
         @FXML public TreeView<String> locationTreeView;
+        @FXML public Pane Mpain;
         //buttons
         @FXML private Button addItemContainer;
         @FXML private Button addItem;
@@ -312,9 +47,8 @@ public class Control implements Initializable{
         @FXML private Button Rename;
         @FXML private Button createItemContainer;
         public ImageView Corgicopter;
-        @FXML private Pane farm;
+        public CustomPane farm=CustomPane.getInstance();
 
-        
         TreeItem<String> root = new TreeItem<String>("Root Node");
         composite rootDirectory = new composite();
 
@@ -328,13 +62,17 @@ public class Control implements Initializable{
         double commandCenterx;
         double commandCentery;
 
-
         ArrayList<Srectangle> rectanglelist = new ArrayList<>();
         
         
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        farm.setLayoutX(260);
+        farm.setLayoutY(102);
+        farm.setPrefHeight(537);
+        farm.setPrefWidth(446);
+        Mpain.getChildren().addAll(farm);
         rootDirectory.setCompName("Root");
         root.setExpanded(true);
         locationTreeView.setRoot(root);
@@ -410,7 +148,7 @@ public class Control implements Initializable{
                 comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
                 comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
                 rootDirectory.additem(comp1);
-                
+                globalComposite=rootDirectory;
 
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
