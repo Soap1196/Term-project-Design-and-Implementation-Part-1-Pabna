@@ -1,71 +1,31 @@
 import javafx.fxml.Initializable;
 import java.net.URL;
-import java.time.format.TextStyle;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import java.util.*;
-import javax.swing.ComboBoxModel;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.PathTransition; 
 import javafx.scene.shape.MoveTo; 
 import javafx.scene.shape.Path;
-import javafx.util.Duration;  
-import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.HLineTo;
-import javafx.scene.control.SplitMenuButton;
-import javafx.scene.control.MenuItem; 
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;  
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.VLineTo;
 import javafx.scene.shape.LineTo;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import java.util.ArrayList;
-import javafx.stage.Stage;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.collections.*;
-import javafx.stage.Stage;
-import javafx.scene.text.Text.*;
-import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import java.util.concurrent.TimeUnit;
-import javafx.scene.input.MouseEvent;
-import javafx.beans.value.ChangeListener;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.geometry.Bounds;
 import javafx.stage.Popup;
 
 class itemList extends Stage{ 
@@ -91,9 +51,11 @@ class itemList extends Stage{
 } 
 
 class Srectangle extends Rectangle{
-    private String name; // private = restricted access
-    private double price; // private = restricted access
+    private String name;
+    private double price; 
     private boolean isComposite;
+    private composite composite;
+    private leaf leaf;
 
   // Getter
   public String getName() {
@@ -127,6 +89,28 @@ public boolean getisComposite() {
     this.isComposite = newisComposite;
 
     }
+// Getter
+public composite getComposite() {
+    return composite;
+  }
+
+  // Setter
+  public void setComposite(composite newComposite) {
+    this.composite = newComposite;
+
+    }
+
+    // Getter
+public leaf getLeaf() {
+    return leaf;
+  }
+
+  // Setter
+  public void setLeaf(leaf newleaf) {
+    this.leaf = newleaf;
+
+    }
+
 }
 
 //Custom classes for item and containers
@@ -134,8 +118,8 @@ interface items{
     public void showItemDetails();
 }
 
-class component implements items{
-    public static component component; 
+class composite implements items{
+    public static composite composite; 
 
     private List<items> itemslist = new ArrayList<items>();
 
@@ -144,7 +128,10 @@ class component implements items{
     {
         for(items x:itemslist)
         {
+            System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
+            System.out.println("{");
             x.showItemDetails();
+            System.out.println("}");
         }
     }
 
@@ -159,46 +146,34 @@ class component implements items{
     }
     
     public String name;
-    public long price;
-    public long xCoordinate;
-    public long yCoordinate;
-    public long length;
-    public long width;
-    public long height;
+    public double price;
+    public double xCoordinate;
+    public double yCoordinate;
+    public double length;
+    public double width;
+    public double height;
 
-    // Getters
-    // Setters
-
-    public static component getInstance() 
-    { 
-        return component;
-    } 
-
-    public component() 
-    { 
-         
-    }
 
     // Getters
     public String getCompName() {
         return name;
     }
-    public long getCompPrice() {
+    public double getCompPrice() {
         return price;
     }
-    public long getCompXcoordinate() {
+    public double getCompXcoordinate() {
         return xCoordinate;
     }
-    public long getCompYcoordinate() {
+    public double getCompYcoordinate() {
         return yCoordinate;
     }
-    public long getCompLength() {
+    public double getCompLength() {
         return length;
     }
-    public long getCompWidth() {
+    public double getCompWidth() {
         return width;
     }
-    public long getCompHeight() {
+    public double getCompHeight() {
         return height;
     }
 
@@ -206,22 +181,22 @@ class component implements items{
     public void setCompName(String name) {
         this.name = name;
     }
-    public void setCompPrice(long price) {
+    public void setCompPrice(double price) {
         this.price = price;
     }
-    public void setCompXcoordinate(long xCoordinate) {
+    public void setCompXcoordinate(double xCoordinate) {
         this.xCoordinate = xCoordinate;
     }
-    public void setCompYcoordinate(long yCoordinate) {
+    public void setCompYcoordinate(double yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
-    public void setCompLength(long length) {
+    public void setCompLength(double length) {
         this.length = length;
     }
-    public void setCompWidth(long width) {
+    public void setCompWidth(double width) {
         this.width = width;
     }
-    public void setCompHeight(long height) {
+    public void setCompHeight(double height) {
         this.height = height;
     }
 
@@ -230,21 +205,14 @@ class component implements items{
 class leaf implements items{
     public static leaf leaf;
     public String name;
-    public long price;
-    public long xCoordinate;
-    public long yCoordinate;
-    public long length;
-    public long width;
-    public long height;
+    public double price;
+    public double xCoordinate;
+    public double yCoordinate;
+    public double length;
+    public double width;
+    public double height;
 
-    public static leaf getInstance() 
-    { 
-        return leaf;
-    } 
-
-    public leaf(){
-
-    }
+    
 
     public String getName()
     {
@@ -256,62 +224,62 @@ class leaf implements items{
         this.name = newName;
     }
 
-    public long getPrice()
+    public double getPrice()
     {
         return price;
     }
 
-    public void setPrice(long newPrice)
+    public void setPrice(double newPrice)
     {
         this.price = newPrice;
     }
 
-    public long getXCoordinate()
+    public double getXCoordinate()
     {
         return xCoordinate;
     }
 
-    public void setXCoordinate(long newXCoordinate)
+    public void setXCoordinate(double newXCoordinate)
     {
         this.xCoordinate = newXCoordinate;
     }
 
-    public long getYCoordinate()
+    public double getYCoordinate()
     {
         return yCoordinate;
     }
 
-    public void setYCoordinate(long newYCoordinate)
+    public void setYCoordinate(double newYCoordinate)
     {
         this.yCoordinate = newYCoordinate;
     }
 
-    public long getLength()
+    public double getLength()
     {
         return length;
     }
 
-    public void setLength(long newLength)
+    public void setLength(double newLength)
     {
         this.length = newLength;
     }
 
-    public long getWidth()
+    public double getWidth()
     {
         return width;
     }
 
-    public void setWidth(long newWidth)
+    public void setWidth(double newWidth)
     {
         this.width = newWidth;
     }
 
-    public long getHeight()
+    public double getHeight()
     {
         return height;
     }
 
-    public void setHeight(long newHeight)
+    public void setHeight(double newHeight)
     {
         this.height = newHeight;
     }
@@ -319,7 +287,7 @@ class leaf implements items{
     @Override
     public void showItemDetails()
     {
-        System.out.println(name);
+        System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
     }
 }
 
@@ -348,11 +316,13 @@ public class Control implements Initializable{
 
         
         TreeItem<String> root = new TreeItem<String>("Root Node");
-        component rootDirectory = new component();
+        composite rootDirectory = new composite();
 
         public String Choice1;
         public TreeItem Choice2 = root;
         public Srectangle Choice3;
+        public composite globalComposite = rootDirectory;
+        public leaf globalLeaf;
         double dronestartx = 25;
         double dronestarty = 25;
         double commandCenterx;
@@ -365,6 +335,7 @@ public class Control implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        rootDirectory.setCompName("Root");
         root.setExpanded(true);
         locationTreeView.setRoot(root);
         locationTreeView.setOnMouseClicked((event) -> {
@@ -372,6 +343,7 @@ public class Control implements Initializable{
             for (int i = 0; i < rectanglelist.size(); i++){
                 if (rectanglelist.get(i)!=null){
                     Srectangle temp = rectanglelist.get(i);
+                    globalComposite = rectanglelist.get(i).getComposite();
                     if (temp.getName().contains(item.getValue())){
                         Choice1 = item.getValue();
                         Choice2 = item;
@@ -411,6 +383,7 @@ public class Control implements Initializable{
         pathTransition.setAutoReverse(false);
         pathTransition.play();
         Corgicopter.toFront();
+        rootDirectory.showItemDetails(); //prints all component objects to the terminal located on the farm
     }
 
     public void commandCenterDrone() {
@@ -427,8 +400,8 @@ public class Control implements Initializable{
         {
             public void handle(ActionEvent event)
             {
-                //Create component object
-                component comp1 = new component();
+                //Create composite object
+                composite comp1 = new composite();
 
                 comp1.setCompName("Command Center");
                 comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
@@ -436,6 +409,8 @@ public class Control implements Initializable{
                 comp1.setCompWidth(Integer.parseInt(textFieldW.getText()));
                 comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
                 comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
+                rootDirectory.additem(comp1);
+                
 
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
@@ -448,6 +423,8 @@ public class Control implements Initializable{
                 rectangle.setHeight(comp1.getCompHeight());
                 rectangle.setPrice(comp1.getCompPrice());
                 rectangle.setisComposite(true);
+                rectangle.setComposite(comp1);
+                rectangle.setLeaf(null);
                 rectangle.setFill(Color.AQUA);
                 rectangle.setStroke(Color.BLACK);
                 
@@ -545,13 +522,14 @@ public class Control implements Initializable{
             public void handle(ActionEvent event)
             {
                 //Create composite object
-                component comp1 = new component();
+                composite comp1 = new composite();
                 comp1.setCompName(textFieldName.getText());
                 comp1.setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
                 comp1.setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
                 comp1.setCompLength(Integer.parseInt(textFieldW.getText()));
                 comp1.setCompHeight(Integer.parseInt(textFieldH.getText()));
                 comp1.setCompPrice(Long.parseLong(textFieldP.getText()));
+                globalComposite.additem(comp1);
 
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
@@ -564,6 +542,8 @@ public class Control implements Initializable{
                 rectangle.setHeight(comp1.getCompHeight());
                 rectangle.setPrice(comp1.getCompPrice());
                 rectangle.setisComposite(true);
+                rectangle.setComposite(comp1);
+                rectangle.setLeaf(null);
                 rectangle.setFill(Color.WHITE);
                 rectangle.setStroke(Color.BLACK);
 
@@ -636,7 +616,7 @@ public class Control implements Initializable{
             public void handle(ActionEvent event)
             {
                 //Create leaf object
-                //component comp1 = new component();
+                //composite comp1 = new composite();
                 leaf leaf1 = new leaf();
                 //Leaf Setup
                 leaf1.setName(textFieldName.getText());
@@ -645,6 +625,7 @@ public class Control implements Initializable{
                 leaf1.setWidth(Long.parseLong(textFieldW.getText()));
                 leaf1.setHeight(Long.parseLong(textFieldH.getText()));
                 leaf1.setPrice(Long.parseLong(textFieldP.getText()));
+                globalComposite.additem(leaf1);
                 
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
@@ -657,6 +638,8 @@ public class Control implements Initializable{
                 rectangle.setHeight(leaf1.getHeight());
                 rectangle.setPrice(leaf1.getPrice());
                 rectangle.setisComposite(false);
+                rectangle.setComposite(Choice3.getComposite());
+                rectangle.setLeaf(leaf1);
                 rectangle.setFill(Color.WHITE);
                 rectangle.setStroke(Color.BLACK);
 
@@ -715,6 +698,12 @@ public class Control implements Initializable{
                 for (int i = 0; i < rectanglelist.size(); i++){
                     if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
                         rectanglelist.get(i).setName(textFieldName.getText());
+                        if (rectanglelist.get(i).getLeaf() != null){
+                            rectanglelist.get(i).getLeaf().setName(textFieldName.getText());
+                        }
+                        else{
+                            rectanglelist.get(i).getComposite().setCompName(textFieldName.getText());
+                        }
                     }
                     
                 }
@@ -753,6 +742,14 @@ public class Control implements Initializable{
                     if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
                         rectanglelist.get(i).setX(Integer.parseInt(textFieldX.getText()));
                         rectanglelist.get(i).setY(Integer.parseInt(textFieldY.getText()));
+                        if (rectanglelist.get(i).getLeaf() != null){
+                            rectanglelist.get(i).getLeaf().setXCoordinate(Integer.parseInt(textFieldX.getText()));
+                            rectanglelist.get(i).getLeaf().setYCoordinate(Integer.parseInt(textFieldY.getText()));
+                        }
+                        else{
+                            rectanglelist.get(i).getComposite().setCompXcoordinate(Integer.parseInt(textFieldX.getText()));
+                            rectanglelist.get(i).getComposite().setCompYcoordinate(Integer.parseInt(textFieldY.getText()));
+                        }
                     }
                     
                 }
@@ -788,6 +785,12 @@ public class Control implements Initializable{
                 for (int i = 0; i < rectanglelist.size(); i++){
                     if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
                         rectanglelist.get(i).setPrice(Long.parseLong(textField.getText()));
+                        if (rectanglelist.get(i).getLeaf() != null){
+                            rectanglelist.get(i).getLeaf().setPrice(Long.parseLong(textField.getText()));
+                        }
+                        else{
+                            rectanglelist.get(i).getComposite().setCompPrice(Long.parseLong(textField.getText()));
+                        }
                     }
                     
                 }
@@ -826,6 +829,14 @@ public class Control implements Initializable{
                     if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
                         rectanglelist.get(i).setWidth(Integer.parseInt(textFieldW.getText()));
                         rectanglelist.get(i).setHeight(Integer.parseInt(textFieldH.getText()));
+                        if (rectanglelist.get(i).getLeaf() != null){
+                            rectanglelist.get(i).getLeaf().setWidth(Long.parseLong(textFieldW.getText()));
+                            rectanglelist.get(i).getLeaf().setHeight(Long.parseLong(textFieldH.getText()));
+                        }
+                        else{
+                            rectanglelist.get(i).getComposite().setCompWidth(Long.parseLong(textFieldW.getText()));
+                            rectanglelist.get(i).getComposite().setCompHeight(Long.parseLong(textFieldH.getText()));
+                        }
                     }
                     
                 }
@@ -852,6 +863,12 @@ public class Control implements Initializable{
         System.out.println(rectanglelist);
         for (int i = 0; i < rectanglelist.size(); i++){
             if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                if (rectanglelist.get(i).getLeaf() != null){
+                    rectanglelist.get(i).getComposite().removeitems(rectanglelist.get(i).getLeaf());
+                }
+                else{
+                    rectanglelist.get(i).getComposite().removeitems(rectanglelist.get(i).getComposite());;
+                }
                 farm.getChildren().remove(rectanglelist.get(i));
                 TreeItem t = (locationTreeView.getSelectionModel().getSelectedItem());
                 t.getParent().getChildren().remove(t);
