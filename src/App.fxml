@@ -39,7 +39,7 @@
       <Button layoutX="302.0" layoutY="48.0" mnemonicParsing="false" text="Scan Farm" />
       <Text layoutX="256.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drone" />
       <Text layoutX="252.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Actions" />
-      <Button fx:id="createItemContainer" layoutX="508.0" layoutY="14.0" mnemonicParsing="false" onAction="#CIC" text="Create Item Container" />
+      <Button fx:id="createItemContainer" layoutX="508.0" layoutY="14.0" mnemonicParsing="false" onAction="#CreateItemContainer" text="Create Item Container" />
       <Button layoutX="536.0" layoutY="48.0" mnemonicParsing="false" text="Create Item" />
       <Line endX="-4.0" endY="-26.0" layoutX="468.0" layoutY="39.0" startX="-4.0" startY="31.0" />
    </children>

@@ -98,8 +98,6 @@ interface items{
     public void showItemDetails();
 }
 
-
-
 class component implements items{
     public static component component; 
 
@@ -113,17 +111,65 @@ class component implements items{
     public long width;
     public long height;
 
+    // Getters
+    // Setters
+
     public static component getInstance() 
     { 
         return component;
     } 
 
-    
-
     public component() 
     { 
          
     }
+
+    // Getters
+    public String getCompName() {
+        return name;
+    }
+    public long getCompPrice() {
+        return price;
+    }
+    public long getCompXcoordinate() {
+        return xCoordinate;
+    }
+    public long getCompYcoordinate() {
+        return yCoordinate;
+    }
+    public long getCompLength() {
+        return length;
+    }
+    public long getCompWidth() {
+        return width;
+    }
+    public long getCompHeight() {
+        return height;
+    }
+
+    // Setters
+    public void setCompName(String name) {
+        this.name = name;
+    }
+    public void setCompPrice(long price) {
+        this.price = price;
+    }
+    public void setCompXcoordinate(long xCoordinate) {
+        this.xCoordinate = xCoordinate;
+    }
+    public void setCompYcoordinate(long yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+    public void setCompLength(long length) {
+        this.length = length;
+    }
+    public void setCompWidth(long width) {
+        this.width = width;
+    }
+    public void setCompHeight(long height) {
+        this.height = height;
+    }
+
     
     public void showItemDetails()
     {
@@ -132,7 +178,6 @@ class component implements items{
 
 }
     
-
 class leaf implements items{
     public static leaf leaf;
     public String name;
@@ -145,18 +190,13 @@ class leaf implements items{
 
     public static leaf getInstance() 
     { 
-        if (leaf == null) {
-            leaf = new leaf(); 
-        }
         return leaf;
+    } 
+
+    public leaf(){
 
     }
 
-    public void setInstance(leaf newLeaf)
-    {
-        this.leaf = newLeaf;
-    }
-    
     public String getName()
     {
         return name;
@@ -230,9 +270,10 @@ class leaf implements items{
     @Override
     public void showItemDetails()
     {
-        System.out.println("Placeholder fo component");
+        System.out.println("Placeholder for leaf");
     }
 }
+
 
 
 public class Control implements Initializable{
@@ -252,16 +293,16 @@ public class Control implements Initializable{
         }
         @FXML private TreeView<String> locationTreeView;
         //buttons
-        Button addItemContainer;
-        Button addItem;
-        Button Delete;
-        Button ChangeName;
-        Button ChangePrices;
-        Button ChangeLocation;
-        Button ChangeLength;
-        Button ChangeWidth;
-        Button ChangeHeight;
-        Button Rename;
+        @FXML private Button addItemContainer;
+        @FXML private Button addItem;
+        @FXML private Button Delete;
+        @FXML private Button ChangeName;
+        @FXML private Button ChangePrices;
+        @FXML private Button ChangeLocation;
+        @FXML private Button ChangeLength;
+        @FXML private Button ChangeWidth;
+        @FXML private Button ChangeHeight;
+        @FXML private Button Rename;
         @FXML private Button createItemContainer;
         @FXML private ImageView Corgicopter;
         @FXML private Pane farm;
@@ -280,6 +321,7 @@ public class Control implements Initializable{
                 pathTransition.setNode(Corgicopter);
                 pathTransition.setPath(path);
                 path.getElements().add(new UpdatedMoveTo(Corgicopter));
+                path.getElements().add(new UpdatedLineTo(Corgicopter, 200, 200));
                 path.getElements().add(new UpdatedLineTo(Corgicopter, 100, 100));
                 pathTransition.setCycleCount(1);
                 pathTransition.setAutoReverse(false);
@@ -301,7 +343,7 @@ public class Control implements Initializable{
             {
                 //Create component object
                 component comp1 = new component();
-                
+
 
                 //Drawing a Rectangle 
                 Srectangle rectangle = new Srectangle();  
@@ -315,12 +357,10 @@ public class Control implements Initializable{
                 farm.getChildren().add(rectangle);
                 TreeItem<String> Container = new TreeItem<>(textFieldName.getText());
                 root.getChildren().add(Container);
+                System.out.println(rectangle.getName());
             }
         });
 
-
-        
-  
         // create a tilepane
         Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldX,textFieldY,Submit);
   
@@ -389,5 +429,10 @@ public class Control implements Initializable{
         stage.show();
     }
 
-    
+    public void treeClick (MouseEvent event) {
+        if (event.getClickCount()==2){
+        TreeItem<String> item = locationTreeView.getSelectionModel().getSelectedItem();
+        System.out.println(item.getValue());
+        }
+    }
 }
