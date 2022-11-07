@@ -699,5 +699,11 @@ public class Control implements Initializable{
 
     }
 
+    public void simulatorDrone(){
+        // this will correspond to simulated drone
+
+    }
+
+
     
 }
