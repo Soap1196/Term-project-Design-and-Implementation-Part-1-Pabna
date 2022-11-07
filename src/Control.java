@@ -330,11 +330,10 @@ public class Control implements Initializable{
         @FXML private Button ChangeWidth;
         @FXML private Button ChangeHeight;
         @FXML private Button Rename;
-        @FXML private Button ppButton; // added by Bryce
         @FXML private Button createItemContainer;
         public ImageView Corgicopter;
         @FXML private Pane farm;
-        @FXML private Label purchasePrice; // added by Bryce
+        @FXML private Label purchasePrice;
 
         
         TreeItem<String> root = new TreeItem<String>("Root Node");
@@ -590,8 +589,9 @@ public class Control implements Initializable{
                 TreeItem Container = new TreeItem(textFieldName.getText());
                 Choice2.getChildren().add(Container);
 
-                // Modification by Bryce for the label to show purchasePrice on creation
-                purchasePrice.setText("Purchase Price: " + textFieldP.getText());
+                rectangle.setOnMouseClicked((eventTwo) -> {
+                    purchasePrice.setText("Purchase Price: " + textFieldP.getText());
+                });
             }
         });
         
@@ -799,41 +799,5 @@ public class Control implements Initializable{
 
     }
 
-    // /* method from Bryce, trying to figure out how to set up change of purchase price display on mouseclick...
-    // / only thing that doesn't work so far 
-    // */
-    // public void showPurchasePrice() {
-    //     Stage stage = new Stage();
-        
-    //     stage.setTitle("Show Purchase Price");
-    //     Button Submit = new Button("Submit");
-    //     ppButton.setOnAction(new EventHandler <ActionEvent>()
-    //     {
-    //         public void handle(ActionEvent event)
-    //         {
-                
-    //             for (int i = 0; i < rectanglelist.size(); i++){
-    //                 if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
-    //                     rectanglelist.get(i).getPrice();
-    //                     purchasePrice.setText("Purchase Price: " + rectanglelist.get(i).getPrice());
-    //                 }
-                    
-    //             }
-                
-    //         }
-    //     });
-
-
-    //     // create a tilepane
-    //     Pane Pane = new VBox(Submit);
-
-    //     // create a scene
-    //     Scene sc = new Scene(Pane, 200, 200);
-    
-    //     // set the scene
-    //     stage.setScene(sc);
-    
-    //     stage.show();
-    // }
 
 }

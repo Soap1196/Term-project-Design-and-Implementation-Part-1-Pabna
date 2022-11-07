@@ -28,7 +28,6 @@
       <Line endX="-4.0" endY="-26.0" layoutX="468.0" layoutY="39.0" startX="-4.0" startY="31.0" />
       <Button layoutX="18.0" layoutY="614.0" mnemonicParsing="false" onAction="#goHome" text="Go to Home" />
       <Button layoutX="18.0" layoutY="541.0" mnemonicParsing="false" onAction="#commandCenterDrone" prefHeight="63.0" prefWidth="137.0" text="Create Command Center and Drone" textAlignment="CENTER" wrapText="true" />
-      <Label fx:id="purchasePrice" layoutX="18.0" layoutY="483.0" prefHeight="25.0" prefWidth="137.0" text="Purchase Price" />
-      <Button fx:id="ppButton" layoutX="18.0" layoutY="458.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="137.0" text="Show Purchase Price" />
+      <Label fx:id="purchasePrice" layoutX="15.0" layoutY="462.0" prefHeight="25.0" prefWidth="137.0" text="Purchase Price" />
    </children>
 </Pane>
