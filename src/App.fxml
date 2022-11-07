@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TreeView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control">
    <children>
       <Button fx:id="Rename" layoutX="14.0" layoutY="315.0" mnemonicParsing="false" onAction="#Rename" text="Rename" />
       <Button fx:id="changeLocation" layoutX="14.0" layoutY="341.0" mnemonicParsing="false" onAction="#changeLocation" text="Change Location" />
@@ -29,5 +28,7 @@
       <Line endX="-4.0" endY="-26.0" layoutX="468.0" layoutY="39.0" startX="-4.0" startY="31.0" />
       <Button layoutX="18.0" layoutY="614.0" mnemonicParsing="false" onAction="#goHome" text="Go to Home" />
       <Button layoutX="18.0" layoutY="541.0" mnemonicParsing="false" onAction="#commandCenterDrone" prefHeight="63.0" prefWidth="137.0" text="Create Command Center and Drone" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="purchasePrice" layoutX="18.0" layoutY="483.0" prefHeight="25.0" prefWidth="137.0" text="Purchase Price" />
+      <Button fx:id="ppButton" layoutX="18.0" layoutY="458.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="137.0" text="Show Purchase Price" />
    </children>
 </Pane>
