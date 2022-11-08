@@ -1,9 +1,11 @@
 package classes;
 
-public class leaf implements items{
+public class leaf implements items,MValueVisitable{
     public static leaf leaf;
     public String name;
     public double price;
+    //New Market-Value Variable 
+    public double market_value;//unqiue to items
     public double xCoordinate;
     public double yCoordinate;
     public double length;
@@ -30,6 +32,16 @@ public class leaf implements items{
     public void setPrice(double newPrice)
     {
         this.price = newPrice;
+    }
+    //Getter for new market-value variable
+    public double getMarketValue()
+    {
+        return market_value;
+    }
+    //Setter for new market-value variable
+    public void setMarketValue(double newMarketValue)
+    {
+        this.market_value = newMarketValue;
     }
 
     public double getXCoordinate()
@@ -85,6 +97,13 @@ public class leaf implements items{
     @Override
     public void showItemDetails()
     {
-        System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
+        System.out.println(name + " " + price + " " +  market_value + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
+    }
+
+    //Visitable Function (accept)
+    @Override 
+    public double accept(MValueVisitor visitor)
+    {
+        return visitor.visit(this);
     }
 }

@@ -7,7 +7,21 @@ interface items{
     public void showItemDetails();
 }
 
-public class composite implements items{
+//Visitor Design Pattern Market Value Interfaces (Ahmed)
+
+//Interface for Visitor
+interface MValueVisitable
+{
+    public double accept(MValueVisitor visitor);
+}
+
+//Interface for Visitable
+interface MValueVisitor
+{
+    double visit(leaf leaf);
+}
+
+public class composite implements items,MValueVisitor{
     public static composite composite; 
 
     private List<items> itemslist = new ArrayList<items>();
@@ -89,4 +103,15 @@ public class composite implements items{
         this.height = height;
     }
 
+    //Visitor Function (visit)
+    //Return Market Value of Leaf Belonging to Composite
+    @Override
+    public double visit(leaf leaf)
+    {
+        double market_value= 0;
+        market_value= leaf.getMarketValue();
+        System.out.println(leaf.getName()+ "market value = "+ market_value);
+        return market_value;
+
+    }
 }

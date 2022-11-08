@@ -376,6 +376,7 @@ public class Control implements Initializable{
         TextField textFieldX = new TextField ("X variable");
         TextField textFieldY = new TextField ("Y variable");
         TextField textFieldP = new TextField ("Price");
+        TextField textFieldM = new TextField ("Market Value");//Market Value Field
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
         {
@@ -391,6 +392,7 @@ public class Control implements Initializable{
                 leaf1.setWidth(Long.parseLong(textFieldW.getText()));
                 leaf1.setHeight(Long.parseLong(textFieldH.getText()));
                 leaf1.setPrice(Long.parseLong(textFieldP.getText()));
+                leaf1.setMarketValue(Long.parseLong(textFieldM.getText()));//Market Value in Memory
                 globalComposite.additem(leaf1);
                 
                 //Drawing a Rectangle 
@@ -439,7 +441,7 @@ public class Control implements Initializable{
 
             }
         });
-        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,Submit);
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,textFieldM,Submit);
   
         Scene sc = new Scene(Pane, 200, 200);
   
@@ -673,5 +675,11 @@ public class Control implements Initializable{
 
     }
 
-    
+    /*Function to calculate market value of a Item Container (Composite)
+    public void calcCompMValue()
+
+    {
+        //Condition When ItemList is empty or ItemList Contains Empty Composites
+    }
+    */
 }
