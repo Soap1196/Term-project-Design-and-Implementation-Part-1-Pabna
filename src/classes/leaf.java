@@ -1,6 +1,6 @@
 package classes;
 
-public class leaf implements items,MValueVisitable{
+public class leaf implements items,VisitableInterface{
     public static leaf leaf;
     public String name;
     public double price;
@@ -102,7 +102,7 @@ public class leaf implements items,MValueVisitable{
 
     //Visitable Function (accept)
     @Override 
-    public double accept(MValueVisitor visitor)
+    public double accept(VisitorInterface visitor)
     {
         return visitor.visit(this);
     }

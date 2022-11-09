@@ -1,6 +1,9 @@
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.lang.model.util.ElementScanner14;
+
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -420,7 +423,27 @@ public class Control implements Initializable{
                 Text textW = new Text ("Width: " + rectangle.getWidth());
                 Text textL = new Text ("Length: " + rectangle.getHeight());
                 Text textP = new Text ("Price: " + rectangle.getPrice());
-                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP);
+                Text textM= new Text ("Current Market Value: ");
+                //If Composite changes textM to null or calculation of all market values contained within
+                if(rectangle.getisComposite()==true)
+                {
+
+                    if(calcCompMValue(rectangle)==-1)
+                    {
+                        textM = new Text ("Current Market Value: None");
+                    }
+                    else{
+                        textM = new Text ("Current Market Value: " + calcCompMValue(rectangle));
+                    }
+                    
+                }
+                //If Leaf changes textM to value of item
+                else
+                {
+                     textM = new Text ("Current Market Value: " + rectangle.getLeaf().getMarketValue());
+                }
+                
+                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP,textM);
 
                 Popup infobox = new Popup();
                 infobox.getContent().add(infoVbox);
@@ -438,12 +461,11 @@ public class Control implements Initializable{
                 rectangle.toFront();
                 TreeItem Container = new TreeItem(textFieldName.getText());
                 Choice2.getChildren().add(Container);
-
             }
         });
         Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,textFieldM,Submit);
   
-        Scene sc = new Scene(Pane, 200, 200);
+        Scene sc = new Scene(Pane, 200, 250);
   
         stage.setScene(sc);
   
@@ -497,7 +519,7 @@ public class Control implements Initializable{
     public void changeLocation() {
         Stage stage = new Stage();
         
-        stage.setTitle("Change Location");
+        stage.setTitle("Rename");
         TextField textFieldX = new TextField ("New X variable");
         TextField textFieldY = new TextField ("New Y variable");
         Button Submit = new Button("Submit");
@@ -542,7 +564,7 @@ public class Control implements Initializable{
     public void changePrice() {
         Stage stage = new Stage();
         
-        stage.setTitle("Change Price");
+        stage.setTitle("Rename");
         TextField textField = new TextField ("New Price variable");
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
@@ -584,7 +606,7 @@ public class Control implements Initializable{
     public void changeDimensions() {
         Stage stage = new Stage();
         
-        stage.setTitle("Change Dimensions");
+        stage.setTitle("Rename");
         TextField textFieldW = new TextField ("New Width variable");
         TextField textFieldH = new TextField ("New Length variable");
         TextField textFieldL = new TextField ("New Height variable");
@@ -675,11 +697,21 @@ public class Control implements Initializable{
 
     }
 
-    /*Function to calculate market value of a Item Container (Composite)
-    public void calcCompMValue()
+    //Function to calculate current market value of a Item Container (Composite)
+    private static double calcCompMValue(Srectangle c)
 
     {
-        //Condition When ItemList is empty or ItemList Contains Empty Composites
+        //Supposed to take the Srectangle object and get all the leaf objects contained within it
+        VisitableInterface[] items= null;
+        VisitorInterface visitor = new composite();
+        double  current_market_value=0;
+        for(VisitableInterface item: items)
+        {
+            current_market_value= current_market_value + item.accept(visitor); 
+        }
+        
+        return current_market_value;
     }
-    */
+    
 }
+

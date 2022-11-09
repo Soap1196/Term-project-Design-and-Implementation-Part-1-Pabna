@@ -7,21 +7,8 @@ interface items{
     public void showItemDetails();
 }
 
-//Visitor Design Pattern Market Value Interfaces (Ahmed)
-
-//Interface for Visitor
-interface MValueVisitable
-{
-    public double accept(MValueVisitor visitor);
-}
-
-//Interface for Visitable
-interface MValueVisitor
-{
-    double visit(leaf leaf);
-}
-
-public class composite implements items,MValueVisitor{
+//Implements Visitor Design Pattern Market Value Interfaces (Ahmed)
+public class composite implements items,VisitorInterface{
     public static composite composite; 
 
     private List<items> itemslist = new ArrayList<items>();
