@@ -94,7 +94,7 @@ public class leaf implements items{
     }
 
     @Override
-    public int accept(ShoppingCartVisitor visitor)
+    public double accept(ShoppingCartVisitor visitor)
     {
         return visitor.visit(this);
     }

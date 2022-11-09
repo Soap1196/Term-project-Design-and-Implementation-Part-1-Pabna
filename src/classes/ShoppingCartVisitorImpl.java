@@ -1,15 +1,17 @@
 package classes;
 
-public class ShoppingCartVisitorImpl {
-    
-    int visit(composite composite)
+public class ShoppingCartVisitorImpl implements ShoppingCartVisitor{
+    @Override
+    public double visit(composite composite)
     {
-        
-    };
+        return composite.getCompPrice();
+    }
 
-    int visit(leaf leaf)
+
+    @Override
+    public double visit(leaf leaf)
     {
-
-    };
+        return leaf.getPrice();
+    }
 }
 

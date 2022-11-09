@@ -3,15 +3,12 @@ package classes;
 import java.util.ArrayList;
 import java.util.List;
 
-interface ShoppingCartVisitor{
-    int visit(composite composite);
-    int visit(leaf leaf);
-}
+
 
 
 interface items{
 
-    public int accept(ShoppingCartVisitor visitor);
+    public double accept(ShoppingCartVisitor visitor);
 
     public void showItemDetails();
 
@@ -23,10 +20,10 @@ interface items{
 public class composite implements items{
     public static composite composite; 
 
-    private List<items> itemslist = new ArrayList<items>();
+    public List<items> itemslist = new ArrayList<items>();
 
     @Override
-    public int accept(ShoppingCartVisitor visitor)
+    public double accept(ShoppingCartVisitor visitor)
     {
         return visitor.visit(this);
     }

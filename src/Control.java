@@ -139,11 +139,11 @@ public class Control implements Initializable{
 
     public void calculatePurchasePrice() {
         Stage stage = new Stage();
-        double PP = globalComposite.calculatePurchasePrice();
-        TextField textfieldPP = new TextField (String.valueOf(PP));
-        Text textName = new Text (globalComposite.getCompName());
-        System.out.println(globalComposite.calculatePurchasePrice());
-        stage.setTitle(globalComposite.getCompName());
+        
+        ShoppingCartVisitor visitor = new ShoppingCartVisitorImpl();
+        double sum = 0;
+        for (items x:globalComposite.itemslist)
+
         Pane Pane = new VBox(textName,textfieldPP);
   
         Scene sc = new Scene(Pane, 200, 200);

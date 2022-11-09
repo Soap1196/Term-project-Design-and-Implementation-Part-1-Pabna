@@ -17,7 +17,6 @@ public class Srectangle extends Rectangle{
   // Setter
   public void setName(String newName) {
     this.name = newName;
-
     }
 
     // Getter
