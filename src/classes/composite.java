@@ -4,7 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 interface items{
+
+    
+
     public void showItemDetails();
+
+    public double calculatePurchasePrice();
+
+    public double calculateMarketValue();
+
+   
 }
 
 public class composite implements items{
@@ -23,6 +32,31 @@ public class composite implements items{
         }
         System.out.println("}");
     }
+
+    @Override
+    public double calculatePurchasePrice()
+    {
+        double PurchasePrice = price;
+        for(items x:itemslist)
+        {
+            double temp = x.calculatePurchasePrice();
+            PurchasePrice = PurchasePrice + temp;
+        }
+        return PurchasePrice;
+    }
+
+    @Override
+    public double calculateMarketValue()
+    {
+        double PurchasePrice = 0;
+        for(items x:itemslist)
+        {
+            double temp = x.calculateMarketValue();
+            PurchasePrice = PurchasePrice + temp;
+        }
+        return PurchasePrice;
+    }
+
 
     public void additem(items x)
     {

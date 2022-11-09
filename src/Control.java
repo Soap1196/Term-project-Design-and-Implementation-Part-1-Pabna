@@ -71,8 +71,8 @@ public class Control implements Initializable{
     public void initialize(URL arg0, ResourceBundle arg1) {
         farm.setLayoutX(260);
         farm.setLayoutY(102);
-        farm.setPrefHeight(537);
-        farm.setPrefWidth(446);
+        farm.setPrefHeight(600);
+        farm.setPrefWidth(800);
         Mpain.getChildren().addAll(farm);
         rootDirectory.setCompName("Root Node");
 
@@ -97,6 +97,7 @@ public class Control implements Initializable{
                         Choice2 = item;
                         Choice3 = temp;
                         globalComposite = temp.getComposite();
+                        globalLeaf = temp.getLeaf();
                         System.out.println(Choice1);
                     }
                 }
@@ -132,7 +133,41 @@ public class Control implements Initializable{
         pathTransition.setAutoReverse(false);
         pathTransition.play();
         Corgicopter.toFront();
-        rootDirectory.showItemDetails(); //prints all component objects to the terminal located on the farm
+        globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
+        
+    }
+
+    public void calculatePurchasePrice() {
+        Stage stage = new Stage();
+        double PP = globalComposite.calculatePurchasePrice();
+        TextField textfieldPP = new TextField (String.valueOf(PP));
+        Text textName = new Text (globalComposite.getCompName());
+        System.out.println(globalComposite.calculatePurchasePrice());
+        stage.setTitle(globalComposite.getCompName());
+        Pane Pane = new VBox(textName,textfieldPP);
+  
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        stage.setScene(sc);
+  
+        stage.show();
+    }
+
+    public void calculateMarketValue() {
+        Stage stage = new Stage();
+        double MV = globalComposite.calculateMarketValue();
+        TextField textfieldPP = new TextField (String.valueOf(MV));
+        Text textName = new Text (globalComposite.getCompName());
+        System.out.println(globalComposite.calculateMarketValue());
+        stage.setTitle(globalComposite.getCompName());
+        Pane Pane = new VBox(textName,textfieldPP);
+  
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        stage.setScene(sc);
+  
+        stage.show();
+        
     }
 
     public void commandCenterDrone() {
@@ -199,6 +234,7 @@ public class Control implements Initializable{
                         infobox.hide();
                     }
                 });
+                
             
                 farm.getChildren().add(rectangle);
                 
@@ -314,22 +350,25 @@ public class Control implements Initializable{
                 VBox infoVbox = new VBox();
                 infoVbox.setPrefSize(200, 150);
                 infoVbox.setStyle("-fx-background-color: grey;");
-                Text textName = new Text ("NAME: " + rectangle.getName());
-                Text textX = new Text ("X coordinate: " + rectangle.getX());
-                Text textY = new Text ("Y coordinate: " + rectangle.getY());
-                Text textW = new Text ("Width: " + rectangle.getWidth());
-                Text textL = new Text ("Length: " + rectangle.getHeight());
-                Text textP = new Text ("Price: " + rectangle.getPrice());
-                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP);
+                
+                
 
                 Popup infobox = new Popup();
                 infobox.getContent().add(infoVbox);
 
                 rectangle.hoverProperty().addListener((x, prev, NewV) -> {
                     if (NewV) {
+                        Text textName = new Text ("NAME: " + rectangle.getName());
+                        Text textX = new Text ("X coordinate: " + rectangle.getX());
+                        Text textY = new Text ("Y coordinate: " + rectangle.getY());
+                        Text textW = new Text ("Width: " + rectangle.getWidth());
+                        Text textL = new Text ("Length: " + rectangle.getHeight());
+                        Text textP = new Text ("Price: " + rectangle.getPrice());
+                        infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP);
                         infobox.show(rectangle, 300, 150);
                     } else {
                         infobox.hide();
+                        infoVbox.getChildren().clear();
                     }
                 });
 
