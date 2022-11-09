@@ -94,6 +94,12 @@ public class leaf implements items{
     }
 
     @Override
+    public int accept(ShoppingCartVisitor visitor)
+    {
+        return visitor.visit(this);
+    }
+
+    @Override
     public void showItemDetails()
     {
         System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
