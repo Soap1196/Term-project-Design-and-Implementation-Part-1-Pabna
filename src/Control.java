@@ -550,7 +550,7 @@ public class Control implements Initializable{
                  * if composite then add value, if not add 0
                  * change price to total
                  */
-                rectangle.setOnMouseClicked((eventThree) -> {
+                
                 
                 Double total = 0.0;
 
@@ -562,9 +562,10 @@ public class Control implements Initializable{
                         total += 0;
                     }
                 }
+                purchasePrice.setText("Purchase Price: " + textFieldP.getText());
                 currentMarketPrice.setText("Current Marker Price: " + total);
 
-                });
+    
             }
         });
 
