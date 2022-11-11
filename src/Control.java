@@ -694,15 +694,16 @@ public class Control implements Initializable{
     }
     
 
-    public void launchDrone(){
+    public void launchDroneScanFarm(){
         // this will correspond to physical drone
 
     }
 
-    public void simulatorDrone(){
-        // this will correspond to simulated drone
-
+    public void launchDroneVisit(){
+        
     }
+
+    
 
 
     
