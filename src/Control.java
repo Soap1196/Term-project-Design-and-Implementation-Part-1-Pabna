@@ -256,6 +256,11 @@ public class Control implements Initializable{
         Corgicopter.toFront();
     }
 
+    public void adapterDroneVisit(){
+        this.droneVisit();
+    }
+
+
     public void CreateItemContainer() {
         if((Choice3.getisComposite()) == false){
             Stage stage = new Stage();
@@ -652,7 +657,12 @@ public class Control implements Initializable{
         dronestartx=446;
         dronestarty=530;
         
+        
 
+    }
+
+    public void adapterScanFarm(){
+        this.scanFarm();
     }
 
     public void goHome() {
@@ -689,7 +699,7 @@ public class Control implements Initializable{
         public static final int VIDEO_WIDTH = 960;
         public static final int VIDEO_HEIGHT = 720;
     
-        public static final String QUALIFIED_PATH_COMPLETION = "/Users/MasterControlProgram/git"; //change to your repo folder
+        // public static final String QUALIFIED_PATH_COMPLETION = "/Users/MasterControlProgram/git"; //change to your repo folder
     
     }
     
@@ -700,7 +710,7 @@ public class Control implements Initializable{
     }
 
     public void launchDroneVisit(){
-        
+
     }
 
     

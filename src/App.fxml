@@ -18,8 +18,8 @@
       <Text layoutX="14.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commands  on Items" />
       <Line endX="-100.0" endY="628.5" layoutX="334.0" layoutY="27.0" startX="-100.0" startY="-16.5" />
       <TreeView fx:id="locationTreeView" layoutX="14.0" layoutY="14.0" prefHeight="280.0" prefWidth="200.0" />
-      <Button fx:id="Visit" layoutX="302.0" layoutY="14.0" mnemonicParsing="false" onAction="#droneVisit" text="Visit Item / Container" />
-      <Button layoutX="302.0" layoutY="48.0" mnemonicParsing="false" onAction="#scanFarm" text="Scan Farm" />
+      <Button fx:id="Visit" layoutX="302.0" layoutY="14.0" mnemonicParsing="false" onAction="#adapterDroneVisit" text="Visit Item / Container" />
+      <Button layoutX="302.0" layoutY="48.0" mnemonicParsing="false" onAction="#adapterScanFarm" text="Scan Farm" />
       <Text layoutX="256.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drone" />
       <Text layoutX="252.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Actions" />
       <Button fx:id="createItemContainer" layoutX="508.0" layoutY="14.0" mnemonicParsing="false" onAction="#CreateItemContainer" text="Create Item Container" />
