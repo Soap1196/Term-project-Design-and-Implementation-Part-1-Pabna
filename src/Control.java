@@ -137,12 +137,16 @@ public class Control implements Initializable{
         
     }
 
-    public void calculatePurchasePrice() {
+    public void calculateMarketValue() {
         Stage stage = new Stage();
         
         ShoppingCartVisitor visitor = new ShoppingCartVisitorImpl();
         double sum = 0;
-        for (items x:globalComposite.itemslist)
+        for (items x:globalComposite.itemslist){
+            sum = sum + x.accept(visitor, false);
+        }
+        Text textName = new Text (globalComposite.getCompName());
+        TextField textfieldPP = new TextField (String.valueOf(sum));
 
         Pane Pane = new VBox(textName,textfieldPP);
   
@@ -153,13 +157,17 @@ public class Control implements Initializable{
         stage.show();
     }
 
-    public void calculateMarketValue() {
+    public void calculatePurchasePrice() {
         Stage stage = new Stage();
-        double MV = globalComposite.calculateMarketValue();
-        TextField textfieldPP = new TextField (String.valueOf(MV));
+        
+        ShoppingCartVisitor visitor = new ShoppingCartVisitorImpl();
+        double sum = globalComposite.getCompPrice();
+        for (items x:globalComposite.itemslist){
+            sum = sum + x.accept(visitor, true);
+        }
         Text textName = new Text (globalComposite.getCompName());
-        System.out.println(globalComposite.calculateMarketValue());
-        stage.setTitle(globalComposite.getCompName());
+        TextField textfieldPP = new TextField (String.valueOf(sum));
+
         Pane Pane = new VBox(textName,textfieldPP);
   
         Scene sc = new Scene(Pane, 200, 200);
@@ -167,7 +175,6 @@ public class Control implements Initializable{
         stage.setScene(sc);
   
         stage.show();
-        
     }
 
     public void commandCenterDrone() {

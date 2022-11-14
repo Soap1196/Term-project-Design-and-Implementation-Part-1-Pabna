@@ -6,26 +6,33 @@ import java.util.List;
 
 
 
-interface items{
-
-    public double accept(ShoppingCartVisitor visitor);
-
-    public void showItemDetails();
-
-    public double calculatePurchasePrice();
-
-    public double calculateMarketValue();
-}
-
 public class composite implements items{
     public static composite composite; 
 
     public List<items> itemslist = new ArrayList<items>();
 
     @Override
-    public double accept(ShoppingCartVisitor visitor)
-    {
-        return visitor.visit(this);
+    public double accept(ShoppingCartVisitor visitor, boolean isComp)
+    {   double PurchasePrice = 0;
+        if (isComp) {
+        PurchasePrice = price;
+        for(items x:itemslist)
+            {
+            double temp = x.calculatePurchasePrice();
+            PurchasePrice = PurchasePrice + temp;
+            }
+        }
+        if (!isComp){
+            PurchasePrice = 0;
+            for(items x:itemslist)
+            {
+            double temp = x.calculateMarketValue();
+            PurchasePrice = PurchasePrice + temp;
+            }
+        }
+               
+        return PurchasePrice;
+    
     }
 
     @Override
@@ -128,6 +135,11 @@ public class composite implements items{
     }
     public void setCompHeight(double height) {
         this.height = height;
+    }
+
+    @Override
+    public Boolean isComp() {
+        return true;
     }
 
 }

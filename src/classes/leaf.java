@@ -94,12 +94,6 @@ public class leaf implements items{
     }
 
     @Override
-    public double accept(ShoppingCartVisitor visitor)
-    {
-        return visitor.visit(this);
-    }
-
-    @Override
     public void showItemDetails()
     {
         System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
@@ -117,5 +111,18 @@ public class leaf implements items{
     {
         double PurchasePrice = price;
         return PurchasePrice;
+    }
+
+    @Override
+    public Boolean isComp() {
+        return false;
+    }
+
+    @Override
+    public double accept(ShoppingCartVisitor visitor, boolean isComp)
+    {   double PurchasePrice = price;
+               
+        return PurchasePrice;
+    
     }
 }

@@ -1,11 +1,11 @@
 package classes;
 
-interface ShoppingCartVisitor{
+public interface Visitable{
     int visit(composite composite);
     int visit(leaf leaf);
 }
 
 interface ItemElement
 {
-    public int accept(ShoppingCartVisitor visitor); 
+    public double accept(Visitable visitor, boolean isComp); 
 }
