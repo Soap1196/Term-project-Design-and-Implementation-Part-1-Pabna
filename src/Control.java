@@ -30,6 +30,7 @@ import javafx.stage.Popup;
 
 import classes.*;
 
+
 public class Control implements Initializable{
 
         @FXML public TreeView<String> locationTreeView;
@@ -651,14 +652,17 @@ public class Control implements Initializable{
         System.out.println(rectanglelist);
     }
 
+
+
+    //Start
+    //maybe somehow these could go into droneVisit interface then delcare them in class to complete adapter.
+    //They both will be shared then, adapting them?
+
     public void scanFarm() {
 
         DroneScan(0,0);
         dronestartx=446;
         dronestarty=530;
-        
-        
-
     }
 
     public void adapterScanFarm(){
