@@ -6,15 +6,15 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="Mpain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="821.0" prefWidth="806.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control">
+<Pane fx:id="Mpain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="821.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control">
    <children>
       <Button fx:id="Rename" layoutX="14.0" layoutY="315.0" mnemonicParsing="false" onAction="#Rename" text="Rename" />
       <Button fx:id="changeLocation" layoutX="14.0" layoutY="341.0" mnemonicParsing="false" onAction="#changeLocation" text="Change Location" />
       <Button fx:id="changePrices" layoutX="14.0" layoutY="367.0" mnemonicParsing="false" onAction="#changePrice" text="Change Price" />
       <Button fx:id="changeDimensions" layoutX="14.0" layoutY="393.0" mnemonicParsing="false" onAction="#changeDimensions" text="Change Dimensions" />
       <Button fx:id="Delete" layoutX="14.0" layoutY="419.0" mnemonicParsing="false" onAction="#Delete" text="Delete" />
-      <Text layoutX="14.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commands  on Items" />
-      <Line endX="-100.0" endY="628.5" layoutX="334.0" layoutY="27.0" startX="-100.0" startY="-16.5" />
+      <Text layoutX="14.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commands on Items" />
+      <Line endX="-100.0" endY="758.0" layoutX="334.0" layoutY="27.0" startX="-100.0" startY="-16.5" />
       <TreeView fx:id="locationTreeView" layoutX="14.0" layoutY="14.0" prefHeight="280.0" prefWidth="200.0" />
       <Button fx:id="Visit" layoutX="302.0" layoutY="14.0" mnemonicParsing="false" onAction="#droneVisit" text="Visit Item / Container" />
       <Button layoutX="302.0" layoutY="48.0" mnemonicParsing="false" onAction="#scanFarm" text="Scan Farm" />
@@ -27,5 +27,6 @@
       <Button layoutX="18.0" layoutY="541.0" mnemonicParsing="false" onAction="#commandCenterDrone" prefHeight="63.0" prefWidth="137.0" text="Create Command Center and Drone" textAlignment="CENTER" wrapText="true" />
       <Button fx:id="purchasePrice" layoutX="13.0" layoutY="454.0" mnemonicParsing="false" onAction="#calculatePurchasePrice" text="Purchase Price" />
       <Button fx:id="marketValue" layoutX="13.0" layoutY="487.0" mnemonicParsing="false" onAction="#calculateMarketValue" text="Market Value" />
+      <Button fx:id="launchDrone" layoutX="18.0" layoutY="661.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="137.0" onAction="#launchDrone" text="Launch Drone" />
    </children>
 </Pane>

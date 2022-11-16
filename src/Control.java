@@ -1,5 +1,10 @@
 import javafx.fxml.Initializable;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -29,6 +34,7 @@ import javafx.scene.text.*;
 import javafx.stage.Popup;
 
 import classes.*;
+import flightClasses.*;
 
 public class Control implements Initializable{
 
@@ -62,6 +68,9 @@ public class Control implements Initializable{
         double dronestarty = 25;
         double commandCenterx;
         double commandCentery;
+
+        TelloDroneAdapter tello;
+        boolean telloDroneActive = false;
 
         ArrayList<Srectangle> rectanglelist = new ArrayList<>();
         
@@ -108,32 +117,30 @@ public class Control implements Initializable{
         });
     }
 
-    public void DroneScan(double x, double y){
+    public void DroneScan(double x, double y) throws IOException, InterruptedException{
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(10000));
         pathTransition.setNode(Corgicopter);
         pathTransition.setPath(path);
         path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
-        path.getElements().add(new LineTo(0, 0)); //ends
-        path.getElements().add(new VLineTo(530));
-        path.getElements().add(new HLineTo(80));
-        path.getElements().add(new VLineTo(0));
-        path.getElements().add(new HLineTo(160));
-        path.getElements().add(new VLineTo(530));
-        path.getElements().add(new HLineTo(240));
-        path.getElements().add(new VLineTo(0));
-        path.getElements().add(new HLineTo(320));
-        path.getElements().add(new VLineTo(530));
-        path.getElements().add(new HLineTo(400));
-        path.getElements().add(new VLineTo(0));
-        path.getElements().add(new HLineTo(446));
-        path.getElements().add(new VLineTo(530));
+        path.getElements().add(new LineTo(0, 0));
+            for(int i = 1; i < 10; i+=2){
+                path.getElements().add(new LineTo(i*80, 600));
+                path.getElements().add(new LineTo((i+1)*80, 25));
+            }
+        path.getElements().add(new LineTo(0, 0));
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
         pathTransition.play();
+        dronestartx = 0;
+        dronestarty = 0;
         Corgicopter.toFront();
-        globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
+        if (telloDroneActive){
+            tello.scan();
+        }
+
+        //globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
         
     }
 
@@ -283,20 +290,23 @@ public class Control implements Initializable{
     }
     
     
-    public void droneVisit() {
+    public void droneVisit() throws IOException, InterruptedException {
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(1000));
         pathTransition.setNode(Corgicopter);
         pathTransition.setPath(path);
         path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
-        path.getElements().add(new LineTo(Choice3.getX(), Choice3.getY())); //ends
+        path.getElements().add(new LineTo(Choice3.getX(), Choice3.getY())); //visits
+        path.getElements().add(new LineTo(dronestartx, dronestartx)); //ends
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
         pathTransition.play();
-        dronestartx = Choice3.getX();
-        dronestarty = Choice3.getY();
         Corgicopter.toFront();
+        if (telloDroneActive){
+            tello.goToItem(Choice3.getX(), Choice3.getY());
+        }
+
     }
 
     public void CreateItemContainer() {
@@ -694,9 +704,6 @@ public class Control implements Initializable{
 
     public void scanFarm() {
 
-        DroneScan(0,0);
-        dronestartx=446;
-        dronestarty=530;
         
 
     }
@@ -713,10 +720,29 @@ public class Control implements Initializable{
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
         pathTransition.play();
-        dronestartx = Choice3.getX();
-        dronestarty = Choice3.getY();
+        dronestartx = commandCenterx;
+        dronestarty = commandCentery;
         Corgicopter.toFront();
 
+    }
+
+    public void launchDrone() throws IOException, InterruptedException {
+
+        telloDroneActive = true;
+        tello = new TelloDroneAdapter();
+        tello.activateSDK();
+		tello.streamOn();
+		tello.hoverInPlace(10);
+		tello.takeoff();
+		tello.flyForward(100);
+		tello.turnCCW(180);
+		tello.flip("b");
+		tello.flyForward(100);
+		tello.flip("f");
+		tello.turnCW(180);
+		tello.land();
+		tello.streamOff();
+		tello.end();
     }
 
     

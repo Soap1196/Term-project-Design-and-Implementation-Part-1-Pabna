@@ -2,7 +2,6 @@ package flightClasses;
 
 import java.io.IOException;
 
-
 public abstract class PhysicalDrone {
 
 	protected DroneController controller;
