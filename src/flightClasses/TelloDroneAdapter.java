@@ -17,7 +17,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
     @Override
     public void scan() throws IOException, InterruptedException {
         drone.activateSDK();
-		drone.hoverInPlace(10);
+		drone.hoverInPlace(5);
 		drone.takeoff();
 		drone.turnCCW(180);
 		drone.turnCW(180);
@@ -91,6 +91,8 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         drone.land();
         drone.end();
     }
+
+    
 
     
 }

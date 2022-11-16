@@ -137,7 +137,10 @@ public class Control implements Initializable{
         dronestarty = 0;
         Corgicopter.toFront();
         if (telloDroneActive){
-            tello.scan();
+            for(int i = 1; i < 10; i+=2){
+                tello.goToItem(i*80, 600);
+                tello.goToItem((i+1)*80, 25);
+            }
         }
 
         //globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
@@ -730,19 +733,7 @@ public class Control implements Initializable{
 
         telloDroneActive = true;
         tello = new TelloDroneAdapter();
-        tello.activateSDK();
-		tello.streamOn();
-		tello.hoverInPlace(10);
-		tello.takeoff();
-		tello.flyForward(100);
-		tello.turnCCW(180);
-		tello.flip("b");
-		tello.flyForward(100);
-		tello.flip("f");
-		tello.turnCW(180);
-		tello.land();
-		tello.streamOff();
-		tello.end();
+        
     }
 
     
