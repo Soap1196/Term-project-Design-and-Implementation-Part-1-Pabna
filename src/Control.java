@@ -117,7 +117,7 @@ public class Control implements Initializable{
         });
     }
 
-    public void DroneScan(double x, double y) throws IOException, InterruptedException{
+    public void scanFarm(double x, double y) throws IOException, InterruptedException{
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(10000));
@@ -307,7 +307,9 @@ public class Control implements Initializable{
         pathTransition.play();
         Corgicopter.toFront();
         if (telloDroneActive){
-            tello.goToItem(Choice3.getX(), Choice3.getY());
+            tello.moveDrone(dronestartx, dronestarty, Choice3.getX(), Choice3.getY());
+            tello.moveDrone(Choice3.getX(), Choice3.getY(), dronestartx, dronestartx);
+            tello.landDrone();
         }
 
     }
@@ -705,11 +707,6 @@ public class Control implements Initializable{
         System.out.println(rectanglelist);
     }
 
-    public void scanFarm() {
-
-        
-
-    }
 
     public void goHome() {
 
@@ -730,8 +727,13 @@ public class Control implements Initializable{
     }
 
     public void launchDrone() throws IOException, InterruptedException {
-
-        telloDroneActive = true;
+        if(telloDroneActive = false){
+            telloDroneActive = true;
+            System.out.println("Tello Drone is Active");
+        }
+        if(telloDroneActive = true){
+            telloDroneActive=false;
+        }
         tello = new TelloDroneAdapter();
         
     }
