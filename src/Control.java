@@ -19,7 +19,6 @@ import javafx.util.Duration;
 import javafx.animation.PathTransition; 
 import javafx.scene.shape.MoveTo; 
 import javafx.scene.shape.Path;
-import javafx.scene.shape.PathElement;
 import javafx.scene.shape.HLineTo;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;  
@@ -30,12 +29,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Popup;
-import java.lang.Thread;
 
 import classes.*;
 import flightClasses.*;
@@ -78,6 +75,7 @@ public class Control implements Initializable{
         boolean telloDroneActive = false;
 
         ArrayList<Srectangle> rectanglelist = new ArrayList<>();
+        Constants constant;
         
         
 
@@ -85,8 +83,8 @@ public class Control implements Initializable{
     public void initialize(URL arg0, ResourceBundle arg1) {
         farm.setLayoutX(260);
         farm.setLayoutY(102);
-        farm.setPrefHeight(600);
-        farm.setPrefWidth(800);
+        farm.setPrefHeight(Constants.MODELHEIGHT*30);
+        farm.setPrefWidth(Constants.MODELWIDTH*30);
         Mpain.getChildren().addAll(farm);
         rootDirectory.setCompName("Root Node");
 
@@ -121,77 +119,50 @@ public class Control implements Initializable{
 
         });
     }
-    public void scanPath1(int i) {
-        Corgicopter.getTransforms().add(new Rotate(30, 50, 30));
-        Path path = new Path();
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(1000));
-        pathTransition.setNode(Corgicopter);
-        pathTransition.setPath(path);
-        path.getElements().add(new MoveTo(dronestartx,dronestarty));
-        path.getElements().add(new LineTo(i*80, 600));
-        pathTransition.setCycleCount(1);
-        pathTransition.setAutoReverse(false);
-        pathTransition.play();
-    }
-
-    public void scanPath2(int i) {
-        Corgicopter.getTransforms().add(new Rotate(30, 50, 30));
-        Path path = new Path();
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(1000));
-        pathTransition.setNode(Corgicopter);
-        pathTransition.setPath(path);
-        path.getElements().add(new MoveTo(dronestartx,dronestarty));
-        path.getElements().add(new LineTo((i+1)*80, 600));
-        pathTransition.setCycleCount(1);
-        pathTransition.setAutoReverse(false);
-        pathTransition.play();
-    }
-    public void scanPath3(int i) {
-        Corgicopter.getTransforms().add(new Rotate(30, 50, 30));
-        Path path = new Path();
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(1000));
-        pathTransition.setNode(Corgicopter);
-        pathTransition.setPath(path);
-        path.getElements().add(new MoveTo(dronestartx,dronestarty));
-        path.getElements().add(new LineTo((i+1)*80, 25));
-        pathTransition.setCycleCount(1);
-        pathTransition.setAutoReverse(false);
-        pathTransition.play();
-    }
-
-    public void scanPath4(int i) {
-        Corgicopter.getTransforms().add(new Rotate(30, 50, 30));
-        Path path = new Path();
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(1000));
-        pathTransition.setNode(Corgicopter);
-        pathTransition.setPath(path);
-        path.getElements().add(new MoveTo(dronestartx,dronestarty));
-        path.getElements().add(new LineTo((i+2)*80, 25));
-        pathTransition.setCycleCount(1);
-        pathTransition.setAutoReverse(false);
-        pathTransition.play();
-    }
 
     public void scanFarm() throws IOException, InterruptedException{
-        for(int i = 0; i < 10; i+=2){
-            scanPath1(i);
-            Thread.sleep(1000);
-            scanPath2(i);
-            scanPath3(i);
-            scanPath4(i);
-        }
+        double tempStartx;
+        double tempStarty;
+        Path path = new Path();
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setNode(Corgicopter);
+        pathTransition.setPath(path);
+        path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
+        path.getElements().add(new LineTo(0, 0));
+            for(int i = 0; i < 10; i+=2){
+                path.getElements().add(new LineTo(i*80, 600));
+                path.getElements().add(new LineTo((i+1)*80, 600));
+                path.getElements().add(new LineTo((i+1)*80, 25));
+                path.getElements().add(new LineTo((i+2)*80, 25));
+            }
+        path.getElements().add(new LineTo(commandCenterx, commandCentery));
+
+        pathTransition.setCycleCount(1);
+        pathTransition.setAutoReverse(false);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.play();
         dronestartx = commandCenterx;
         dronestarty = commandCentery;
         Corgicopter.toFront();
         if (telloDroneActive){
+            tempStartx = commandCenterx;
+            tempStarty = commandCentery;
             for(int i = 1; i < 10; i+=2){
-                tello.goToItem(i*80, 600);
-                tello.goToItem((i+1)*80, 25);
+                tello.moveDrone(tempStartx, tempStartx, i*80, 600);
+                tempStartx = i*80;
+                tempStarty = 600;
+                tello.moveDrone(tempStartx, tempStartx, (i+1)*80, 600);
+                tempStartx = (i+1)*80;
+                tempStarty = 600;
+                tello.moveDrone(tempStartx, tempStartx, (i+1)*80, 25);
+                tempStartx = (i+1)*80;
+                tempStarty = 25;
+                tello.moveDrone(tempStartx, tempStartx, (i+2)*80, 25);
+                tempStartx = (i+2)*80;
+                tempStarty = 25;
             }
+            tello.moveDrone((9+1)*80, 25, commandCenterx, commandCentery);
         }
 
         //globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
@@ -310,7 +281,7 @@ public class Control implements Initializable{
                 TreeItem Container = new TreeItem("Command Center");
                 root.getChildren().add(Container);
                 
-                Corgicopter = new ImageView(new Image("Subject.png"));
+                Corgicopter = new ImageView(new Image("drone.png"));
                 Corgicopter.setFitHeight(72.0);
                 Corgicopter.setFitWidth(107.0);
                 Corgicopter.setPickOnBounds(true);
@@ -345,7 +316,6 @@ public class Control implements Initializable{
     
     
     public void droneVisit() throws IOException, InterruptedException {
-        Corgicopter.setRotate((calculateDroneRotation(dronestartx, dronestarty, Choice3.getX(), Choice3.getY())));
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(1000));
@@ -356,13 +326,13 @@ public class Control implements Initializable{
         path.getElements().add(new LineTo(dronestartx, dronestartx)); //ends
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
-
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.play();
-        Corgicopter.setRotate(0); 
         Corgicopter.toFront();
         if (telloDroneActive == true)
         {
             tello.moveDrone(dronestartx, dronestarty, Choice3.getX(), Choice3.getY());
+            tello.establishDrone();
             tello.moveDrone(Choice3.getX(), Choice3.getY(), dronestartx, dronestartx);
         }
         

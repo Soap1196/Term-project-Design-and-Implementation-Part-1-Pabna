@@ -103,7 +103,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         }
 
     @Override
-    public double calcualateDroneDistance(double xStart, double yStart, double xEnd, double yEnd)throws IOException, InterruptedException {
+    public double calculateDroneDistance(double xStart, double yStart, double xEnd, double yEnd)throws IOException, InterruptedException {
 
         return Math.sqrt((yEnd - yStart) * (yEnd - yStart) + (xEnd - xStart) * (xEnd - xStart));
         }
@@ -118,10 +118,10 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
 
     @Override
     public void moveDrone(double xStart, double yStart, double xEnd, double yEnd)throws IOException, InterruptedException {
-        double Rotate = calcualateDroneDistance(xStart, yStart, xEnd, yEnd);
+        double Rotate = calculateDroneRotation(xStart, yStart, xEnd, yEnd);
         int RotateInt = (int)Rotate;
-        double Distance = calcualateDroneDistance(xStart, yStart, xEnd, yEnd);
-        int DistanceInt = (int)Distance;
+        double Distance = calculateDroneDistance(xStart, yStart, xEnd, yEnd);
+        int DistanceInt = ((int)Distance/3);
 		drone.turnCW(RotateInt);
         drone.flyForward(DistanceInt);
         
@@ -131,6 +131,13 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
     public void landDrone() throws IOException, InterruptedException {
         drone.land();
         drone.end();
+    }
+
+    @Override
+    public void establishDrone() throws IOException, InterruptedException {
+        drone.turnCCW(360);
+        drone.hoverInPlace(5);
+        
     }
 
         
