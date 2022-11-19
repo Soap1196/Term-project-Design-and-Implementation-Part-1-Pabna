@@ -31,6 +31,7 @@ import javafx.scene.control.TreeView;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.text.*;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Popup;
 
 import classes.*;
@@ -117,7 +118,7 @@ public class Control implements Initializable{
         });
     }
 
-    public void scanFarm(double x, double y) throws IOException, InterruptedException{
+    public void scanFarm() throws IOException, InterruptedException{
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(10000));
@@ -294,6 +295,7 @@ public class Control implements Initializable{
     
     
     public void droneVisit() throws IOException, InterruptedException {
+        Corgicopter.setRotate((calculateDroneRotation(dronestartx, dronestarty, Choice3.getX(), Choice3.getY())));
         Path path = new Path();
         PathTransition pathTransition = new PathTransition();
         pathTransition.setDuration(Duration.millis(1000));
@@ -304,14 +306,27 @@ public class Control implements Initializable{
         path.getElements().add(new LineTo(dronestartx, dronestartx)); //ends
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
+
         pathTransition.play();
+        Corgicopter.setRotate(0); 
         Corgicopter.toFront();
-        if (telloDroneActive){
+            tello = new TelloDroneAdapter();
             tello.moveDrone(dronestartx, dronestarty, Choice3.getX(), Choice3.getY());
             tello.moveDrone(Choice3.getX(), Choice3.getY(), dronestartx, dronestartx);
             tello.landDrone();
-        }
+        
+        
 
+    }
+
+    public double calculateDroneRotation(double xStart, double yStart, double xEnd, double yEnd) throws IOException, InterruptedException {
+        double angle = (double) Math.toDegrees(Math.atan2(yEnd - yStart, xEnd - xStart));
+    
+        if(angle < 0){
+            angle += 360;
+        }
+        System.out.println(angle);
+        return angle;
     }
 
     public void CreateItemContainer() {
@@ -729,12 +744,14 @@ public class Control implements Initializable{
     public void launchDrone() throws IOException, InterruptedException {
         if(telloDroneActive = false){
             telloDroneActive = true;
+            tello = new TelloDroneAdapter();
             System.out.println("Tello Drone is Active");
         }
         if(telloDroneActive = true){
             telloDroneActive=false;
+            
         }
-        tello = new TelloDroneAdapter();
+        
         
     }
 

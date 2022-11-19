@@ -120,7 +120,6 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
 		drone.takeoff();
 		drone.turnCW(RotateInt);
         drone.flyForward(DistanceInt);
-		drone.land();
         
     }
 
@@ -129,6 +128,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         drone.land();
         drone.end();
     }
+
         
 }
 
