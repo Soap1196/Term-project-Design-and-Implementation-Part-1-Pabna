@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import javafx.animation.PathTransition; 
 import javafx.scene.shape.MoveTo; 
 import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
 import javafx.scene.shape.HLineTo;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;  
@@ -29,6 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
@@ -118,6 +120,18 @@ public class Control implements Initializable{
 
         });
     }
+    public void scanPath(int i) {
+        Path path = new Path();
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setNode(Corgicopter);
+        pathTransition.setPath(path);
+        path.getElements().add(new MoveTo(dronestartx,dronestarty));
+        path.getElements().add(new LineTo(i*80, 600));
+        pathTransition.setCycleCount(1);
+        pathTransition.setAutoReverse(false);
+        pathTransition.play();
+    }
 
     public void scanFarm() throws IOException, InterruptedException{
         Path path = new Path();
@@ -127,16 +141,19 @@ public class Control implements Initializable{
         pathTransition.setPath(path);
         path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
         path.getElements().add(new LineTo(0, 0));
-            for(int i = 1; i < 10; i+=2){
+            for(int i = 0; i < 10; i+=2){
                 path.getElements().add(new LineTo(i*80, 600));
+                path.getElements().addAll((Collection<? extends PathElement>) new Rotate(90));
+                path.getElements().add(new LineTo((i+1)*80, 600));
                 path.getElements().add(new LineTo((i+1)*80, 25));
+                path.getElements().add(new LineTo((i+2)*80, 25));
             }
         path.getElements().add(new LineTo(0, 0));
         pathTransition.setCycleCount(1);
         pathTransition.setAutoReverse(false);
         pathTransition.play();
-        dronestartx = 0;
-        dronestarty = 0;
+        dronestartx = commandCenterx;
+        dronestarty = commandCentery;
         Corgicopter.toFront();
         if (telloDroneActive){
             for(int i = 1; i < 10; i+=2){
