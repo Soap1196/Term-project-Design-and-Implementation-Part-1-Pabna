@@ -27,6 +27,7 @@
       <Button layoutX="18.0" layoutY="541.0" mnemonicParsing="false" onAction="#commandCenterDrone" prefHeight="63.0" prefWidth="137.0" text="Create Command Center and Drone" textAlignment="CENTER" wrapText="true" />
       <Button fx:id="purchasePrice" layoutX="13.0" layoutY="454.0" mnemonicParsing="false" onAction="#calculatePurchasePrice" text="Purchase Price" />
       <Button fx:id="marketValue" layoutX="13.0" layoutY="487.0" mnemonicParsing="false" onAction="#calculateMarketValue" text="Market Value" />
-      <Button fx:id="launchDrone" layoutX="18.0" layoutY="661.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="137.0" onAction="#launchDrone" text="Launch Drone" />
+      <Button fx:id="LaunchDrone" layoutX="18.0" layoutY="661.0" mnemonicParsing="false" onAction="#launchDrone" prefHeight="49.0" prefWidth="137.0" text="Launch Drone" />
+      <Button layoutX="18.0" layoutY="721.0" mnemonicParsing="false" onAction="#landDrone" prefHeight="58.0" prefWidth="137.0" text="Land Drone" />
    </children>
 </Pane>

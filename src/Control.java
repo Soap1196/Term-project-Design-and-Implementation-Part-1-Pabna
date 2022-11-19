@@ -53,6 +53,7 @@ public class Control implements Initializable{
         @FXML private Button ChangeHeight;
         @FXML private Button Rename;
         @FXML private Button createItemContainer;
+        @FXML private Button LaunchDrone;
         public ImageView Corgicopter;
         public CustomPane farm=CustomPane.getInstance();
 
@@ -310,10 +311,11 @@ public class Control implements Initializable{
         pathTransition.play();
         Corgicopter.setRotate(0); 
         Corgicopter.toFront();
-            tello = new TelloDroneAdapter();
+        if (telloDroneActive == true)
+        {
             tello.moveDrone(dronestartx, dronestarty, Choice3.getX(), Choice3.getY());
             tello.moveDrone(Choice3.getX(), Choice3.getY(), dronestartx, dronestartx);
-            tello.landDrone();
+        }
         
         
 
@@ -742,17 +744,20 @@ public class Control implements Initializable{
     }
 
     public void launchDrone() throws IOException, InterruptedException {
-        if(telloDroneActive = false){
+        if(telloDroneActive == false){
             telloDroneActive = true;
             tello = new TelloDroneAdapter();
+            tello.activateDrone();
             System.out.println("Tello Drone is Active");
         }
-        if(telloDroneActive = true){
+    }
+    public void landDrone() throws IOException, InterruptedException {
+        if(telloDroneActive == true){
             telloDroneActive=false;
+            tello.landDrone();
+            System.out.println("Tello Drone is NOT Active");
             
         }
-        
-        
     }
 
     
