@@ -11,5 +11,5 @@ public interface TelloDroneSimulation {
     void establishDrone() throws IOException, InterruptedException;
     void moveDrone(double xStart, double yStart, double xEnd, double yEnd) throws IOException, InterruptedException;
     void landDrone() throws IOException, InterruptedException;
-    void scanFarm() throws IOException, InterruptedException;
+    void scanFarm(double xStart, double yStart, double xEnd, double yEnd) throws IOException, InterruptedException;
 }

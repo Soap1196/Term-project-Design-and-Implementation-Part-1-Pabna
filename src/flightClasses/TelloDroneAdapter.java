@@ -29,20 +29,37 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
     }
 
     @Override
-    public void scanFarm() throws IOException, InterruptedException {
-        for(int i = 1; i < 6; i++){
-        drone.flyForward(575);
-        drone.turnCCW(90);
-        drone.flyForward(80);
-        drone.turnCCW(90);
-        drone.flyForward(575);
-        drone.turnCW(90);
-        drone.flyForward(80);
-        drone.turnCW(90);
-        }
-        drone.turnCW(90);
-        drone.flyForward(800);
-        drone.turnCCW(90);
+    public void scanFarm(double xStart, double yStart, double xEnd, double yEnd) throws IOException, InterruptedException {
+        double Rotate = calculateDroneRotation(xStart, yStart, xEnd, yEnd);
+        int RotateInt = (int)Rotate;
+        double Distance = calculateDroneDistance(xStart, yStart, xEnd, yEnd);
+        int DistanceInt = ((int)Distance);
+		drone.turnCCW(RotateInt);
+        drone.flyForward(DistanceInt);
+        drone.turnCCW(180);
+        drone.turnCCW(180+RotateInt);
+            for(int i = 1; i < 6; i++){
+            drone.flyForward(575);
+            drone.turnCCW(90);
+            drone.flyForward(80);
+            drone.turnCCW(90);
+            drone.flyForward(575);
+            drone.turnCW(90);
+            drone.flyForward(80);
+            drone.turnCW(90);
+            }
+            drone.turnCW(90);
+            drone.flyForward(800);
+            drone.turnCCW(90);
+        double Rotate2 = calculateDroneRotation(0, 0, xStart, yStart);
+        int RotateInt2 = (int)Rotate2;
+        double Distance2 = calculateDroneDistance(0, 0, xStart, yStart);
+        int DistanceInt2 = ((int)Distance2);
+        drone.turnCCW(RotateInt2);
+        drone.flyForward(DistanceInt2);
+        drone.turnCCW(180);
+        drone.turnCCW(180+RotateInt2);
+
 
     }
 
@@ -113,6 +130,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
 
     @Override
     public double calculateDroneRotation(double xStart, double yStart, double xEnd, double yEnd) throws IOException, InterruptedException {
+        
             double rotationDegrees = (double) Math.toDegrees(Math.atan2(yEnd - yStart, xEnd - xStart));
             System.out.println(rotationDegrees);
             if(rotationDegrees < 0){
@@ -123,7 +141,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
 
     @Override
     public double calculateDroneDistance(double xStart, double yStart, double xEnd, double yEnd)throws IOException, InterruptedException {
-
+        // Just the pythagorean theorem
         return Math.hypot((xStart - xEnd),(yStart - yEnd));
         
         }

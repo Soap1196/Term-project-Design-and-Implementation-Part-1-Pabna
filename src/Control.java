@@ -158,7 +158,7 @@ public class Control implements Initializable{
         Corgicopter.toFront();
         }
         if (telloDroneActive){
-            tello.scanFarm();
+            tello.scanFarm(dronestartx, dronestarty,0,0);
         }
 
         //globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
