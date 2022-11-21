@@ -102,12 +102,19 @@ public class Control{
                         Choice3 = temp;
                         System.out.println(Choice1);
                         if(Choice3.getisComposite()){
-                            System.out.println("Composite");
-                            PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getComposite()));
-                            MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getComposite()));
+                            System.out.println(Choice3.getComposite().getCompPrice());
+                            System.out.println(calculatePrice(Choice3.getComposite()));
+                            if(Choice3.getComposite() != globalComposite){
+                                PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getComposite()));
+                                MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getComposite()));
+                            } else{
+                                //divide by 2 because the root directory is a composite
+                                PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getComposite())/2);
+                                MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getComposite())/2);
+                            }
+                            
                         }
                         else{
-                            System.out.println("Leaf");
                             PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getLeaf()));
                             MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getLeaf()));
                         }
@@ -322,21 +329,8 @@ public class Control{
                 //If selected node is a composite
                 if(Choice3.getisComposite() == true){
                     //if tree children is not empty delete all rectangles in tree that match children names
-                    if(Choice2.getChildren().size() != 0){
-                        for(int i = 0; i < Choice2.getChildren().size(); i++){
-                            for(int j = 0; j < rectangles.size(); j++){
-                                if(Choice2.getChildren().get(i).getValue().equals(rectangles.get(j).getName())){
-                                    farm.getChildren().remove(rectangles.get(j));
-                                    rectangles.remove(j);
-                                    Choice3.getComposite().removeitems(rectangles.get(j).getComposite());
-                                    
-                                }
-                            }
-                        }
-                    }
-                    if (Choice2.getParent().getValue().equals("Root")){
-                        globalComposite.removeitems(Choice3.getComposite());
-                    }
+                    DeleteChildren(Choice2);
+                    globalComposite.removeitems(Choice3.getComposite());
                     //Remove composite from Tree
                     Choice2.getParent().getChildren().remove(Choice2);
                     //Remove composite from rectangles
@@ -363,14 +357,37 @@ public class Control{
                 //set the selected node to the parent of the deleted node
                 Choice1 = Choice2.getValue();
                 Choice2 = temp;
-                globalComposite = Choice3.getComposite();
                 
-            } else {
-                //Do nothing
             }
         }
     }
 
+    void DeleteChildren(TreeItem<String> node){
+        //If node has children
+        if(node.getChildren().size() != 0){
+            //For each child
+            for(int i = 0; i < node.getChildren().size(); i++){
+                //Remove child from rectangles and farm
+                for(int j = 0; j < rectangles.size(); j++){
+                    if(node.getChildren().get(i).getValue().equals(rectangles.get(j).getName())){
+                        farm.getChildren().remove(j);
+                        if(rectangles.get(j).getisComposite() == true){
+                            globalComposite.removeitems(rectangles.get(j).getComposite());
+                            rectangles.remove(j);
+                            //If child has children
+                            if(node.getChildren().get(i).getChildren().size() != 0){
+                                //Delete all children of child
+                                DeleteChildren(node.getChildren().get(i));
+                            }
+                        } else{
+                            globalComposite.removeitems(rectangles.get(j).getLeaf());
+                            rectangles.remove(j);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @FXML
     void Rename(ActionEvent event) {
@@ -620,10 +637,11 @@ public class Control{
         double price = 0;
         CurrentItemVisitor visitor = new CurrentItemVisitorImpl();
         if(r instanceof composite){
+            price += visitor.visit((composite) r);
             for(items i : ((composite) r).getItems()){
                 price += calculatePrice(i);
             }
-            price += visitor.visit((composite) r);
+            
             
         } else {
             price += visitor.visit((leaf) r);
@@ -635,10 +653,11 @@ public class Control{
         double marketValue = 0;
         CurrentMarketVisitor visitor = new CurrentMarketVisitorImpl();
         if(r instanceof composite){
+            marketValue += visitor.visit((composite) r);
             for(items i : ((composite) r).getItems()){
                 marketValue += calculateMarketValue(i);
             }
-            marketValue += visitor.visit((composite) r);
+            
             
         } else {
             marketValue += visitor.visit((leaf) r);
