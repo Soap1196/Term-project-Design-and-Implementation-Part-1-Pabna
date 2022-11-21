@@ -331,6 +331,7 @@ public class Control{
                     //if tree children is not empty delete all rectangles in tree that match children names
                     DeleteChildren(Choice2);
                     globalComposite.removeitems(Choice3.getComposite());
+                    
                     //Remove composite from Tree
                     Choice2.getParent().getChildren().remove(Choice2);
                     //Remove composite from rectangles
@@ -351,8 +352,10 @@ public class Control{
                 for(int i = 0; i < rectangles.size(); i++){
                     if(temp.getValue().equals(rectangles.get(i).getName())){
                         //set Choice3 to temp
+                        rectangles.get(i).getComposite().removeitems(Choice3.getComposite());
                         Choice3 = rectangles.get(i);
                     }
+                        
                 }
                 //set the selected node to the parent of the deleted node
                 Choice1 = Choice2.getValue();
@@ -363,6 +366,13 @@ public class Control{
     }
 
     void DeleteChildren(TreeItem<String> node){
+        Srectangle rectangle = Choice3;
+        //find the rectangle for this node
+        for(int i = 0; i < rectangles.size(); i++){
+            if(node.getValue().equals(rectangles.get(i).getName())){
+                rectangle = rectangles.get(i);
+            }
+        }
         //If node has children
         if(node.getChildren().size() != 0){
             //For each child
@@ -373,6 +383,7 @@ public class Control{
                         farm.getChildren().remove(j);
                         if(rectangles.get(j).getisComposite() == true){
                             globalComposite.removeitems(rectangles.get(j).getComposite());
+                            rectangle.getComposite().removeitems(rectangles.get(j).getComposite());
                             rectangles.remove(j);
                             //If child has children
                             if(node.getChildren().get(i).getChildren().size() != 0){
