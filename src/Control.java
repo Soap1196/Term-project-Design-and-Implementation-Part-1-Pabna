@@ -304,7 +304,7 @@ public class Control{
             });
             
             Pane pane = new VBox(textFieldName, textFieldW, textFieldH, textFieldX, textFieldY, textFieldPrice, textFieldMarketValue, item, container, button);
-            Scene sc = new Scene(pane, 200, 230);
+            Scene sc = new Scene(pane, 200, 240);
             stage.setScene(sc);
             stage.show();
             
@@ -515,9 +515,12 @@ public class Control{
             button.setOnAction(new EventHandler <ActionEvent>(){
                 public void handle(ActionEvent event){
                     //Edit composite
-                    Choice3.getComposite().setCompPrice(Double.parseDouble(textFieldPrice.getText()));
-                    //Edit Rectangle
-                    Choice3.setPrice(Double.parseDouble(textFieldPrice.getText()));
+                    if(Choice3.getisComposite()){
+                        Choice3.getComposite().setCompPrice(Double.parseDouble(textFieldPrice.getText()));
+                    } else{
+                        //Edit Leaf
+                        Choice3.getLeaf().setPrice(Double.parseDouble(textFieldPrice.getText()));
+                    }
                     //Close Stage
                     stage.close();
                 }
