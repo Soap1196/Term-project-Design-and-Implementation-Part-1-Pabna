@@ -158,7 +158,7 @@ public class Control implements Initializable{
         Corgicopter.toFront();
         }
         if (telloDroneActive){
-            tello.scanFarm();
+            tello.scanFarm(dronestartx, dronestarty,0,0);
         }
 
         //globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
@@ -771,6 +771,33 @@ public class Control implements Initializable{
 
     }
 
+    void DeleteChildren(TreeItem<String> node){
+        //If node has children
+        if(node.getChildren().size() != 0){
+            //For each child
+            for(int i = 0; i < node.getChildren().size(); i++){
+                //Remove child from rectanglelist and farm
+                for(int j = 0; j < rectanglelist.size(); j++){
+                    if(node.getChildren().get(i).getValue().equals(rectanglelist.get(j).getName())){
+                        farm.getChildren().remove(j);
+                        if(rectanglelist.get(j).getisComposite() == true){
+                            globalComposite.removeitems(rectanglelist.get(j).getComposite());
+                            rectanglelist.remove(j);
+                            //If child has children
+                            if(node.getChildren().get(i).getChildren().size() != 0){
+                                //Delete all children of child
+                                DeleteChildren(node.getChildren().get(i));
+                            }
+                        } else{
+                            globalComposite.removeitems(rectanglelist.get(j).getLeaf());
+                            rectanglelist.remove(j);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void Delete() {
         //If selected node is Root or Command Center
         if(Choice1.equals("Root") || Choice1.equals("Command Center")){
@@ -803,6 +830,8 @@ public class Control implements Initializable{
                     if (Choice2.getParent().getValue().equals("Root")){
                         globalComposite.removeitems(Choice3.getComposite());
                     }
+                    DeleteChildren(Choice2);
+                    globalComposite.removeitems(Choice3.getComposite());
                     //Remove composite from Tree
                     Choice2.getParent().getChildren().remove(Choice2);
                     //Remove composite from rectanglelist
@@ -869,8 +898,8 @@ public class Control implements Initializable{
         if(telloDroneActive == false){
             telloDroneActive = true;
             LaunchDrone.setStyle("-fx-background-color: red");
-            //tello = new TelloDroneAdapter();
-            //tello.activateDrone();
+            tello = new TelloDroneAdapter();
+            tello.activateDrone();
             System.out.println("Tello Drone is Active");
 
         }
@@ -879,8 +908,8 @@ public class Control implements Initializable{
         if(telloDroneActive == true){
         telloDroneActive=false;
             LaunchDrone.setStyle("-fx-background-color: grey");
-            //tello.landDrone();
-            //System.out.println("Tello Drone is NOT Active");
+            tello.landDrone();
+            System.out.println("Tello Drone is NOT Active");
             
         }
     }
