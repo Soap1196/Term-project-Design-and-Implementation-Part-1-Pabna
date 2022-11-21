@@ -9,6 +9,7 @@ public class leaf implements items{
     public double length;
     public double width;
     public double height;
+    public double marketValue;
 
     
 
@@ -82,9 +83,52 @@ public class leaf implements items{
         this.height = newHeight;
     }
 
+    public double getMarketValue()
+    {
+        return marketValue;
+    }
+
+    public void setMarketValue(double newMarketValue)
+    {
+        this.marketValue = newMarketValue;
+    }
+
     @Override
     public void showItemDetails()
     {
         System.out.println(name + " " + price + " " + xCoordinate + " " + yCoordinate + " " + length + " " + width + " " + height);
+    }
+
+    @Override
+    public double calculatePurchasePrice()
+    {
+        double PurchasePrice = price;
+        return PurchasePrice;
+    }
+
+    @Override
+    public double calculateMarketValue()
+    {
+        double PurchasePrice = marketValue;
+        return PurchasePrice;
+    }
+
+    @Override
+    public Boolean isComp() {
+        return false;
+    }
+
+    @Override
+    public double accept(ShoppingCartVisitor visitor, boolean isComp)
+    {   double PurchasePrice = 0;
+        if (isComp) {
+        PurchasePrice = price;
+        }
+        if (!isComp){
+        PurchasePrice = marketValue;
+        }
+               
+        return PurchasePrice;
+    
     }
 }

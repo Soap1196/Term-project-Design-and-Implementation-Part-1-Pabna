@@ -3,14 +3,37 @@ package classes;
 import java.util.ArrayList;
 import java.util.List;
 
-interface items{
-    public void showItemDetails();
-}
+
+
 
 public class composite implements items{
     public static composite composite; 
 
-    private List<items> itemslist = new ArrayList<items>();
+    public List<items> itemslist = new ArrayList<items>();
+
+    @Override
+    public double accept(ShoppingCartVisitor visitor, boolean isComp)
+    {   double PurchasePrice = 0;
+        if (isComp) {
+        PurchasePrice = price;
+        for(items x:itemslist)
+            {
+            double temp = x.calculatePurchasePrice();
+            PurchasePrice = PurchasePrice + temp;
+            }
+        }
+        if (!isComp){
+            PurchasePrice = 0;
+            for(items x:itemslist)
+            {
+            double temp = x.calculateMarketValue();
+            PurchasePrice = PurchasePrice + temp;
+            }
+        }
+               
+        return PurchasePrice;
+    
+    }
 
     @Override
     public void showItemDetails()
@@ -23,6 +46,31 @@ public class composite implements items{
         }
         System.out.println("}");
     }
+
+    @Override
+    public double calculatePurchasePrice()
+    {
+        double PurchasePrice = price;
+        for(items x:itemslist)
+        {
+            double temp = x.calculatePurchasePrice();
+            PurchasePrice = PurchasePrice + temp;
+        }
+        return PurchasePrice;
+    }
+
+    @Override
+    public double calculateMarketValue()
+    {
+        double PurchasePrice = 0;
+        for(items x:itemslist)
+        {
+            double temp = x.calculateMarketValue();
+            PurchasePrice = PurchasePrice + temp;
+        }
+        return PurchasePrice;
+    }
+
 
     public void additem(items x)
     {
@@ -87,6 +135,11 @@ public class composite implements items{
     }
     public void setCompHeight(double height) {
         this.height = height;
+    }
+
+    @Override
+    public Boolean isComp() {
+        return true;
     }
 
 }

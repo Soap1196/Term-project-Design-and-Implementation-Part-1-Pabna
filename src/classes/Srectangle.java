@@ -4,7 +4,8 @@ import javafx.scene.shape.Rectangle;
 
 public class Srectangle extends Rectangle{
     private String name;
-    private double price; 
+    private double price;
+    private double marketValue;
     private boolean isComposite;
     private composite composite;
     private leaf leaf;
@@ -17,7 +18,6 @@ public class Srectangle extends Rectangle{
   // Setter
   public void setName(String newName) {
     this.name = newName;
-
     }
 
     // Getter
@@ -30,6 +30,18 @@ public class Srectangle extends Rectangle{
     this.price = newPrice;
 
     }
+
+    // Getter
+  public double getMarketValue() {
+    return marketValue;
+  }
+
+  // Setter
+  public void setMarketValue(double newMarketValue) {
+    this.marketValue = newMarketValue;
+
+    }
+  
 
 // Getter
 public boolean getisComposite() {
