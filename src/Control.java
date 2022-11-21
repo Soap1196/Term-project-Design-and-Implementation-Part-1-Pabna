@@ -104,14 +104,8 @@ public class Control{
                         if(Choice3.getisComposite()){
                             System.out.println(Choice3.getComposite().getCompPrice());
                             System.out.println(calculatePrice(Choice3.getComposite()));
-                            if(Choice3.getComposite() != globalComposite){
-                                PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getComposite()));
-                                MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getComposite()));
-                            } else{
-                                //divide by 2 because the root directory is a composite
-                                PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getComposite())/2);
-                                MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getComposite())/2);
-                            }
+                            PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getComposite()));
+                            MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getComposite()));
                             
                         }
                         else{
@@ -213,15 +207,13 @@ public class Control{
                         if(Choice3.getisComposite() == true){
                             composite.setCompXcoordinate(Double.parseDouble(textFieldX.getText()) + Choice3.getComposite().getCompXcoordinate());
                             composite.setCompYcoordinate(Double.parseDouble(textFieldY.getText()) + Choice3.getComposite().getCompYcoordinate());
-                            //add the item to the list of items
-                            Choice3.getComposite().additem(composite);
                         } else {
                             composite.setCompXcoordinate(Double.parseDouble(textFieldX.getText()));
                             composite.setCompYcoordinate(Double.parseDouble(textFieldY.getText()));
                         }
-                        globalComposite.additem(composite);
                         composite.setCompPrice(Double.parseDouble(textFieldPrice.getText()));
                         composite.setMarketValue(0.0);
+                        Choice3.getComposite().additem(composite);
                         if(textFieldMarketValue.getText().equals("Enter Market Value") == false){
                             Alert alert = new Alert(AlertType.WARNING);
                             alert.setTitle("Market Value");
@@ -265,15 +257,13 @@ public class Control{
                         if(Choice3.getisComposite() == true){
                             leaf.setXCoordinate(Double.parseDouble(textFieldX.getText()) + Choice3.getComposite().getCompXcoordinate());
                             leaf.setYCoordinate(Double.parseDouble(textFieldY.getText()) + Choice3.getComposite().getCompYcoordinate());
-                            //add the item to the list of items
-                            Choice3.getComposite().additem(leaf);
                         } else{
                             leaf.setXCoordinate(Double.parseDouble(textFieldX.getText()));
                             leaf.setYCoordinate(Double.parseDouble(textFieldY.getText()));
                         }
-                        globalComposite.additem(leaf);
                         leaf.setPrice(Double.parseDouble(textFieldPrice.getText()));
                         leaf.setMarketValue(Double.parseDouble(textFieldMarketValue.getText()));
+                        Choice3.getComposite().additem(leaf);
                         
 
                         //Create New Rectangle
