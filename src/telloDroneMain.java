@@ -11,9 +11,9 @@ public class telloDroneMain {
 		tello.takeoff();
 		tello.flyForward(100);
 		tello.turnCCW(180);
-		tello.flip("b");
+		
 		tello.flyForward(100);
-		tello.flip("f");
+		
 		tello.turnCW(180);
 		tello.land();
 		tello.streamOff();

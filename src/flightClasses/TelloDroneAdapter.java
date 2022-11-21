@@ -27,6 +27,24 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
     }
 
     @Override
+    public void scanFarm() throws IOException, InterruptedException {
+        for(int i = 1; i < 6; i++){
+        drone.flyForward(575);
+        drone.turnCCW(90);
+        drone.flyForward(80);
+        drone.turnCCW(90);
+        drone.flyForward(575);
+        drone.turnCW(90);
+        drone.flyForward(80);
+        drone.turnCW(90);
+        }
+        drone.turnCW(90);
+        drone.flyForward(800);
+        drone.turnCCW(90);
+
+    }
+
+    @Override
     public void goToItem(double x, double y) throws IOException, InterruptedException {
         //calculate the midpoint of x and y
         double midX = x;
@@ -94,10 +112,6 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
     @Override
     public double calculateDroneRotation(double xStart, double yStart, double xEnd, double yEnd) throws IOException, InterruptedException {
             double rotationDegrees = (double) Math.toDegrees(Math.atan2(yEnd - yStart, xEnd - xStart));
-        
-            if(rotationDegrees < 0){
-                rotationDegrees += 360;
-            }
             System.out.println(rotationDegrees);
             return rotationDegrees;
         }
@@ -121,9 +135,14 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         double Rotate = calculateDroneRotation(xStart, yStart, xEnd, yEnd);
         int RotateInt = (int)Rotate;
         double Distance = calculateDroneDistance(xStart, yStart, xEnd, yEnd);
-        int DistanceInt = ((int)Distance/3);
+        int DistanceInt = ((int)Distance/2);
 		drone.turnCW(RotateInt);
         drone.flyForward(DistanceInt);
+        drone.turnCCW(360);
+        drone.hoverInPlace(5);
+        drone.turnCCW(180);
+        drone.flyForward(DistanceInt);
+        drone.turnCCW(180+RotateInt);
         
     }
 

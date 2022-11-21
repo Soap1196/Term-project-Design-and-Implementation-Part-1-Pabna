@@ -10,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -28,8 +30,12 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.Alert.AlertType;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Popup;
@@ -54,6 +60,7 @@ public class Control implements Initializable{
         @FXML private Button Rename;
         @FXML private Button createItemContainer;
         @FXML private Button LaunchDrone;
+        
         public ImageView Corgicopter;
         public CustomPane farm=CustomPane.getInstance();
 
@@ -87,6 +94,7 @@ public class Control implements Initializable{
         farm.setPrefWidth(Constants.MODELWIDTH*30);
         Mpain.getChildren().addAll(farm);
         rootDirectory.setCompName("Root Node");
+        LaunchDrone.setStyle("-fx-background-color: grey");
 
         //Drawing a Rectangle 
         Srectangle rectangle = new Srectangle();  
@@ -111,6 +119,7 @@ public class Control implements Initializable{
                         globalComposite = temp.getComposite();
                         globalLeaf = temp.getLeaf();
                         System.out.println(Choice1);
+                        
                     }
                 }
                 
@@ -121,6 +130,8 @@ public class Control implements Initializable{
     }
 
     public void scanFarm() throws IOException, InterruptedException{
+        if (telloDroneActive == false)
+        {
         double tempStartx;
         double tempStarty;
         Path path = new Path();
@@ -145,24 +156,9 @@ public class Control implements Initializable{
         dronestartx = commandCenterx;
         dronestarty = commandCentery;
         Corgicopter.toFront();
+        }
         if (telloDroneActive){
-            tempStartx = commandCenterx;
-            tempStarty = commandCentery;
-            for(int i = 1; i < 10; i+=2){
-                tello.moveDrone(tempStartx, tempStartx, i*80, 600);
-                tempStartx = i*80;
-                tempStarty = 600;
-                tello.moveDrone(tempStartx, tempStartx, (i+1)*80, 600);
-                tempStartx = (i+1)*80;
-                tempStarty = 600;
-                tello.moveDrone(tempStartx, tempStartx, (i+1)*80, 25);
-                tempStartx = (i+1)*80;
-                tempStarty = 25;
-                tello.moveDrone(tempStartx, tempStartx, (i+2)*80, 25);
-                tempStartx = (i+2)*80;
-                tempStarty = 25;
-            }
-            tello.moveDrone((9+1)*80, 25, commandCenterx, commandCentery);
+            tello.scanFarm();
         }
 
         //globalLeaf.showItemDetails(); //prints all component objects to the terminal located on the farm
@@ -174,10 +170,16 @@ public class Control implements Initializable{
         
         ShoppingCartVisitor visitor = new ShoppingCartVisitorImpl();
         double sum = 0;
-        for (items x:globalComposite.itemslist){
-            sum = sum + x.accept(visitor, false);
+        if(globalComposite != null){
+            sum = 0;
+            for (items x:globalComposite.itemslist){
+                sum = sum + x.accept(visitor, false);
+            }
         }
-        Text textName = new Text (globalComposite.getCompName());
+            if(globalLeaf != null){
+                sum = globalLeaf.getMarketValue();
+            }
+        Text textName = new Text ("Market Value");
         TextField textfieldPP = new TextField (String.valueOf(sum));
 
         Pane Pane = new VBox(textName,textfieldPP);
@@ -191,13 +193,20 @@ public class Control implements Initializable{
 
     public void calculatePurchasePrice() {
         Stage stage = new Stage();
+        Text textName = new Text ("Purchase Price");
         
         ShoppingCartVisitor visitor = new ShoppingCartVisitorImpl();
-        double sum = globalComposite.getCompPrice();
+        double sum = 0;
+        if(globalComposite != null){
+        sum = globalComposite.getCompPrice();
         for (items x:globalComposite.itemslist){
             sum = sum + x.accept(visitor, true);
         }
-        Text textName = new Text (globalComposite.getCompName());
+    }
+        if(globalLeaf != null){
+            sum = globalLeaf.getPrice();
+        }
+        
         TextField textfieldPP = new TextField (String.valueOf(sum));
 
         Pane Pane = new VBox(textName,textfieldPP);
@@ -316,39 +325,31 @@ public class Control implements Initializable{
     
     
     public void droneVisit() throws IOException, InterruptedException {
-        Path path = new Path();
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(1000));
-        pathTransition.setNode(Corgicopter);
-        pathTransition.setPath(path);
-        path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
-        path.getElements().add(new LineTo(Choice3.getX(), Choice3.getY())); //visits
-        path.getElements().add(new LineTo(dronestartx, dronestartx)); //ends
-        pathTransition.setCycleCount(1);
-        pathTransition.setAutoReverse(false);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.play();
-        Corgicopter.toFront();
+        if (telloDroneActive == false) 
+        {
+            Path path = new Path();
+            PathTransition pathTransition = new PathTransition();
+            pathTransition.setDuration(Duration.millis(1000));
+            pathTransition.setNode(Corgicopter);
+            pathTransition.setPath(path);
+            path.getElements().add(new MoveTo(dronestartx,dronestarty)); //starts
+            path.getElements().add(new LineTo(Choice3.getX(), Choice3.getY())); //visits
+            path.getElements().add(new LineTo(dronestartx, dronestartx)); //ends
+            pathTransition.setCycleCount(1);
+            pathTransition.setAutoReverse(false);
+            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            pathTransition.play();
+            Corgicopter.toFront();
+        }
         if (telloDroneActive == true)
         {
             tello.moveDrone(dronestartx, dronestarty, Choice3.getX(), Choice3.getY());
-            tello.establishDrone();
-            tello.moveDrone(Choice3.getX(), Choice3.getY(), dronestartx, dronestartx);
         }
         
         
 
     }
 
-    public double calculateDroneRotation(double xStart, double yStart, double xEnd, double yEnd) throws IOException, InterruptedException {
-        double angle = (double) Math.toDegrees(Math.atan2(yEnd - yStart, xEnd - xStart));
-    
-        if(angle < 0){
-            angle += 360;
-        }
-        System.out.println(angle);
-        return angle;
-    }
 
     public void CreateItemContainer() {
         if((Choice3.getisComposite()) == false){
@@ -473,6 +474,7 @@ public class Control implements Initializable{
         TextField textFieldX = new TextField ("X variable");
         TextField textFieldY = new TextField ("Y variable");
         TextField textFieldP = new TextField ("Price");
+        TextField textFieldMV = new TextField ("Market Value");
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
         {
@@ -488,6 +490,7 @@ public class Control implements Initializable{
                 leaf1.setWidth(Long.parseLong(textFieldW.getText()));
                 leaf1.setHeight(Long.parseLong(textFieldH.getText()));
                 leaf1.setPrice(Long.parseLong(textFieldP.getText()));
+                leaf1.setMarketValue(Long.parseLong(textFieldMV.getText()));
                 globalComposite.additem(leaf1);
                 
                 //Drawing a Rectangle 
@@ -500,6 +503,7 @@ public class Control implements Initializable{
                 rectangle.setWidth(leaf1.getWidth()); 
                 rectangle.setHeight(leaf1.getHeight());
                 rectangle.setPrice(leaf1.getPrice());
+                rectangle.setMarketValue(leaf1.getMarketValue());
                 rectangle.setisComposite(false);
                 rectangle.setComposite(Choice3.getComposite());
                 rectangle.setLeaf(leaf1);
@@ -512,10 +516,12 @@ public class Control implements Initializable{
                 Text textName = new Text ("NAME: " + rectangle.getName());
                 Text textX = new Text ("X coordinate: " + rectangle.getX());
                 Text textY = new Text ("Y coordinate: " + rectangle.getY());
+                Text textH = new Text ("Y coordinate: " + rectangle.getY());
                 Text textW = new Text ("Width: " + rectangle.getWidth());
                 Text textL = new Text ("Length: " + rectangle.getHeight());
                 Text textP = new Text ("Price: " + rectangle.getPrice());
-                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP);
+                Text textMV = new Text ("Market: " + rectangle.getMarketValue());
+                infoVbox.getChildren().addAll(textName,textX,textY,textW,textL,textP,textMV);
 
                 Popup infobox = new Popup();
                 infobox.getContent().add(infoVbox);
@@ -536,9 +542,9 @@ public class Control implements Initializable{
 
             }
         });
-        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,Submit);
+        Pane Pane = new VBox(textFieldName,textFieldW,textFieldH,textFieldL,textFieldX,textFieldY,textFieldP,textFieldMV,Submit);
   
-        Scene sc = new Scene(Pane, 200, 200);
+        Scene sc = new Scene(Pane, 200, 300);
   
         stage.setScene(sc);
   
@@ -592,7 +598,7 @@ public class Control implements Initializable{
     public void changeLocation() {
         Stage stage = new Stage();
         
-        stage.setTitle("Rename");
+        stage.setTitle("Change Location");
         TextField textFieldX = new TextField ("New X variable");
         TextField textFieldY = new TextField ("New Y variable");
         Button Submit = new Button("Submit");
@@ -637,7 +643,7 @@ public class Control implements Initializable{
     public void changePrice() {
         Stage stage = new Stage();
         
-        stage.setTitle("Rename");
+        stage.setTitle("Change Price");
         TextField textField = new TextField ("New Price variable");
         Button Submit = new Button("Submit");
         Submit.setOnAction(new EventHandler <ActionEvent>()
@@ -660,6 +666,48 @@ public class Control implements Initializable{
                 
             }
         });
+        // create a tilepane
+        Pane Pane = new VBox(textField,Submit);
+  
+        // create a scene
+        Scene sc = new Scene(Pane, 200, 200);
+  
+        // set the scene
+        stage.setScene(sc);
+  
+        stage.show();
+    }
+
+        public void changeMarketValue() {
+            Stage stage = new Stage();
+            
+            stage.setTitle("Change Market Value");
+            TextField textField = new TextField ("New Market Value variable");
+            Button Submit = new Button("Submit");
+            Submit.setOnAction(new EventHandler <ActionEvent>()
+            {
+                public void handle(ActionEvent event)
+                {
+                    
+                    for (int i = 0; i < rectanglelist.size(); i++){
+                        if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
+                            if (rectanglelist.get(i).getLeaf() != null){
+                                rectanglelist.get(i).getLeaf().setMarketValue(Long.parseLong(textField.getText()));
+                                rectanglelist.get(i).setMarketValue(Long.parseLong(textField.getText()));
+                            }
+                            else{
+                                Alert alert = new Alert(AlertType.WARNING);
+                                alert.setTitle("Market Value");
+                                alert.setHeaderText("Market Value Warning!");
+                                alert.setContentText("Market Value will be set to 0 for Item Containers");
+                                alert.showAndWait();
+                            }
+                        }
+                        
+                    }
+                    
+                }
+            });
         
 
   
@@ -724,23 +772,78 @@ public class Control implements Initializable{
     }
 
     public void Delete() {
-        System.out.println(rectanglelist);
-        for (int i = 0; i < rectanglelist.size(); i++){
-            if (rectanglelist.get(i).getName().contains((locationTreeView.getSelectionModel().getSelectedItem().getValue()))){
-                if (rectanglelist.get(i).getLeaf() != null){
-                    rectanglelist.get(i).getComposite().removeitems(rectanglelist.get(i).getLeaf());
+        //If selected node is Root or Command Center
+        if(Choice1.equals("Root") || Choice1.equals("Command Center")){
+            editError();
+        } else{
+            //Warn user of deletion
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Delete");
+            alert.setHeaderText("Are you sure you want to delete " + Choice1 + "?");
+            alert.setContentText("This action cannot be undone.");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                //Assign a temp variable to the nodes parent
+                TreeItem<String> temp = Choice2.getParent();
+                //If selected node is a composite
+                if(Choice3.getisComposite() == true){
+                    //if tree children is not empty delete all rectanglelist in tree that match children names
+                    if(Choice2.getChildren().size() != 0){
+                        for(int i = 0; i < Choice2.getChildren().size(); i++){
+                            for(int j = 0; j < rectanglelist.size(); j++){
+                                if(((TreeItem<String>) Choice2.getChildren().get(i)).getValue().equals(rectanglelist.get(j).getName())){
+                                    farm.getChildren().remove(rectanglelist.get(j));
+                                    rectanglelist.remove(j);
+                                    Choice3.getComposite().removeitems(rectanglelist.get(j).getComposite());
+                                    
+                                }
+                            }
+                        }
+                    }
+                    if (Choice2.getParent().getValue().equals("Root")){
+                        globalComposite.removeitems(Choice3.getComposite());
+                    }
+                    //Remove composite from Tree
+                    Choice2.getParent().getChildren().remove(Choice2);
+                    //Remove composite from rectanglelist
+                    rectanglelist.remove(Choice3);
+                    //Remove composite from farm
+                    farm.getChildren().remove(Choice3);
+                } else{
+                    //Remove leaf from global composite
+                    globalComposite.removeitems(Choice3.getLeaf());
+                    //Remove leaf from Tree
+                    Choice2.getParent().getChildren().remove(Choice2);
+                    //Remove leaf from rectanglelist
+                    rectanglelist.remove(Choice3);
+                    //Remove leaf from farm
+                    farm.getChildren().remove(Choice3);
                 }
-                else{
-                    rectanglelist.get(i).getComposite().removeitems(rectanglelist.get(i).getComposite());;
+                //scan rectanglelist to find rectangle equal to the parent of the deleted node
+                for(int i = 0; i < rectanglelist.size(); i++){
+                    if(temp.getValue().equals(rectanglelist.get(i).getName())){
+                        //set Choice3 to temp
+                        Choice3 = rectanglelist.get(i);
+                    }
                 }
-                farm.getChildren().remove(rectanglelist.get(i));
-                TreeItem t = (locationTreeView.getSelectionModel().getSelectedItem());
-                t.getParent().getChildren().remove(t);
-                rectanglelist.remove(i);
+                //set the selected node to the parent of the deleted node
+                Choice1 = (String) Choice2.getValue();
+                Choice2 = temp;
+                globalComposite = Choice3.getComposite();
+                
+            } else {
+                //Do nothing
             }
-            
         }
-        System.out.println(rectanglelist);
+    }
+
+    //Error Message for Editing Root or Command Center
+    void editError(){
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Cannot Edit " + Choice1 + "!");
+        alert.setContentText("You cannot edit this item!");
+        alert.showAndWait();
     }
 
 
@@ -765,16 +868,19 @@ public class Control implements Initializable{
     public void launchDrone() throws IOException, InterruptedException {
         if(telloDroneActive == false){
             telloDroneActive = true;
-            tello = new TelloDroneAdapter();
-            tello.activateDrone();
+            LaunchDrone.setStyle("-fx-background-color: red");
+            //tello = new TelloDroneAdapter();
+            //tello.activateDrone();
             System.out.println("Tello Drone is Active");
+
         }
     }
     public void landDrone() throws IOException, InterruptedException {
         if(telloDroneActive == true){
-            telloDroneActive=false;
-            tello.landDrone();
-            System.out.println("Tello Drone is NOT Active");
+        telloDroneActive=false;
+            LaunchDrone.setStyle("-fx-background-color: grey");
+            //tello.landDrone();
+            //System.out.println("Tello Drone is NOT Active");
             
         }
     }

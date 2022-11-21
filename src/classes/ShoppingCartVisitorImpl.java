@@ -3,7 +3,7 @@ package classes;
 public class ShoppingCartVisitorImpl implements ShoppingCartVisitor{
     @Override
     public double visit(composite composite, boolean isComp)
-    {
+    {      
         return composite.getCompPrice();
     }
 

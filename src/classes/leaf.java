@@ -109,7 +109,7 @@ public class leaf implements items{
     @Override
     public double calculateMarketValue()
     {
-        double PurchasePrice = price;
+        double PurchasePrice = marketValue;
         return PurchasePrice;
     }
 
@@ -120,7 +120,13 @@ public class leaf implements items{
 
     @Override
     public double accept(ShoppingCartVisitor visitor, boolean isComp)
-    {   double PurchasePrice = price;
+    {   double PurchasePrice = 0;
+        if (isComp) {
+        PurchasePrice = price;
+        }
+        if (!isComp){
+        PurchasePrice = marketValue;
+        }
                
         return PurchasePrice;
     
