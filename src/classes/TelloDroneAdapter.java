@@ -20,13 +20,36 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
 
     @Override
     public void scan() throws IOException, InterruptedException {
+        //distance from home to 0,0
         drone.activateSDK();
-		drone.hoverInPlace(10);
+		drone.hoverInPlace(2);
 		drone.takeoff();
-		drone.turnCCW(180);
-		drone.turnCW(180);
-		drone.land();
-		drone.end();
+		drone.turnCW(90); //right
+        int distancex = (350 / 25) * 30; //go to the corner
+        drone.flyForward(distancex);
+        drone.turnCCW(90); //turn left
+
+        for(int i = 0; i < 5; i++){
+            int distancey = (500 / 25) * 30; //go down
+            drone.flyForward(distancey);
+            drone.turnCCW(90); //turn left
+            distancex = (80/25) * 30; //move to next position
+            drone.flyForward(distancex);
+            drone.turnCCW(90); //turn left
+            distancey = (500 / 25) * 30; //go up
+            drone.flyForward(distancey);
+            drone.turnCW(90); //turn right
+            distancex = (80/25) * 30; //move to next position
+            drone.flyForward(distancex);
+            drone.turnCW(90); //turn right
+        }
+        //go back to home position
+        drone.turnCW(90); //turn right
+        distancex = (350 / 25) * 30; //go back Home
+        drone.flyForward(distancex);
+        drone.turnCCW(90); //turn left
+        drone.land();
+        drone.end();
         
     }
 
