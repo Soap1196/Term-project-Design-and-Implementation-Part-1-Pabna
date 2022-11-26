@@ -58,66 +58,55 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         //calculate the midpoint of x and y
         double midX = x;
         double midY = y;
+        boolean turnLeft = true;
         //fly to the midpoint
         System.out.println("I'm running!");
         drone.activateSDK();
         drone.hoverInPlace(2);
         drone.takeoff();
+        int distancex = Math.abs((int) ((midX - droneHomex) / 25) * 30);
+        int distancey = Math.abs((int) ((midY - droneHomey) / 25) * 30);
+        //determine angle to turn
+        int turnAngle = (int) angle(distancex, distancey);
+        int spinAngle = 360 + 180;
+
+        //determine direction to turn
         if(midX > droneHomex){
-            drone.turnCCW(90); // left
-            int distancex = (int) ((midX - droneHomex)/25) * 30;
-            drone.flyForward(distancex);
-            if(midY > droneHomey){
-                drone.turnCW(90); // right
-                int distancey = (int) ((midY - droneHomey)/25) * 30;
-                drone.flyForward(distancey);
-                drone.turnCCW(360); // left
-                //make the drone return home
-                drone.flyBackward(distancey);
-                drone.flyRight(distancex);
-            }
-            else{
-                drone.turnCW(90); // left
-                int distancey = (int) ((droneHomey - midY)/25) * 30;
-                drone.flyForward(distancey);
-                drone.turnCW(180); // right
-                drone.turnCCW(360); // left
-                //make the drone return home
-                drone.flyForward(distancey);
-                drone.flyRight(distancex);
-            }
+            drone.turnCCW(turnAngle); //left
+            turnLeft = true;
+        }else if(midX < droneHomex){
+            drone.turnCW(turnAngle); //right
+            turnLeft = false;
         }
-        else{
-            drone.turnCW(90); // right
-            double temp = (droneHomex - midX);
-            int distancex = (int) (temp/25) * 30;
-            System.out.println(distancex);
-            drone.flyForward(distancex);
-            if(midY > droneHomey){
-                drone.turnCCW(90); // left
-                double temp2 = (midY - droneHomey);
-                int distancey = (int) (temp2/25) * 30;
-                System.out.println(distancey);
-                drone.flyForward(distancey);
-                drone.turnCCW(360); // left
-                //make the drone return home
-                drone.flyBackward(distancey);
-                drone.flyLeft(distancex);
-            }
-            else{
-                drone.turnCW(90); // right
-                int distancey = (int) ((droneHomey - midY)/25) * 30;
-                drone.flyForward(distancey);
-                drone.turnCW(180); // right
-                drone.turnCCW(360); // left
-                //make the drone return home
-                drone.flyForward(distancey);
-                drone.flyLeft(distancex);
-            }
+        //determine distance to fly
+        int distance = hypo(distancex, distancey);
+        drone.flyForward(distance);
+
+        drone.turnCCW(spinAngle); //spin
+
+        //return to home position
+        drone.flyForward(distance);
+        spinAngle = 180 - turnAngle;
+        if(turnLeft){
+            drone.turnCCW(spinAngle); //left
+        } else{
+            drone.turnCW(spinAngle); //right
         }
+        //land and end flight
         drone.land();
         drone.end();
     }
 
+    //calculate the hypotenuse of the triangle
+    public int hypo(int x, int y){
+        int hypotenuse = (int)Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        return hypotenuse;
+    }
+
+    //determine angle to turn drone using law of sines
+    public double angle(int x, int y){
+        double angle = Math.asin(x/hypo(x,y));
+        return angle;
+    }
     
 }

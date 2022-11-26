@@ -370,11 +370,12 @@ public class Control{
                 //Remove child from rectangles and farm
                 for(int j = 0; j < rectangles.size(); j++){
                     if(node.getChildren().get(i).getValue().equals(rectangles.get(j).getName())){
-                        farm.getChildren().remove(j);
+                        
                         if(rectangles.get(j).getisComposite() == true){
                             globalComposite.removeitems(rectangles.get(j).getComposite());
                             rectangle.getComposite().removeitems(rectangles.get(j).getComposite());
                             rectangles.remove(j);
+                            farm.getChildren().remove(j);
                             //If child has children
                             if(node.getChildren().get(i).getChildren().size() != 0){
                                 //Delete all children of child
