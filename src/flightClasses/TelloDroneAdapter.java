@@ -164,7 +164,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         drone.hoverInPlace(4);
         drone.turnCCW(180);
         drone.flyForward(DistanceInt);
-        drone.turnCCW(180+RotateInt);
+        drone.turnCCW(90+RotateInt);
         
     }
 
