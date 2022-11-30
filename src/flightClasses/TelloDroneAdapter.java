@@ -158,13 +158,14 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         int RotateInt = (int)Rotate;
         double Distance = calculateDroneDistance(xStart, yStart, xEnd, yEnd);
         int DistanceInt = ((int)Distance);
+        //int RotateIntReturn = ((RotateInt - 90));
 		drone.turnCCW(RotateInt);
         drone.flyForward(DistanceInt);
         drone.turnCW(360);
         drone.hoverInPlace(4);
         drone.turnCCW(180);
         drone.flyForward(DistanceInt);
-        drone.turnCCW(90+RotateInt);
+        drone.turnCW(180+RotateInt);
         
     }
 
