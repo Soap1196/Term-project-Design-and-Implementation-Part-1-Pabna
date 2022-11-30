@@ -34,11 +34,10 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         int RotateInt = (int)Rotate;
         double Distance = calculateDroneDistance(xStart, yStart, xEnd, yEnd);
         int DistanceInt = ((int)Distance);
-		drone.turnCCW(RotateInt);
+		drone.turnCW(RotateInt);
         drone.flyForward(DistanceInt);
-        drone.turnCCW(180);
-        drone.turnCCW(180+RotateInt);
-            for(int i = 1; i < 6; i++){
+        drone.turnCCW(RotateInt);
+            for(int i = 1; i < 2; i++){
             drone.flyForward(575);
             drone.turnCCW(90);
             drone.flyForward(80);
@@ -49,7 +48,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
             drone.turnCW(90);
             }
             drone.turnCW(90);
-            drone.flyForward(800);
+            drone.flyForward(240);
             drone.turnCCW(90);
         double Rotate2 = calculateDroneRotation(0, 0, xStart, yStart);
         int RotateInt2 = (int)Rotate2;
@@ -57,8 +56,7 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         int DistanceInt2 = ((int)Distance2);
         drone.turnCCW(RotateInt2);
         drone.flyForward(DistanceInt2);
-        drone.turnCCW(180);
-        drone.turnCCW(180+RotateInt2);
+        drone.turnCW(RotateInt2);
 
 
     }
@@ -160,13 +158,14 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         int RotateInt = (int)Rotate;
         double Distance = calculateDroneDistance(xStart, yStart, xEnd, yEnd);
         int DistanceInt = ((int)Distance);
+        //int RotateIntReturn = ((RotateInt - 90));
 		drone.turnCCW(RotateInt);
         drone.flyForward(DistanceInt);
         drone.turnCW(360);
         drone.hoverInPlace(4);
         drone.turnCCW(180);
         drone.flyForward(DistanceInt);
-        drone.turnCCW(180+RotateInt);
+        drone.turnCW(180+RotateInt);
         
     }
 
