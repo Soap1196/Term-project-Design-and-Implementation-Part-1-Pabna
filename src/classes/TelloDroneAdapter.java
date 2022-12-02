@@ -1,5 +1,6 @@
 package classes;
 
+import java.lang.Math;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.SocketException;
@@ -22,30 +23,32 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
     public void scan() throws IOException, InterruptedException {
         //distance from home to 0,0
         drone.activateSDK();
-		drone.hoverInPlace(2);
+		drone.hoverInPlace(1);
 		drone.takeoff();
+        //go up high
+        drone.increaseAltitude(30);
 		drone.turnCW(90); //right
-        int distancex = (350 / 25) * 30; //go to the corner
+        int distancex = (125 / 25) * 30; //go to the corner
         drone.flyForward(distancex);
         drone.turnCCW(90); //turn left
 
         for(int i = 0; i < 5; i++){
-            int distancey = (500 / 25) * 30; //go down
+            int distancey = (250 / 25) * 30; //go down
             drone.flyForward(distancey);
             drone.turnCCW(90); //turn left
-            distancex = (80/25) * 30; //move to next position
+            distancex = (40/25) * 30; //move to next position
             drone.flyForward(distancex);
             drone.turnCCW(90); //turn left
-            distancey = (500 / 25) * 30; //go up
+            distancey = (250 / 25) * 30; //go up
             drone.flyForward(distancey);
             drone.turnCW(90); //turn right
-            distancex = (80/25) * 30; //move to next position
+            distancex = (40/25) * 30; //move to next position
             drone.flyForward(distancex);
             drone.turnCW(90); //turn right
         }
         //go back to home position
         drone.turnCW(90); //turn right
-        distancex = (350 / 25) * 30; //go back Home
+        distancex = (125 / 25) * 30; //go back Home
         drone.flyForward(distancex);
         drone.turnCCW(90); //turn left
         drone.land();
@@ -62,12 +65,13 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         //fly to the midpoint
         System.out.println("I'm running!");
         drone.activateSDK();
-        drone.hoverInPlace(2);
+        drone.hoverInPlace(1);
         drone.takeoff();
-        int distancex = Math.abs((int) ((midX - droneHomex) / 25) * 30);
-        int distancey = Math.abs((int) ((midY - droneHomey) / 25) * 30);
+        double distancex = Math.abs( ((midX - droneHomex) / 25) * 30);
+        double distancey = Math.abs( ((midY - droneHomey) / 25) * 30);
         //determine angle to turn
         int turnAngle = (int) angle(distancex, distancey);
+        System.out.println(turnAngle);
         int spinAngle = 360 + 180;
 
         //determine direction to turn
@@ -98,14 +102,16 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
     }
 
     //calculate the hypotenuse of the triangle
-    public int hypo(int x, int y){
+    public int hypo(double x, double y){
         int hypotenuse = (int)Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         return hypotenuse;
     }
 
     //determine angle to turn drone using law of sines
-    public double angle(int x, int y){
-        double angle = Math.asin(x/hypo(x,y));
+    public double angle(double x, double y) throws IOException, InterruptedException{
+        System.out.println("x distance: " + x + " y distance: " + y);
+        double angle = (double) Math.toDegrees(Math.atan(x/y));
+        System.out.println(angle);
         return angle;
     }
     
