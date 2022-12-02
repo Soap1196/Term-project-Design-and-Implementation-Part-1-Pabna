@@ -71,7 +71,6 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         double distancey = Math.abs( ((midY - droneHomey) / 25) * 30);
         //determine angle to turn
         int turnAngle = (int) angle(distancex, distancey);
-        System.out.println(turnAngle);
         int spinAngle = 360 + 180;
 
         //determine direction to turn
@@ -107,11 +106,9 @@ public class TelloDroneAdapter implements TelloDroneSimulation{
         return hypotenuse;
     }
 
-    //determine angle to turn drone using law of sines
+    //determine angle to turn drone using arctangent
     public double angle(double x, double y) throws IOException, InterruptedException{
-        System.out.println("x distance: " + x + " y distance: " + y);
         double angle = (double) Math.toDegrees(Math.atan(x/y));
-        System.out.println(angle);
         return angle;
     }
     
