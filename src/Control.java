@@ -102,8 +102,6 @@ public class Control{
                         Choice3 = temp;
                         System.out.println(Choice1);
                         if(Choice3.getisComposite()){
-                            System.out.println(Choice3.getComposite().getCompPrice());
-                            System.out.println(calculatePrice(Choice3.getComposite()));
                             PurchasePrice.setText("Purchase Price: $" + calculatePrice(Choice3.getComposite()));
                             MarketValue.setText("Market Value: $" + calculateMarketValue(Choice3.getComposite()));
                             
