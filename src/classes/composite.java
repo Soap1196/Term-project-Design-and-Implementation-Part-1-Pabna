@@ -1,10 +1,11 @@
 package classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 
-public class composite implements items{
+public class composite implements items, Serializable{
     public static composite composite; 
 
     private ArrayList<items> itemslist = new ArrayList<items>();
@@ -23,6 +24,10 @@ public class composite implements items{
 
     public ArrayList<items> getItems() {
         return (ArrayList<items>) itemslist;
+    }
+
+    public void setItems(ArrayList<items> items) {
+        this.itemslist = items;
     }
 
     public void additem(items x)

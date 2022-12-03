@@ -8,8 +8,15 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -172,7 +179,11 @@ public class Control{
 
 
     @FXML
-    void CreateItemContainer(ActionEvent event) { // Create Item and Item Container
+    void CreateItemContainer(ActionEvent event) throws FileNotFoundException, IOException{ // Create Item and Item Container
+        //create farm.ser file or open existing farm.ser file
+        FileOutputStream fileOut = new FileOutputStream("farm.ser");
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        System.out.printf("Serialized data is saved in farm.ser");
         if(Choice3.getisComposite() == false || Choice1.equals("Command Center") || Choice1.equals("Drone")){ // if the selected item is a leaf or the command center
             leafError();
         } else{ // if the selected item is a composite
@@ -237,7 +248,8 @@ public class Control{
                         rectangle.setLeaf(null);
                         rectangle.setFill(Color.WHITE);
                         rectangle.setStroke(Color.BLACK);
-                
+
+
 
                         //Add rectangle to Tree
                         farm.getChildren().add(rectangle);
@@ -245,6 +257,7 @@ public class Control{
                         TreeItem<String> addition = new TreeItem<String>(textFieldName.getText());
                         Choice2.getChildren().add(addition);
 
+                        saveComp(rectangle.getComposite(), out);
                     } else if(item.isSelected()){
                         //Create leaf object
                         leaf leaf = new leaf();
@@ -285,6 +298,8 @@ public class Control{
                         rectangles.add(rectangle);
                         TreeItem<String> addition = new TreeItem<String>(textFieldName.getText());
                         Choice2.getChildren().add(addition);
+
+                        saveLeaf(rectangle.getLeaf(), out);
                     }
                     //Close Stage
                     stage.close();
@@ -705,9 +720,53 @@ public class Control{
         //chang sim button text to white
         Sim.setTextFill(Color.WHITE);
     }
-                    
     
+    public void saveComp(composite comp,ObjectOutputStream out){
+        //save rectangle to farm.ser
+        try {
+            out.writeObject(comp);
+            out.writeObject(comp.getItems());
+            for(items i : comp.getItems()){
+                if((composite)i instanceof composite){
+                    int ret = saveCompHelper(comp, out);
+                }
+            }
+        } catch (IOException e) {
+            // Auto-generated catch block
+            e.printStackTrace();
+        }
+                        
+    }
 
+    public void saveLeaf(leaf l, ObjectOutputStream out){
+        try{
+            out.writeObject(l);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int saveCompHelper(composite comp, ObjectOutputStream out){
+        //save rectangle to farm.ser
+        try {
+            ArrayList<items> list = new ArrayList<items>();
+            out.writeObject(comp);
+            out.writeObject(comp.getItems());
+                for(items i : comp.getItems()){
+                    if((composite)i instanceof composite){
+                        list.add(i);
+                    }
+                }
+                for(items i : list){
+                    int ret = saveCompHelper((composite)i, out);
+                }
+        } catch (IOException e) {
+            // Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
 
     @FXML
     private Label PurchasePrice;

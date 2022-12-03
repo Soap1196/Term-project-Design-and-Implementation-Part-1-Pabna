@@ -1,6 +1,8 @@
 package classes;
 
-public class leaf implements items{
+import java.io.Serializable;
+
+public class leaf implements items, Serializable{
     public static leaf leaf;
     public String name;
     public double price;
