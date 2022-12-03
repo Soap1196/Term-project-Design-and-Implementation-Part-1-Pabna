@@ -48,6 +48,7 @@ public class composite implements items, Serializable{
     public double length;
     public double width;
     public double height;
+    private composite parent;
 
 
     // Getters
@@ -75,6 +76,9 @@ public class composite implements items, Serializable{
     public double getMarketValue() {
         return MarketValue;
     }
+    public composite getCompParent() {
+        return parent;
+    }
 
     // Setters
     public void setCompName(String name) {
@@ -100,6 +104,9 @@ public class composite implements items, Serializable{
     }
     public void setMarketValue(double MarketValue) {
         this.MarketValue = MarketValue;
+    }
+    public void setCompParent(composite parent) {
+        this.parent = parent;
     }
 
     @Override

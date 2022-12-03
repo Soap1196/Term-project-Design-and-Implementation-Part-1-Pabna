@@ -1,4 +1,5 @@
 import javafx.animation.PathTransition;
+import javafx.collections.ObservableList;
 import javafx.util.Duration;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -96,6 +97,50 @@ public class Control{
         rectangle.setComposite(rootDirectory);
         rectangle.setisComposite(true);
 
+        composite composite = new composite();
+        composite.setCompName("Command Center");
+        composite.setCompWidth(Double.parseDouble("200"));
+        composite.setCompHeight(Double.parseDouble("100"));
+        composite.setCompXcoordinate(Double.parseDouble("300"));
+        composite.setCompYcoordinate(Double.parseDouble("0"));
+        composite.setCompPrice(Double.parseDouble("0"));
+        globalComposite.additem(composite);
+
+        //Create New Rectangle
+        Srectangle rectangleCC = new Srectangle();
+
+        //Set Rectangle Properties
+
+        rectangleCC.setName(composite.getCompName());
+        rectangleCC.setX(composite.getCompXcoordinate());
+        rectangleCC.setY(composite.getCompYcoordinate());
+        rectangleCC.setWidth(composite.getCompWidth());
+        rectangleCC.setHeight(composite.getCompHeight());
+        rectangleCC.setPrice(composite.getCompPrice());
+        rectangleCC.setisComposite(true);
+        rectangleCC.setComposite(composite);
+        rectangleCC.setLeaf(null);
+        rectangleCC.setFill(Color.WHITE);
+        rectangleCC.setStroke(Color.BLACK);
+
+        //Add ImageView Corgicopter to Center of Rectangle
+        Corgicopter = new ImageView("Subject.png");
+        Corgicopter.setFitHeight(50);
+        Corgicopter.setFitWidth(50);
+        Corgicopter.setX(375.0);
+        Corgicopter.setY(25.0);
+
+
+
+
+        //Add rectangle to Tree
+        farm.getChildren().add(rectangleCC);
+        farm.getChildren().add(Corgicopter);
+        rectangles.add(rectangleCC);
+        TreeItem<String> container = new TreeItem<String>(composite.getCompName());
+        container.getChildren().add(new TreeItem<String>("Drone"));
+        Choice2.getChildren().add(container);
+
         //load rectangles from file farm.ser
         try {
             FileInputStream fileIn = new FileInputStream("farm.ser");
@@ -138,6 +183,24 @@ public class Control{
                         rect.setFill(Color.WHITE);
                         rect.setStroke(Color.BLACK);
                     }
+                    
+                    TreeItem<String> addition = new TreeItem<String>(rect.getName());
+                    if(rect.getisComposite()){
+                        if(rect.getComposite().getCompParent().getCompName().equals("Root")){
+                            root.getChildren().add(addition);
+                        } else{
+                            //find the treeitem that corresponds to the parent of the composite
+                            int ret = treeSetHelper(root.getChildren(), rect.getComposite().getCompParent().getCompName(), addition);
+                        }
+                    } else{
+                        if(rect.getLeaf().getParent().getCompName().equals("Root")){
+                            root.getChildren().add(addition);
+                        } else{
+                            //find the treeitem that corresponds to the parent of the leaf
+                            int ret = treeSetHelper(root.getChildren(), rect.getLeaf().getParent().getCompName(), addition);
+                        }
+                    }
+
                     
                 }catch(Exception e){
                 }
@@ -188,49 +251,7 @@ public class Control{
         Choice3 = rectangle;
         globalComposite = rootDirectory;
 
-        composite composite = new composite();
-        composite.setCompName("Command Center");
-        composite.setCompWidth(Double.parseDouble("200"));
-        composite.setCompHeight(Double.parseDouble("100"));
-        composite.setCompXcoordinate(Double.parseDouble("300"));
-        composite.setCompYcoordinate(Double.parseDouble("0"));
-        composite.setCompPrice(Double.parseDouble("0"));
-        globalComposite.additem(composite);
 
-        //Create New Rectangle
-        Srectangle rectangleCC = new Srectangle();
-
-        //Set Rectangle Properties
-
-        rectangleCC.setName(composite.getCompName());
-        rectangleCC.setX(composite.getCompXcoordinate());
-        rectangleCC.setY(composite.getCompYcoordinate());
-        rectangleCC.setWidth(composite.getCompWidth());
-        rectangleCC.setHeight(composite.getCompHeight());
-        rectangleCC.setPrice(composite.getCompPrice());
-        rectangleCC.setisComposite(true);
-        rectangleCC.setComposite(composite);
-        rectangleCC.setLeaf(null);
-        rectangleCC.setFill(Color.WHITE);
-        rectangleCC.setStroke(Color.BLACK);
-
-        //Add ImageView Corgicopter to Center of Rectangle
-        Corgicopter = new ImageView("Subject.png");
-        Corgicopter.setFitHeight(50);
-        Corgicopter.setFitWidth(50);
-        Corgicopter.setX(375.0);
-        Corgicopter.setY(25.0);
-
-
-
-
-        //Add rectangle to Tree
-        farm.getChildren().add(rectangleCC);
-        farm.getChildren().add(Corgicopter);
-        rectangles.add(rectangleCC);
-        TreeItem<String> container = new TreeItem<String>(composite.getCompName());
-        container.getChildren().add(new TreeItem<String>("Drone"));
-        Choice2.getChildren().add(container);
         
     }
 
@@ -279,6 +300,7 @@ public class Control{
                         }
                         composite.setCompPrice(Double.parseDouble(textFieldPrice.getText()));
                         composite.setMarketValue(0.0);
+                        composite.setCompParent(Choice3.getComposite());
                         Choice3.getComposite().additem(composite);
                         if(textFieldMarketValue.getText().equals("Enter Market Value") == false){
                             Alert alert = new Alert(AlertType.WARNING);
@@ -331,6 +353,7 @@ public class Control{
                         }
                         leaf.setPrice(Double.parseDouble(textFieldPrice.getText()));
                         leaf.setMarketValue(Double.parseDouble(textFieldMarketValue.getText()));
+                        leaf.setParent(Choice3.getComposite());
                         Choice3.getComposite().additem(leaf);
                         
 
@@ -462,7 +485,9 @@ public class Control{
     }
 
     @FXML
-    void Rename(ActionEvent event) {
+    void Rename(ActionEvent event) throws IOException {
+        FileOutputStream fileOut = new FileOutputStream("farm.ser", true);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
         //If the selected item is Root or the Command Center do not edit
         if(Choice1.equals("Root") || Choice1.equals("Command Center") || Choice1.equals("Drone")){
             editError();
@@ -479,9 +504,11 @@ public class Control{
                     //Rename Composite
                     if(Choice3.getisComposite() == true){
                         Choice3.getComposite().setCompName(textField.getText());
+                        saveComp(Choice3.getComposite(), out);
                     } else{
                         //Rename Leaf
                         Choice3.getLeaf().setName(textField.getText());
+                        saveLeaf(Choice3.getLeaf(), out);
                     }
                     //Rename Tree Item
                     Choice2.setValue(textField.getText());
@@ -821,6 +848,22 @@ public class Control{
         } catch (IOException e) {
             // Auto-generated catch block
             e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int treeSetHelper(ObservableList<TreeItem<String>> list, String name, TreeItem<String> addition){
+        boolean found = false;
+        for(TreeItem<String> i : list){
+            if(i.getValue().equals(name)){
+                i.getChildren().add(addition);
+                found = true;
+            }
+        }
+        if(!found){
+            for(TreeItem<String> i : list){
+                int ret = treeSetHelper(i.getChildren(), name, addition);
+            }
         }
         return 0;
     }

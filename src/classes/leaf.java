@@ -12,6 +12,7 @@ public class leaf implements items, Serializable{
     public double length;
     public double width;
     public double height;
+    private composite parent;
 
     
 
@@ -93,6 +94,15 @@ public class leaf implements items, Serializable{
     public void setHeight(double newHeight)
     {
         this.height = newHeight;
+    }
+
+    public composite getParent()
+    {
+        return parent;
+    }
+    public void setParent(composite newParent)
+    {
+        this.parent = newParent;
     }
 
     @Override
