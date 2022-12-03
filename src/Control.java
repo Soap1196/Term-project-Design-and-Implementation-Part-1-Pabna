@@ -486,8 +486,6 @@ public class Control{
 
     @FXML
     void Rename(ActionEvent event) throws IOException {
-        FileOutputStream fileOut = new FileOutputStream("farm.ser", true);
-        ObjectOutputStream out = new ObjectOutputStream(fileOut);
         //If the selected item is Root or the Command Center do not edit
         if(Choice1.equals("Root") || Choice1.equals("Command Center") || Choice1.equals("Drone")){
             editError();
@@ -504,11 +502,9 @@ public class Control{
                     //Rename Composite
                     if(Choice3.getisComposite() == true){
                         Choice3.getComposite().setCompName(textField.getText());
-                        saveComp(Choice3.getComposite(), out);
                     } else{
                         //Rename Leaf
                         Choice3.getLeaf().setName(textField.getText());
-                        saveLeaf(Choice3.getLeaf(), out);
                     }
                     //Rename Tree Item
                     Choice2.setValue(textField.getText());
@@ -867,6 +863,8 @@ public class Control{
         }
         return 0;
     }
+
+    //
     
 
     @FXML
