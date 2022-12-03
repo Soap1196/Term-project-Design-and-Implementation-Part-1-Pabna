@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -78,7 +77,9 @@ public class Control{
     
     ArrayList<Srectangle> rectangles = new ArrayList<Srectangle>();
     @FXML
-     void initialize() {
+     void initialize() throws IOException {
+        
+
         //Initialize Farm Pane
         farm.setLayoutX(250);
         farm.setLayoutY(5);
@@ -94,6 +95,62 @@ public class Control{
         rectangles.add(rectangle);
         rectangle.setComposite(rootDirectory);
         rectangle.setisComposite(true);
+
+        //load rectangles from file farm.ser
+        try {
+            FileInputStream fileIn = new FileInputStream("farm.ser");
+            //deserialize every object in farm.ser and add it to the farm using a loop
+            boolean cont = true;
+            while(cont){
+                composite comp = null;
+                leaf leaf = null;
+                try{
+                    ObjectInputStream in = new ObjectInputStream(fileIn);
+                    Srectangle rect = new Srectangle();
+                    //if the object is a composite, deserialize it as a composite
+                    if(in.readBoolean()){
+                        comp = (composite) in.readObject();
+                        rect.setComposite(comp);
+                        rect.setisComposite(true);
+                        rect.setName(comp.getCompName());
+                        rect.setX(comp.getCompXcoordinate());
+                        rect.setY(comp.getCompYcoordinate());
+                        rect.setWidth(comp.getCompWidth());
+                        rect.setHeight(comp.getCompHeight());
+                        rect.setPrice(comp.getCompPrice());
+                        rectangles.add(rect);
+                        farm.getChildren().add(rect);
+                        rect.setFill(Color.WHITE);
+                        rect.setStroke(Color.BLACK);
+                    }else{
+                        //if the object is a leaf, deserialize it as a leaf
+                        leaf = (leaf) in.readObject();
+                        rect.setLeaf(leaf);
+                        rect.setisComposite(false);
+                        rect.setName(leaf.getName());
+                        rect.setX(leaf.getXCoordinate());
+                        rect.setY(leaf.getYCoordinate());
+                        rect.setWidth(leaf.getWidth());
+                        rect.setHeight(leaf.getHeight());
+                        rect.setPrice(leaf.getPrice());
+                        rectangles.add(rect);
+                        farm.getChildren().add(rect);
+                        rect.setFill(Color.WHITE);
+                        rect.setStroke(Color.BLACK);
+                    }
+                    
+                }catch(Exception e){
+                }
+                if(comp == null && leaf == null){
+                    cont = false;
+                }
+            }
+            fileIn.close();
+
+        } catch(FileNotFoundException e){
+            FileOutputStream fileOut = new FileOutputStream("farm.ser");
+            fileOut.close();
+        }
 
         //Set Tree View Properties
         root.setExpanded(true);
@@ -181,7 +238,7 @@ public class Control{
     @FXML
     void CreateItemContainer(ActionEvent event) throws FileNotFoundException, IOException{ // Create Item and Item Container
         //create farm.ser file or open existing farm.ser file
-        FileOutputStream fileOut = new FileOutputStream("farm.ser");
+        FileOutputStream fileOut = new FileOutputStream("farm.ser", true);
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         System.out.printf("Serialized data is saved in farm.ser");
         if(Choice3.getisComposite() == false || Choice1.equals("Command Center") || Choice1.equals("Drone")){ // if the selected item is a leaf or the command center
@@ -724,8 +781,8 @@ public class Control{
     public void saveComp(composite comp,ObjectOutputStream out){
         //save rectangle to farm.ser
         try {
+            out.writeBoolean(true);
             out.writeObject(comp);
-            out.writeObject(comp.getItems());
             for(items i : comp.getItems()){
                 if((composite)i instanceof composite){
                     int ret = saveCompHelper(comp, out);
@@ -740,6 +797,7 @@ public class Control{
 
     public void saveLeaf(leaf l, ObjectOutputStream out){
         try{
+            out.writeBoolean(false);
             out.writeObject(l);
         } catch (IOException e) {
             e.printStackTrace();
@@ -750,8 +808,8 @@ public class Control{
         //save rectangle to farm.ser
         try {
             ArrayList<items> list = new ArrayList<items>();
+            out.writeBoolean(true);
             out.writeObject(comp);
-            out.writeObject(comp.getItems());
                 for(items i : comp.getItems()){
                     if((composite)i instanceof composite){
                         list.add(i);
