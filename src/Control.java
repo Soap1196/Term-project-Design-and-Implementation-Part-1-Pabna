@@ -9,7 +9,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -80,7 +79,6 @@ public class Control{
     @FXML
      void initialize() throws IOException {
         
-
         //Initialize Farm Pane
         farm.setLayoutX(250);
         farm.setLayoutY(5);
@@ -191,6 +189,7 @@ public class Control{
                         } else{
                             //find the treeitem that corresponds to the parent of the composite
                             int ret = treeSetHelper(root.getChildren(), rect.getComposite().getCompParent().getCompName(), addition);
+                            System.out.println(ret);
                         }
                     } else{
                         if(rect.getLeaf().getParent().getCompName().equals("Root")){
@@ -198,6 +197,7 @@ public class Control{
                         } else{
                             //find the treeitem that corresponds to the parent of the leaf
                             int ret = treeSetHelper(root.getChildren(), rect.getLeaf().getParent().getCompName(), addition);
+                            System.out.println(ret);
                         }
                     }
 
@@ -809,6 +809,7 @@ public class Control{
             for(items i : comp.getItems()){
                 if((composite)i instanceof composite){
                     int ret = saveCompHelper(comp, out);
+                    System.out.println(ret);
                 }
             }
         } catch (IOException e) {
@@ -840,6 +841,7 @@ public class Control{
                 }
                 for(items i : list){
                     int ret = saveCompHelper((composite)i, out);
+                    System.out.println(ret);
                 }
         } catch (IOException e) {
             // Auto-generated catch block
@@ -859,6 +861,7 @@ public class Control{
         if(!found){
             for(TreeItem<String> i : list){
                 int ret = treeSetHelper(i.getChildren(), name, addition);
+                System.out.println(ret);
             }
         }
         return 0;

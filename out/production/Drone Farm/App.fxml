@@ -15,7 +15,7 @@
       <TreeView fx:id="locationTreeView" layoutX="14.0" layoutY="14.0" prefHeight="280.0" prefWidth="200.0" />
       <ScrollPane layoutX="1.0" layoutY="332.0" prefHeight="269.0" prefWidth="229.0">
          <content>
-            <AnchorPane prefHeight="347.0" prefWidth="200.0">
+            <AnchorPane prefHeight="442.0" prefWidth="200.0">
                <children>
                   <Button fx:id="Rename" layoutX="18.0" layoutY="93.0" mnemonicParsing="false" onAction="#Rename" text="Rename" />
                   <Button fx:id="changeLocation" layoutX="18.0" layoutY="119.0" mnemonicParsing="false" onAction="#changeLocation" text="Change Location" />
@@ -28,6 +28,8 @@
                   <Button layoutX="93.0" layoutY="296.0" mnemonicParsing="false" onAction="#goHome" text="Go to Home" />
                   <Text layoutX="54.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drone Options" />
                   <Button fx:id="createItemContainer" layoutX="20.0" layoutY="21.0" mnemonicParsing="false" onAction="#CreateItemContainer" text="Create Item / Container" />
+                  <Button fx:id="Sim" layoutX="5.0" layoutY="337.0" mnemonicParsing="false" onAction="#Simulation" style="-fx-background-color: #00ff00;" text="Simulation" />
+                  <Button fx:id="Launch" layoutX="85.0" layoutY="337.0" mnemonicParsing="false" onAction="#LaunchDrone" style="-fx-background-color: #ff0000;" text="Launch Drone" textFill="WHITE" />
                </children>
             </AnchorPane>
          </content>
