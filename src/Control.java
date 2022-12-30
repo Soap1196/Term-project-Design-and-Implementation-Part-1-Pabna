@@ -635,18 +635,8 @@ public class Control{
             for(int i = 0; i < globalComposite.getItems().size(); i++){
                 double x = getMiddleX(Choice3);
                 double y = getMiddleY(Choice3);
-                if (globalComposite.getItems().get(i) instanceof composite){
-                    composite temp = (composite) globalComposite.getItems().get(i);
-                    if(temp.getCompName().equals(Choice1)){
-
-                        drone.goToItem(x, y);
-                    }
-                } else{
-                    leaf temp = (leaf) globalComposite.getItems().get(i);
-                    if(temp.getName().equals(Choice1)){
-                        drone.goToItem(x, y);
-                    }
-                }
+                
+                drone.goToItem(x, y);
             }
         }
     }
